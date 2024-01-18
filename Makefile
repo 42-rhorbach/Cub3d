@@ -38,11 +38,14 @@ MLX42= $(MLX42_DIR)/$(MLX42_BUILD_DIR)/libmlx42.a
 ##########
 
 HEADERS= ./Libft/libft.h \
-	./MLX42/include/MLX42/MLX42.h \
+		./MLX42/include/MLX42/MLX42.h \
+		src/types.h \
+		src/error.h \
 
 ##########
 
-SOURCE= main.c \
+SOURCE= src/main.c \
+		src/error.c \
 
 ##########
 
@@ -82,7 +85,8 @@ $(MLX42):
 $(ODIR):
 	@mkdir -p $(ODIR)
 
-$(ODIR)/%.o: %.c $(HEADER) | $(ODIR)
+$(ODIR)/%.o: %.c $(HEADER)
+	@mkdir -p $(dir $@)
 	@$(call prettycomp,$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@)
 
 clean:

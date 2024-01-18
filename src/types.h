@@ -13,6 +13,9 @@
 #ifndef TYPES_H
 # define TYPES_H
 
+# include "MLX42.h"
+# include <unistd.h>
+
 typedef enum e_error
 {
 	OK,
@@ -20,6 +23,7 @@ typedef enum e_error
 	E_MLX,
 	E_SYS,
 	E_NO_MAP,
+	E_EMPTY_ARG,
 	E_EXTENSION,
 	E_MAP_NOT_CLOSED,
 	E_INCORRECT_ELEMENT,
