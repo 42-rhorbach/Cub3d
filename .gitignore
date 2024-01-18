@@ -1,0 +1,11 @@
+*
+
+!*/
+!*.c
+!*.h
+!Makefile
+!.gitignore
+!.normignore
+!textures/*
+
+//!*.cub
