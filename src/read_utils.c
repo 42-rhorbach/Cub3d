@@ -4,7 +4,7 @@
 #include "libft.h"
 #include <stdlib.h>
 
-bool	ft_info_complete(t_parser *parse_info)
+bool	ft_info_set(t_parser *parse_info)
 {
 	if (!parse_info)
 		return (false);
@@ -27,6 +27,8 @@ void	ft_free_parse_struct(t_parser *parse_info)
 {
 	if (parse_info)
 	{
+		if (parse_info->map)
+			ft_free_ptr_array((void **)parse_info->map);
 		if (parse_info->north)
 			free (parse_info->north);
 		if (parse_info->south)
@@ -45,18 +47,10 @@ void	ft_free_parse_struct(t_parser *parse_info)
 
 t_error	ft_init_parse_struct(t_parser	**parse_info)
 {
-	int	i;
-
 	*parse_info = (t_parser *)malloc(sizeof(t_parser));
 	if (!*parse_info)
 		return (set_error(E_SYS));
-	i = 0;
-	while (i < 3)
-	{
-		(*parse_info)->f_colour[i] = -1;
-		(*parse_info)->c_colour[i] = -1;
-		i++;
-	}
+	(*parse_info)->map = NULL;
 	(*parse_info)->face = '\0';
 	(*parse_info)->north = NULL;
 	(*parse_info)->south = NULL;
