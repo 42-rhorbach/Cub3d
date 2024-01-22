@@ -21,7 +21,7 @@ NAME= cub3D
 ##########
 
 LIBFT= ./Libft/libft.a
-LIBFLAGS= -L$(dir $(LIBFT)) -lft -L$(dir $(MLX42)) -lmlx42
+LIBFLAGS= -L$(dir $(LIBFT)) -lft -L$(dir $(MLX42)) -lmlx42 -ldl
 
 ifeq ($(shell uname),Linux)
 LIBFLAGS += -lglfw
@@ -41,11 +41,14 @@ HEADERS= ./Libft/libft.h \
 		./MLX42/include/MLX42/MLX42.h \
 		src/types.h \
 		src/error.h \
+		src/read.h \
 
 ##########
 
 SOURCE= src/main.c \
 		src/error.c \
+		src/read.c \
+		src/read_utils.c \
 
 ##########
 

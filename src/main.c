@@ -13,10 +13,11 @@
 #include "types.h"
 #include "libft.h"
 #include "error.h"
+#include "read.h"
 #include <fcntl.h>
 #include <stdlib.h>
 
- //this function only checks if the file ends with a '.cub'. should we check other things?
+//this function only checks if the file ends with a '.cub'. should we check other things?
 static t_error	ft_check_file_name(char *file)
 {
 	int	i;
@@ -31,7 +32,7 @@ static t_error	ft_check_file_name(char *file)
 	return (OK);
 }
 
-static t_error	cub3d(char	*file)
+static t_error	ft_cub3d(char	*file)
 {
 	int	fd;
 
@@ -55,7 +56,7 @@ int	main(int argc, char **argv)
 		print_error(E_ARGC);
 		return (EXIT_FAILURE);
 	}
-	if (cub3d(argv[1]) != OK)
+	if (ft_cub3d(argv[1]) != OK)
 	{
 		print_error(get_error());
 		return (EXIT_FAILURE);

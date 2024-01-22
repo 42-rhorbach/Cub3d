@@ -28,6 +28,7 @@ typedef enum e_error
 	E_MAP_NOT_CLOSED,
 	E_INCORRECT_ELEMENT,
 	E_WRONG_QUANTITY,
+	E_INV_INSTRC,
 }	t_error;
 
 typedef enum e_texture_index {
@@ -49,7 +50,6 @@ typedef struct s_data
 	size_t		height;
 	int			px;
 	int			py;
-	int			move_count;
 }	t_data;
 
 #endif

@@ -50,6 +50,7 @@ void	print_error(t_error err)
 	[E_MAP_NOT_CLOSED] = "Map is not enclosed by walls.",
 	[E_INCORRECT_ELEMENT] = "Unknown symbol found in map.",
 	[E_WRONG_QUANTITY] = "Too many/few players in map.",
+	[E_INV_INSTRC] = "Invalid instruction present.",
 	};
 
 	ft_putendl_fd("Error", STDERR_FILENO);
