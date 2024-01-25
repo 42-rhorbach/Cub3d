@@ -20,8 +20,6 @@ static t_error	ft_set_input(char *line1, char *line2, t_parser **parse_info)
 {
 	if (!line2)
 		return (set_error(E_EMPTY_ARG));
-	if (!line1 || !parse_info)
-		return (free(line2), set_error(E_EMPTY_ARG));
 	if (ft_strcmp(line1, "NO") == 0 && (*parse_info)->north == NULL)
 		(*parse_info)->north = line2;
 	else if (ft_strcmp(line1, "SO") == 0 && (*parse_info)->south == NULL)
@@ -45,13 +43,10 @@ static t_error	ft_check_line(char	*trim_line, t_parser **parse_info)
 
 	if (!trim_line)
 		return (set_error(E_EMPTY_ARG));
-	if (!parse_info)
-		return (free(trim_line), set_error(E_EMPTY_ARG));
 	if (trim_line[0] && trim_line[0] != '\0')
 	{
 		buf = ft_split(trim_line, ' ');
-		if (trim_line)
-			free(trim_line);
+		free(trim_line);
 		if (buf && ft_ptr_array_length((void **)buf) == 2)
 			if (ft_set_input(buf[0], ft_strdup(buf[1]), parse_info) != OK)
 				return (ft_free_ptr_array((void **)buf), get_error());
@@ -68,12 +63,10 @@ static t_error	ft_new_map(char *line, t_parser **parse_info, int size)
 	char	**buf;
 	int		i;
 
-	i = 0;
-	if (!line)
-		return (set_error(E_EMPTY_ARG));
 	buf = (char **)malloc((size + 1) * sizeof(char *));
 	if (!buf)
 		return (free(line), set_error(E_SYS));
+	i = 0;
 	while (i < (size - 1) && (*parse_info)->map)
 	{
 		ft_putstr_fd((*parse_info)->map[i], 1);
@@ -102,10 +95,6 @@ static t_error	ft_get_map(int fd, char *line, t_parser **parse_info)
 {
 	int		size;
 
-	if (!line)
-		return (set_error(E_EMPTY_ARG));
-	if (!parse_info)
-		return (free(line), set_error(E_EMPTY_ARG));
 	size = 0;
 	while (line)
 	{
@@ -122,12 +111,15 @@ t_error	ft_read_and_parse(int fd)
 {
 	t_parser	*parse_info;
 	char		*line;
+	//int			count; use counter to count lines which contain info, as start for map;
 
-	parse_info = NULL;
-	if (ft_init_parse_struct(&parse_info) != OK)
-		return (get_error());
+	parse_info = (t_parser *)ft_calloc(1, sizeof(t_parser));
+	if (!parse_info)
+		return (set_error(E_CALLOC));
+	count = 0;
 	while (!ft_info_set(parse_info) && get_next_line(fd, &line) == GNL_CONTINUE)
 	{
+		//count++;
 		if (ft_check_line(ft_strtrim(line, " \n"), &parse_info) != OK)
 		{
 			if (line)
@@ -136,7 +128,8 @@ t_error	ft_read_and_parse(int fd)
 		}
 		free(line);
 	}
-	while (get_next_line(fd, &line) == GNL_CONTINUE && !ft_strchr(line, '1'))
+	while (get_next_line(fd, &line) == GNL_CONTINUE \
+			&& (!ft_strchr(line, '1') || !ft_strchr(line, '0')))
 		free(line);
 	if (ft_get_map(fd, line, &parse_info) != OK)
 		return (ft_free_parse_struct(parse_info), get_error());

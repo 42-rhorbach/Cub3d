@@ -45,18 +45,26 @@ void	ft_free_parse_struct(t_parser *parse_info)
 	}
 }
 
-t_error	ft_init_parse_struct(t_parser	**parse_info)
-{
-	*parse_info = (t_parser *)malloc(sizeof(t_parser));
-	if (!*parse_info)
-		return (set_error(E_SYS));
-	(*parse_info)->map = NULL;
-	(*parse_info)->face = '\0';
-	(*parse_info)->north = NULL;
-	(*parse_info)->south = NULL;
-	(*parse_info)->east = NULL;
-	(*parse_info)->west = NULL;
-	(*parse_info)->ceiling = NULL;
-	(*parse_info)->floor = NULL;
-	return (OK);
-}
+// t_error	ft_init_parse_struct(t_parser	**parse_info)
+// {
+// 	*parse_info = (t_parser *)ft_calloc(1, sizeof(t_parser));
+// 	if (!*parse_info)
+// 		return (set_error(E_SYS));
+// 	return (OK);
+// }
+
+// t_error	ft_init_parse_struct(t_parser	**parse_info)
+// {
+// 	*parse_info = (t_parser *)malloc(sizeof(t_parser)); //use calloc
+// 	if (!*parse_info)
+// 		return (set_error(E_SYS));
+// 	(*parse_info)->map = NULL;
+// 	(*parse_info)->face = '\0';
+// 	(*parse_info)->north = NULL;
+// 	(*parse_info)->south = NULL;
+// 	(*parse_info)->east = NULL;
+// 	(*parse_info)->west = NULL;
+// 	(*parse_info)->ceiling = NULL;
+// 	(*parse_info)->floor = NULL;
+// 	return (OK);
+// }

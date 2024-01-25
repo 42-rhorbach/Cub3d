@@ -17,7 +17,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
-//this function only checks if the file ends with a '.cub'. should we check other things?
+//TODO: this function only checks if the file ends with a '.cub'. should we check other things?
 static t_error	ft_check_file_name(char *file)
 {
 	int	i;
@@ -25,7 +25,7 @@ static t_error	ft_check_file_name(char *file)
 	if (!file)
 		return (set_error(E_EMPTY_ARG));
 	i = ft_strlen(file) - 4;
-	if (i < 0 || !file[i])
+	if (i < 0)
 		return (set_error(E_EXTENSION));
 	if (ft_strcmp(&file[i], ".cub") != 0)
 		return (set_error(E_EXTENSION));
@@ -36,8 +36,6 @@ static t_error	ft_cub3d(char	*file)
 {
 	int	fd;
 
-	if (!file)
-		return (set_error(E_EMPTY_ARG));
 	if (ft_check_file_name(file) != OK)
 		return (get_error());
 	fd = open(file, O_RDONLY);
