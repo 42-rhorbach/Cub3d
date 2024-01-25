@@ -22,6 +22,7 @@ typedef enum e_error
 	E_ARGC,
 	E_MLX,
 	E_SYS,
+	E_CALLOC,
 	E_NO_MAP,
 	E_EMPTY_ARG,
 	E_EXTENSION,
@@ -31,7 +32,8 @@ typedef enum e_error
 	E_INV_INSTRC,
 }	t_error;
 
-typedef enum e_texture_index {
+typedef enum e_texture_index
+{
 	EXIT,
 	FLOOR,
 	HATCH,

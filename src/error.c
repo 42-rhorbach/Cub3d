@@ -45,12 +45,13 @@ void	print_error(t_error err)
 	static const char	*error_table[] = {
 	[E_ARGC] = "Program takes only one argument.",
 	[E_EMPTY_ARG] = "Passed argument is empty.",
+	[E_CALLOC] = "Calloc failed.",
 	[E_NO_MAP] = "Received empty map.",
 	[E_EXTENSION] = "Map file must end in \".cub\".",
 	[E_MAP_NOT_CLOSED] = "Map is not enclosed by walls.",
 	[E_INCORRECT_ELEMENT] = "Unknown symbol found in map.",
 	[E_WRONG_QUANTITY] = "Too many/few players in map.",
-	[E_INV_INSTRC] = "Invalid instruction present.",
+	[E_INV_INSTRC] = "Invalid file content.",
 	};
 
 	ft_putendl_fd("Error", STDERR_FILENO);

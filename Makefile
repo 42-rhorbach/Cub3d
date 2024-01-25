@@ -41,14 +41,15 @@ HEADERS= ./Libft/libft.h \
 		./MLX42/include/MLX42/MLX42.h \
 		src/types.h \
 		src/error.h \
-		src/read.h \
+		src/parser/parser.h \
 
 ##########
 
 SOURCE= src/main.c \
 		src/error.c \
-		src/read.c \
-		src/read_utils.c \
+		src/parser/parser.c \
+		src/parser/parse_utils.c \
+		src/parser/map_parser.c \
 
 ##########
 

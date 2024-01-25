@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef READ_H
-# define READ_H
+#ifndef PARSER_H
+# define PARSER_H
 
 typedef struct s_parser
 {
@@ -25,9 +25,10 @@ typedef struct s_parser
 	char	**map;
 }	t_parser;
 
-t_error	ft_read_and_parse(int fd);
+t_error	ft_parser(int fd, char *file);
 bool	ft_info_set(t_parser *parse_info);
 void	ft_free_parse_struct(t_parser *parse_info);
-t_error	ft_init_parse_struct(t_parser **parse_info);
+bool	ft_is_empty_line(char *line);
+t_error	ft_init_map(int fd, t_parser **parse_info, int start, char *file);
 
 #endif
