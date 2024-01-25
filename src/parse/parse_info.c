@@ -1,17 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   read.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jvorstma <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/18 18:48:25 by jvorstma          #+#    #+#             */
-/*   Updated: 2024/01/18 18:48:28 by jvorstma         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   parse_info.c                                       :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/01/25 09:10:54 by jvorstma      #+#    #+#                 */
+/*   Updated: 2024/01/25 09:10:54 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "types.h"
-#include "error.h"
 #include "parser.h"
 #include "libft.h"
 #include <stdlib.h>
@@ -37,7 +35,7 @@ static t_error	ft_set_input(char *id, char *value, t_parser **parse_info)
 	return (OK);
 }
 
-static t_error	ft_check_line(char	*trim_line, t_parser **parse_info)
+static t_error	ft_check_line(char	*trim_line, t_parser *parse_info)
 {
 	char	**buf;
 
@@ -55,7 +53,7 @@ static t_error	ft_check_line(char	*trim_line, t_parser **parse_info)
 		ft_free_ptr_array((void **)buf);
 		return (set_error(E_INV_INSTRC));
 	}
-	if (ft_set_input(buf[0], ft_strdup(buf[1]), parse_info) != OK)
+	if (ft_set_input(buf[0], ft_strdup(buf[1]), &parse_info) != OK)
 	{
 		ft_free_ptr_array((void **)buf);
 		return (get_error());
@@ -64,29 +62,28 @@ static t_error	ft_check_line(char	*trim_line, t_parser **parse_info)
 	return (OK);
 }
 
-t_error	ft_parser(int fd, char *file)
+t_error	ft_parser(int fd, char *file, t_parser **parse_info)
 {
-	t_parser	*parse_info;
 	char		*line;
 	int			start;
 
-	parse_info = (t_parser *)ft_calloc(1, sizeof(t_parser));
-	if (!parse_info)
+	*parse_info = (t_parser *)ft_calloc(1, sizeof(t_parser));
+	if (!*parse_info)
 		return (set_error(E_CALLOC));
 	start = 0;
-	while (!ft_info_set(parse_info) && get_next_line(fd, &line) == GNL_CONTINUE)
+	while (!ft_info_set(*parse_info) && get_next_line(fd, &line) == GNL_CONTINUE)
 	{
 		start++;
-		if (ft_is_empty_line(line) == false \
-			&& ft_check_line(ft_strtrim(line, " \n"), &parse_info) != OK)
+		if (line && ft_is_empty_line(line) == false \
+			&& ft_check_line(ft_strtrim(line, " \n"), *parse_info) != OK)
 		{
-			if (line)
-				free(line);
-			return (ft_free_parse_struct(parse_info), get_error());
+			free(line);
+			return (get_error());
 		}
 		free(line);
 	}
-	if (ft_init_map(fd, &parse_info, start, file) != OK)
-		return (ft_free_parse_struct(parse_info), get_error());
-	return (ft_free_parse_struct(parse_info), OK);
+	if (ft_init_map(fd, *parse_info, start, file) != OK)
+		return (get_error());
+	close (fd);
+	return (OK);
 }

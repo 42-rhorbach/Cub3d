@@ -1,17 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   map_parser.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jvorstma <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/25 14:28:02 by jvorstma          #+#    #+#             */
-/*   Updated: 2024/01/25 14:28:03 by jvorstma         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   parse_map.c                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: jvorstma <marvin@42.fr>                      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/01/25 14:28:02 by jvorstma      #+#    #+#                 */
+/*   Updated: 2024/01/26 00:00:23 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "types.h"
-#include "error.h"
 #include "parser.h"
 #include "libft.h"
 #include <fcntl.h>
@@ -68,21 +66,28 @@ static t_error	ft_get_map_size(int fd, int *start, int *size)
 // if it gets out of those loops before eof, 
 //something went wrong in gnl or there are illegal instructions in the file.
 
-t_error	ft_init_map(int fd, t_parser **parse_info, int start, char *file)
+t_error	ft_init_map(int fd, t_parser *parse_info, int start, char *file)
 {
 	int		size;
 	int		new_fd;
 
 	size = 0;
 	if (ft_get_map_size(fd, &start, &size) != OK)
+	{
+		ft_free_parse_struct(parse_info);
 		return (get_error());
+	}
 	close (fd);
 	new_fd = open(file, O_RDONLY);
 	if (new_fd == -1)
+	{
+		ft_free_parse_struct(parse_info);
 		return (set_error(E_SYS));
-	if (ft_fill_map(new_fd, &(*parse_info), start, size) != OK)
+	}
+	if (ft_fill_map(new_fd, &parse_info, start, size) != OK)
 	{
 		close (new_fd);
+		ft_free_parse_struct(parse_info);
 		return (get_error());
 	}
 	close (new_fd);

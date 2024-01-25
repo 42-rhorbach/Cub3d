@@ -42,14 +42,18 @@ HEADERS= ./Libft/libft.h \
 		src/types.h \
 		src/error.h \
 		src/parser/parser.h \
+		src/validate/validate.h \
 
 ##########
 
 SOURCE= src/main.c \
 		src/error.c \
-		src/parser/parser.c \
-		src/parser/parse_utils.c \
-		src/parser/map_parser.c \
+		src/parse/parse_info.c \
+		src/parse/parse_utils.c \
+		src/parse/parse_map.c \
+		src/validate/validate_colour.c \
+		src/validate/validate_path.c \
+		src/validate/validate_map.c \
 
 ##########
 
