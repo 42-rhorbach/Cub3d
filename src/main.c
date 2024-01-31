@@ -18,8 +18,6 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
-#include <stdio.h>
-
 //TODO: this function only checks if the file ends with a '.cub'. 
 //should we check other things?
 static t_error	ft_check_file_name(char *file)
@@ -60,12 +58,14 @@ static t_error	ft_init(int fd, char *file, t_data **data)
 
 static void	ft_print_data_to_check(t_data *data)
 {
-	printf("north: %s\t", data->north);
-	printf("south: %s\t", data->south);
-	printf("east: %s\t", data->east);
-	printf("west: %s\n", data->west);
-	printf("ceiling: %i,%i,%i\n", data->ceiling[0], data->ceiling[1], data->ceiling[2]);
-	printf("floor: %i,%i,%i\n", data->floor[0], data->floor[1], data->floor[2]);
+	printf("printing for checking:\n");
+	printf("--north: %s\n", data->north);
+	printf("--south: %s\n", data->south);
+	printf("--east: %s\n", data->east);
+	printf("--west: %s\n", data->west);
+	printf("--ceiling: %i,%i,%i\n", data->ceiling[0], data->ceiling[1], data->ceiling[2]);
+	printf("--floor: %i,%i,%i\n", data->floor[0], data->floor[1], data->floor[2]);
+	printf("--px: %i, py: %i, face: %c\n", data->px, data->py, data->face);
 }
 
 static t_error	ft_cub3d(char *file)

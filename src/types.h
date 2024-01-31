@@ -16,6 +16,8 @@
 # include "MLX42.h"
 # include <unistd.h>
 
+# include <stdio.h> //for printf testing
+
 typedef enum e_error
 {
 	OK,
@@ -45,7 +47,6 @@ typedef enum e_texture_index
 
 typedef struct s_parser
 {
-	char	face;
 	char	*north;
 	char	*east;
 	char	*south;
@@ -53,6 +54,9 @@ typedef struct s_parser
 	char	*floor;
 	char	*ceiling;
 	char	**map;
+	char	face;
+	int		px;
+	int		py;
 }	t_parser;
 
 typedef struct s_data
@@ -62,6 +66,7 @@ typedef struct s_data
 	char		**map_grid;
 	size_t		width;
 	size_t		height;
+	char		face;
 	int			px;
 	int			py;
 	int			ceiling[3];

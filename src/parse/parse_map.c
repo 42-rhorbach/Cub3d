@@ -6,7 +6,7 @@
 /*   By: jvorstma <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 14:28:02 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/01/26 00:00:23 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/01 00:37:12 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,32 @@
 #include "libft.h"
 #include <fcntl.h>
 #include <stdlib.h>
+
+static t_error	ft_check_map_line(char *line, t_parser *info, int i)
+{
+	int	j;
+
+	j = 0;
+	while (line && line[j] && line[j] != '\n')
+	{
+		if (line[j] == '0' || line[j] == '1' || line[j] == ' ')
+			j++;
+		else if (ft_strchr("NSWE", line[j]) != NULL && info->face == '\0')
+		{
+			info->face = line[j];
+			info->px = j;
+			info->py = i;
+			j++;
+		}
+		else
+			return (set_error(E_INCORRECT_ELEMENT));
+	}
+	info->map[i] = ft_strtrim(line, "\n");
+	if (!line)
+		return (set_error(E_SYS));
+	free(line);
+	return (OK);
+}
 
 static t_error	ft_fill_map(int fd, t_parser **info, int start, int size)
 {
@@ -27,9 +53,17 @@ static t_error	ft_fill_map(int fd, t_parser **info, int start, int size)
 	while (i++ < start && get_next_line(fd, &line) == GNL_CONTINUE)
 		free(line);
 	i = 0;
-	while (i < size && get_next_line(fd, &(*info)->map[i]) == GNL_CONTINUE)
+	while (i < size && get_next_line(fd, &line) == GNL_CONTINUE)
+	{
+		if (ft_check_map_line(line, *info, i) != OK)
+		{
+			free(line);
+			return (get_error());
+		}
 		i++;
-	if (i != size)
+	}
+	(*info)->map[i] = NULL;
+	if (i != size || (*info)->face == '\0')
 		return (set_error(E_INV_INSTRC));
 	return (OK);
 }
@@ -61,10 +95,6 @@ static t_error	ft_get_map_size(int fd, int *start, int *size)
 		free (line);
 	return (set_error(E_INV_INSTRC));
 }
-//return ok in while loops if EOF is reached while not have empty lines, 
-//or after map if only having empty lines.
-// if it gets out of those loops before eof, 
-//something went wrong in gnl or there are illegal instructions in the file.
 
 t_error	ft_init_map(int fd, t_parser *parse_info, int start, char *file)
 {

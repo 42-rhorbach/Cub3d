@@ -31,7 +31,10 @@ static t_error	ft_set_input(char *id, char *value, t_parser **parse_info)
 	else if (ft_strcmp(id, "F") == 0 && (*parse_info)->floor == NULL)
 		(*parse_info)->floor = value;
 	else
-		return (free(value), set_error(E_INV_INSTRC));
+	{
+		free(value);
+		return (set_error(E_INV_INSTRC));
+	}
 	return (OK);
 }
 
@@ -71,7 +74,8 @@ t_error	ft_parser(int fd, char *file, t_parser **parse_info)
 	if (!*parse_info)
 		return (set_error(E_CALLOC));
 	start = 0;
-	while (!ft_info_set(*parse_info) && get_next_line(fd, &line) == GNL_CONTINUE)
+	while (ft_info_set(*parse_info) == false \
+			&& get_next_line(fd, &line) == GNL_CONTINUE)
 	{
 		start++;
 		if (line && ft_is_empty_line(line) == false \
@@ -84,6 +88,5 @@ t_error	ft_parser(int fd, char *file, t_parser **parse_info)
 	}
 	if (ft_init_map(fd, *parse_info, start, file) != OK)
 		return (get_error());
-	close (fd);
 	return (OK);
 }

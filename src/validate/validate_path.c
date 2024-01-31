@@ -6,15 +6,22 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 03:14:48 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/01/26 00:22:04 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/01 00:39:14 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "validate.h"
 #include "libft.h"
+#include <fcntl.h>
 
-static t_error ft_check_path(char *path, char **data_path)
+static t_error	ft_check_path(char *path, char **data_path)
 {
+//	int	fd;
+//
+//	fd = open(path, O_RDONLY);
+//	if (fd == -1)
+//		return (set_error(E_SYS));
+//	close (fd);
 	*data_path = ft_strdup(path);
 	if (!*data_path)
 		return (set_error(E_SYS));
@@ -31,7 +38,12 @@ t_error ft_validate_data(t_parser *parse_info, t_data *data)
 		|| 	ft_check_path(parse_info->east, &data->east) != OK)
 	{
 		ft_free_parse_struct(parse_info);
-		return (set_error(E_INCORRECT_ELEMENT));
+		return (get_error());
+	}
+	if (ft_validate_map(parse_info, &data) != OK)
+	{
+		ft_free_parse_struct(parse_info);
+		return (get_error());
 	}
 	ft_free_parse_struct(parse_info);
 	return (OK);
