@@ -14,35 +14,27 @@
 #include "libft.h"
 #include <stdlib.h>
 
-//instead of mallocing 2 structs, and mallocing every value twice,
-//do check overhere, return (validate_funct(struct->place, value))
-//only the map needs validation after saving.
-
-static t_error	ft_set_input(char *id, char *value, t_parser **parse_info)
+static t_error	ft_set_input(char *id, char *value, t_data *data)
 {
 	if (!value)
 		return (set_error(E_EMPTY_ARG));
-	if (ft_strcmp(id, "NO") == 0 && (*parse_info)->north == NULL)
-		(*parse_info)->north = value;
-	else if (ft_strcmp(id, "SO") == 0 && (*parse_info)->south == NULL)
-		(*parse_info)->south = value;
-	else if (ft_strcmp(id, "WE") == 0 && (*parse_info)->west == NULL)
-		(*parse_info)->west = value;
-	else if (ft_strcmp(id, "EA") == 0 && (*parse_info)->east == NULL)
-		(*parse_info)->east = value;
-	else if (ft_strcmp(id, "C") == 0 && (*parse_info)->ceiling == NULL)
-		(*parse_info)->ceiling = value;
-	else if (ft_strcmp(id, "F") == 0 && (*parse_info)->floor == NULL)
-		(*parse_info)->floor = value;
+	if (ft_strcmp(id, "NO") == 0 && data->north == NULL)
+		return (ft_check_path(value, &data->north));
+	else if (ft_strcmp(id, "SO") == 0 && data->south == NULL)
+		return (ft_check_path(value, &data->south));
+	else if (ft_strcmp(id, "WE") == 0 && data->west == NULL)
+		return (ft_check_path(value, &data->west));
+	else if (ft_strcmp(id, "EA") == 0 && data->east == NULL)
+		return (ft_check_path(value, &data->east));
+	else if (ft_strcmp(id, "C") == 0 && data->ceiling[0] == -1)
+		return (ft_check_colour(value, data->ceiling));
+	else if (ft_strcmp(id, "F") == 0 && data->floor[0] == -1)
+		return (ft_check_colour(value, data->floor));
 	else
-	{
-		free(value);
 		return (set_error(E_INV_INSTRC));
-	}
-	return (OK);
 }
 
-static t_error	ft_check_line(char	*trim_line, t_parser *parse_info)
+static t_error	ft_check_line(char	*trim_line, t_data **data)
 {
 	char	**buf;
 
@@ -60,7 +52,7 @@ static t_error	ft_check_line(char	*trim_line, t_parser *parse_info)
 		ft_free_ptr_array((void **)buf);
 		return (set_error(E_INV_INSTRC));
 	}
-	if (ft_set_input(buf[0], ft_strdup(buf[1]), &parse_info) != OK)
+	if (ft_set_input(buf[0], buf[1], *data) != OK)
 	{
 		ft_free_ptr_array((void **)buf);
 		return (get_error());
@@ -69,28 +61,25 @@ static t_error	ft_check_line(char	*trim_line, t_parser *parse_info)
 	return (OK);
 }
 
-t_error	ft_parser(int fd, char *file, t_parser **parse_info)
+t_error	ft_parser(int fd, char *file, t_data *data)
 {
 	char		*line;
-	int			start;
+	size_t		start;
 
-	*parse_info = (t_parser *)ft_calloc(1, sizeof(t_parser));
-	if (!*parse_info)
-		return (set_error(E_CALLOC));
 	start = 0;
-	while (ft_info_set(*parse_info) == false \
+	while (ft_info_set(data) == false \
 			&& get_next_line(fd, &line) == GNL_CONTINUE)
 	{
 		start++;
 		if (line && ft_is_empty_line(line) == false \
-			&& ft_check_line(ft_strtrim(line, " \n"), *parse_info) != OK)
+			&& ft_check_line(ft_strtrim(line, " \n"), &data) != OK)
 		{
 			free(line);
 			return (get_error());
 		}
 		free(line);
 	}
-	if (ft_init_map(fd, *parse_info, start, file) != OK)
+	if (ft_init_map(fd, &data, start, file) != OK)
 		return (get_error());
 	return (OK);
 }

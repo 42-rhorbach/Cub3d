@@ -5,16 +5,30 @@
 /*                                                     +:+                    */
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2024/01/25 03:14:48 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/01 16:12:07 by jvorstma      ########   odam.nl         */
+/*   Created: 2024/02/01 18:06:22 by jvorstma      #+#    #+#                 */
+/*   Updated: 2024/02/01 18:10:50 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "validate.h"
+#include "parser.h"
 #include "libft.h"
 #include <fcntl.h>
 
-static t_error	ft_check_path(char *path, char **data_path)
+static t_error	ft_check_texture_name(char *file)
+{
+	int	i;
+
+	if (!file)
+		return (set_error(E_EMPTY_ARG));
+	i = ft_strlen(file) - 4;
+	if (i < 0)
+		return (set_error(E_TEXTURE_EXTENSION));
+	if (ft_strcmp(&file[i], ".png") != 0)
+		return (set_error(E_TEXTURE_EXTENSION));
+	return (OK);
+}
+
+t_error	ft_check_path(char *path, char **data_path)
 {
 //	int	fd;
 //
@@ -22,31 +36,10 @@ static t_error	ft_check_path(char *path, char **data_path)
 //	if (fd == -1)
 //		return (set_error(E_SYS));
 //	close (fd);
-	if (ft_check_file_name(path, ".png") != OK)
+	if (ft_check_texture_name(path) != OK)
 		return (get_error());
 	*data_path = ft_strdup(path);
 	if (!*data_path)
 		return (set_error(E_SYS));
-	return (OK);
-}
-
-t_error	ft_validate_data(t_parser *parse_info, t_data *data)
-{
-	if (ft_check_colour(parse_info->ceiling, data->ceiling) != OK \
-		|| ft_check_colour(parse_info->floor, data->floor) != OK \
-		|| ft_check_path(parse_info->north, &data->north) != OK \
-		|| ft_check_path(parse_info->south, &data->south) != OK \
-		|| ft_check_path(parse_info->west, &data->west) != OK \
-		|| ft_check_path(parse_info->east, &data->east) != OK)
-	{
-		ft_free_parse_struct(parse_info);
-		return (get_error());
-	}
-	if (ft_validate_map(parse_info, &data) != OK)
-	{
-		ft_free_parse_struct(parse_info);
-		return (get_error());
-	}
-	ft_free_parse_struct(parse_info);
 	return (OK);
 }

@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   validate.h                                         :+:    :+:            */
+/*   validate_map.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2024/01/25 03:17:32 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/01 15:23:04 by jvorstma      ########   odam.nl         */
+/*   Created: 2024/01/25 03:16:05 by jvorstma      #+#    #+#                 */
+/*   Updated: 2024/02/01 17:37:22 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VALIDATE_H
-# define VALIDATE_H
+#include "parser.h"
+#include "libft.h"
 
-# include "types.h"
-# include "../parse/parser.h"
-# include "error.h"
+static t_error	ft_enclosed_grid(char **map, int x, int y)
+{
+	printf("%c\n", map[y][x]);
+	return (OK);
+}
 
-t_error	ft_validate_data(t_parser *parse_info, t_data *data);
-t_error	ft_check_colour(char *str, int *colours);
-t_error	ft_validate_map(t_parser *parse_info, t_data **data);
-t_error	ft_check_file_name(char *file, char *extension);
-void	ft_free_data_struct(t_data *data);
-
-#endif
+t_error	ft_validate_map(t_data *data)
+{
+	if (ft_enclosed_grid(data->map_grid, data->px, data->py) != OK)
+		return (get_error());
+	return (OK);
+}

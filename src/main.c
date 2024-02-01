@@ -14,29 +14,35 @@
 #include "libft.h"
 #include "error.h"
 #include "parse/parser.h"
-#include "validate/validate.h"
 #include <fcntl.h>
 #include <stdlib.h>
 
+static t_error	ft_check_map_name(char *file)
+{
+	int	i;
+
+	if (!file)
+		return (set_error(E_EMPTY_ARG));
+	i = ft_strlen(file) - 4;
+	if (i < 0)
+		return (set_error(E_EXTENSION));
+	if (ft_strcmp(&file[i], ".cub") != 0)
+		return (set_error(E_EXTENSION));
+	return (OK);
+}
+
 static t_error	ft_init(int fd, char *file, t_data **data)
 {
-	t_parser	*parse_info;
-
-	parse_info = NULL;
-	if (ft_parser(fd, file, &parse_info) != OK)
-	{
-		close (fd);
-		ft_free_parse_struct(parse_info);
-		return (get_error());
-	}
 	*data = (t_data *)ft_calloc(1, sizeof(t_data));
 	if (!*data)
-	{
-		ft_free_parse_struct(parse_info);
 		return (set_error(E_CALLOC));
-	}
-	if (ft_validate_data(parse_info, *data) != OK)
+	(*data)->floor[0] = -1;
+	(*data)->ceiling[0] = -1;
+	if (ft_parser(fd, file, *data) != OK)
+	{
+		close (fd);
 		return (get_error());
+	}
 	return (OK);
 }
 
@@ -58,7 +64,7 @@ static t_error	ft_cub3d(char *file)
 	int		fd;
 
 	data = NULL;
-	if (ft_check_file_name(file, ".cub") != OK)
+	if (ft_check_map_name(file) != OK)
 		return (get_error());
 	fd = open(file, O_RDONLY);
 	if (fd == -1)

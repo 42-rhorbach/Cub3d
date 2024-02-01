@@ -47,20 +47,6 @@ typedef enum e_texture_index
 	TEXTURE_COUNT
 }	t_texture_index;
 
-typedef struct s_parser
-{
-	char	*north;
-	char	*east;
-	char	*south;
-	char	*west;
-	char	*floor;
-	char	*ceiling;
-	char	**map;
-	char	face;
-	int		px;
-	int		py;
-}	t_parser;
-
 typedef struct s_data
 {
 	mlx_t		*mlx;

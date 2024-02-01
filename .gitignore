@@ -3,6 +3,8 @@
 !*/
 !*.c
 !*.h
+!*.cub
+!*.png
 !Makefile
 !.gitignore
 !.normignore

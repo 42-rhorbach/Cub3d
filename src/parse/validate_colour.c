@@ -5,12 +5,12 @@
 /*                                                     +:+                    */
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2024/01/25 03:16:02 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/01 16:17:00 by jvorstma      ########   odam.nl         */
+/*   Created: 2024/02/01 18:08:29 by jvorstma      #+#    #+#                 */
+/*   Updated: 2024/02/01 18:10:11 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "validate.h"
+#include "parser.h"
 #include "libft.h"
 
 t_error	ft_check_colour(char *str, int *colours)

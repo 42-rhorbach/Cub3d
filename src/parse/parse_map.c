@@ -6,7 +6,7 @@
 /*   By: jvorstma <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 14:28:02 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/01 16:16:27 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/01 18:00:45 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
-static t_error	ft_check_map_line(char *line, t_parser *info, int i)
+static t_error	ft_check_map_line(char *line, t_data **data, int i)
 {
 	int	j;
 
@@ -24,50 +24,50 @@ static t_error	ft_check_map_line(char *line, t_parser *info, int i)
 	{
 		if (line[j] == '0' || line[j] == '1' || line[j] == ' ')
 			j++;
-		else if (ft_strchr("NSWE", line[j]) != NULL && info->face == '\0')
+		else if (ft_strchr("NSWE", line[j]) != NULL && (*data)->face == '\0')
 		{
-			info->face = line[j];
-			info->px = j;
-			info->py = i;
+			(*data)->face = line[j];
+			(*data)->px = j;
+			(*data)->py = i;
 			j++;
 		}
 		else
 			return (set_error(E_INCORRECT_ELEMENT));
 	}
-	info->map[i] = ft_strtrim(line, "\n");
+	(*data)->map_grid[i] = ft_strtrim(line, "\n");
 	if (!line)
 		return (set_error(E_SYS));
 	free(line);
 	return (OK);
 }
 
-static t_error	ft_fill_map(int fd, t_parser **info, int start, int size)
+static t_error	ft_fill_map(int fd, t_data *data, size_t start)
 {
-	int		i;
+	size_t	i;
 	char	*line;
 
-	(*info)->map = (char **)ft_calloc((size + 1), sizeof(char *));
-	if (!(*info)->map)
+	data->map_grid = (char **)ft_calloc((data->height + 1), sizeof(char *));
+	if (!data->map_grid)
 		return (set_error(E_CALLOC));
 	i = 0;
 	while (i++ < start && get_next_line(fd, &line) == GNL_CONTINUE)
 		free(line);
 	i = 0;
-	while (i < size && get_next_line(fd, &line) == GNL_CONTINUE)
+	while (i < data->height && get_next_line(fd, &line) == GNL_CONTINUE)
 	{
-		if (ft_check_map_line(line, *info, i) != OK)
+		if (ft_check_map_line(line, &data, i) != OK)
 		{
 			free(line);
 			return (get_error());
 		}
 		i++;
 	}
-	if (i != size || (*info)->face == '\0')
+	if (i != data->height || data->face == '\0')
 		return (set_error(E_INV_INSTRC));
 	return (OK);
 }
 
-static t_error	ft_get_map_size(int fd, int *start, int *size)
+static t_error	ft_get_map_size(int fd, size_t *start, size_t *size)
 {
 	char	*line;
 
@@ -95,23 +95,21 @@ static t_error	ft_get_map_size(int fd, int *start, int *size)
 	return (set_error(E_INV_INSTRC));
 }
 
-t_error	ft_init_map(int fd, t_parser *parse_info, int start, char *file)
+t_error	ft_init_map(int fd, t_data **data, size_t start, char *file)
 {
-	int		size;
 	int		new_fd;
 
-	size = 0;
-	if (ft_get_map_size(fd, &start, &size) != OK)
+	if (ft_get_map_size(fd, &start, &(*data)->height) != OK)
 		return (get_error());
 	close (fd);
 	new_fd = open(file, O_RDONLY);
 	if (new_fd == -1)
 		return (set_error(E_SYS));
-	if (ft_fill_map(new_fd, &parse_info, start, size) != OK)
+	if (ft_fill_map(new_fd, *data, start) != OK)
 	{
 		close (new_fd);
 		return (get_error());
 	}
 	close (new_fd);
-	return (OK);
+	return (ft_validate_map(*data));
 }

@@ -1,0 +1,19 @@
+      F 20,23,232               
+      SO ./southpic.png
+
+NO                              ./northpic.png
+     C 13,12,12
+         WE   ./westpic.png
+EA ./eastpic/back/eastpic.png
+
+
+    11111 11
+111110001111
+100000000001
+110000000001
+ 10100N00
+ 001
+110000100001
+111111111111
+
+

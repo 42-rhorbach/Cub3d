@@ -6,7 +6,7 @@
 /*   By: jvorstma <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 14:13:21 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/01 15:33:43 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/01 17:16:21 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,18 @@
 #include "libft.h"
 #include <stdlib.h>
 
-bool	ft_info_set(t_parser *parse_info)
+bool	ft_info_set(t_data *data)
 {
-	if (parse_info == NULL \
-			|| parse_info->north == NULL \
-			|| parse_info->south == NULL \
-			|| parse_info->west == NULL \
-			|| parse_info->east == NULL \
-			|| parse_info->ceiling == NULL \
-			|| parse_info->floor == NULL)
+	if (data == NULL \
+			|| data->north == NULL \
+			|| data->south == NULL \
+			|| data->west == NULL \
+			|| data->east == NULL \
+			|| data->ceiling[0] == -1 \
+			|| data->floor[0] == -1)
 		return (false);
 	else
 		return (true);
-}
-
-void	ft_free_parse_struct(t_parser *parse_info)
-{
-	if (parse_info)
-	{
-		if (parse_info->map)
-			ft_free_ptr_array((void **)parse_info->map);
-		if (parse_info->north)
-			free (parse_info->north);
-		if (parse_info->south)
-			free (parse_info->south);
-		if (parse_info->east)
-			free (parse_info->east);
-		if (parse_info->west)
-			free (parse_info->west);
-		if (parse_info->ceiling)
-			free (parse_info->ceiling);
-		if (parse_info->floor)
-			free(parse_info->floor);
-		free (parse_info);
-	}
 }
 
 bool	ft_is_empty_line(char *line)
@@ -61,4 +39,22 @@ bool	ft_is_empty_line(char *line)
 		return (true);
 	else
 		return (false);
+}
+
+void	ft_free_data_struct(t_data *data)
+{
+	if (data)
+	{
+		if (data->map_grid)
+			ft_free_ptr_array((void **)data->map_grid);
+		if (data->north)
+			free(data->north);
+		if (data->south)
+			free(data->south);
+		if (data->west)
+			free(data->west);
+		if (data->east)
+			free(data->east);
+		free (data);
+	}
 }
