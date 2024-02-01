@@ -28,10 +28,12 @@ typedef enum e_error
 	E_NO_MAP,
 	E_EMPTY_ARG,
 	E_EXTENSION,
+	E_TEXTURE_EXTENSION,
 	E_MAP_NOT_CLOSED,
 	E_INCORRECT_ELEMENT,
 	E_WRONG_QUANTITY,
 	E_INV_INSTRC,
+	E_INCORRECT_COLOUR,
 }	t_error;
 
 typedef enum e_texture_index

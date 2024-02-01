@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 03:16:02 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/01/26 01:16:38 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/01 16:17:00 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_error	ft_check_colour(char *str, int *colours)
 	if (ft_ptr_array_length((void **)s_str) != 3)
 	{
 		ft_free_ptr_array((void **)s_str);
-		return (set_error(E_INCORRECT_ELEMENT));
+		return (set_error(E_INCORRECT_COLOUR));
 	}
 	i = 0;
 	while (s_str[i])
@@ -32,7 +32,7 @@ t_error	ft_check_colour(char *str, int *colours)
 		if (c < 0 || c > 255)
 		{
 			ft_free_ptr_array((void **)s_str);
-			return (set_error(E_INCORRECT_ELEMENT));
+			return (set_error(E_INCORRECT_COLOUR));
 		}
 		colours[i] = c;
 		i++;

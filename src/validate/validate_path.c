@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 03:14:48 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/01 00:44:48 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/01 16:12:07 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static t_error	ft_check_path(char *path, char **data_path)
 //	if (fd == -1)
 //		return (set_error(E_SYS));
 //	close (fd);
+	if (ft_check_file_name(path, ".png") != OK)
+		return (get_error());
 	*data_path = ft_strdup(path);
 	if (!*data_path)
 		return (set_error(E_SYS));

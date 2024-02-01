@@ -6,7 +6,7 @@
 /*   By: jvorstma <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 14:13:21 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/01/31 01:02:31 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/01 15:33:43 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,6 @@ bool	ft_info_set(t_parser *parse_info)
 		return (false);
 	else
 		return (true);
-}
-
-void	ft_free_data_struct(t_data *data)
-{
-	if (data)
-	{
-		if (data->map_grid)
-			free(data->map_grid);
-		if (data->north)
-			free(data->north);
-		if (data->south)
-			free(data->south);
-		if (data->west)
-			free(data->west);
-		if (data->east)
-			free(data->east);
-		free (data);
-	}
 }
 
 void	ft_free_parse_struct(t_parser *parse_info)

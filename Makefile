@@ -54,6 +54,7 @@ SOURCE= src/main.c \
 		src/validate/validate_colour.c \
 		src/validate/validate_path.c \
 		src/validate/validate_map.c \
+		src/validate/validate_utils.c \
 
 ##########
 

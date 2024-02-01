@@ -6,7 +6,7 @@
 /*   By: jvorstma <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 14:28:02 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/01 00:37:12 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/01 16:16:27 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ static t_error	ft_fill_map(int fd, t_parser **info, int start, int size)
 		}
 		i++;
 	}
-	(*info)->map[i] = NULL;
 	if (i != size || (*info)->face == '\0')
 		return (set_error(E_INV_INSTRC));
 	return (OK);
@@ -103,21 +102,14 @@ t_error	ft_init_map(int fd, t_parser *parse_info, int start, char *file)
 
 	size = 0;
 	if (ft_get_map_size(fd, &start, &size) != OK)
-	{
-		ft_free_parse_struct(parse_info);
 		return (get_error());
-	}
 	close (fd);
 	new_fd = open(file, O_RDONLY);
 	if (new_fd == -1)
-	{
-		ft_free_parse_struct(parse_info);
 		return (set_error(E_SYS));
-	}
 	if (ft_fill_map(new_fd, &parse_info, start, size) != OK)
 	{
 		close (new_fd);
-		ft_free_parse_struct(parse_info);
 		return (get_error());
 	}
 	close (new_fd);
