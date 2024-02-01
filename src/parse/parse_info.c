@@ -14,6 +14,10 @@
 #include "libft.h"
 #include <stdlib.h>
 
+//instead of mallocing 2 structs, and mallocing every value twice,
+//do check overhere, return (validate_funct(struct->place, value))
+//only the map needs validation after saving.
+
 static t_error	ft_set_input(char *id, char *value, t_parser **parse_info)
 {
 	if (!value)
