@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 13:44:28 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/02/01 18:13:20 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/04 11:41:45 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 t_error	ft_parser(int fd, char *file, t_data *data);
 
 //parse_map
-t_error	ft_init_map(int fd, t_data **data, size_t start, char *file);
+t_error	ft_init_map(int fd, t_data **data, int start, char *file);
 
 //validate_map
 t_error	ft_validate_map(t_data *data);
@@ -29,7 +29,7 @@ t_error	ft_validate_map(t_data *data);
 t_error	ft_check_path(char *path, char **data_path);
 
 //validate_colour
-t_error	ft_check_colour(char *str, int *colours);
+t_error	ft_check_colour(char *str, int *colours, int *done);
 
 //parse_utils
 t_error	ft_check_file_name(char *file, char *extension);

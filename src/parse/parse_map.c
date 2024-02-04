@@ -6,7 +6,7 @@
 /*   By: jvorstma <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 14:28:02 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/01 18:00:45 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/01 10:53:44 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,20 @@ static t_error	ft_check_map_line(char *line, t_data **data, int i)
 		else
 			return (set_error(E_INCORRECT_ELEMENT));
 	}
-	(*data)->map_grid[i] = ft_strtrim(line, "\n");
+	(*data)->map[i] = ft_strtrim(line, "\n");
 	if (!line)
 		return (set_error(E_SYS));
 	free(line);
 	return (OK);
 }
 
-static t_error	ft_fill_map(int fd, t_data *data, size_t start)
+static t_error	ft_fill_map(int fd, t_data *data, int start)
 {
-	size_t	i;
+	int		i;
 	char	*line;
 
-	data->map_grid = (char **)ft_calloc((data->height + 1), sizeof(char *));
-	if (!data->map_grid)
+	data->map = (char **)ft_calloc((data->height + 1), sizeof(char *));
+	if (!data->map)
 		return (set_error(E_CALLOC));
 	i = 0;
 	while (i++ < start && get_next_line(fd, &line) == GNL_CONTINUE)
@@ -67,7 +67,7 @@ static t_error	ft_fill_map(int fd, t_data *data, size_t start)
 	return (OK);
 }
 
-static t_error	ft_get_map_size(int fd, size_t *start, size_t *size)
+static t_error	ft_get_map_size(int fd, int *start, int *size)
 {
 	char	*line;
 
@@ -95,7 +95,7 @@ static t_error	ft_get_map_size(int fd, size_t *start, size_t *size)
 	return (set_error(E_INV_INSTRC));
 }
 
-t_error	ft_init_map(int fd, t_data **data, size_t start, char *file)
+t_error	ft_init_map(int fd, t_data **data, int start, char *file)
 {
 	int		new_fd;
 

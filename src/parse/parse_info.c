@@ -26,10 +26,10 @@ static t_error	ft_set_input(char *id, char *value, t_data *data)
 		return (ft_check_path(value, &data->west));
 	else if (ft_strcmp(id, "EA") == 0 && data->east == NULL)
 		return (ft_check_path(value, &data->east));
-	else if (ft_strcmp(id, "C") == 0 && data->ceiling[0] == -1)
-		return (ft_check_colour(value, data->ceiling));
-	else if (ft_strcmp(id, "F") == 0 && data->floor[0] == -1)
-		return (ft_check_colour(value, data->floor));
+	else if (ft_strcmp(id, "C") == 0 && data->c == 0)
+		return (ft_check_colour(value, data->ceiling, &data->c));
+	else if (ft_strcmp(id, "F") == 0 && data->f == 0)
+		return (ft_check_colour(value, data->floor, &data->f));
 	else
 		return (set_error(E_INV_INSTRC));
 }
@@ -63,8 +63,8 @@ static t_error	ft_check_line(char	*trim_line, t_data **data)
 
 t_error	ft_parser(int fd, char *file, t_data *data)
 {
-	char		*line;
-	size_t		start;
+	char	*line;
+	int		start;
 
 	start = 0;
 	while (ft_info_set(data) == false \

@@ -51,14 +51,16 @@ typedef struct s_data
 {
 	mlx_t		*mlx;
 	mlx_image_t	*images[TEXTURE_COUNT];
-	char		**map_grid;
-	size_t		width;
-	size_t		height;
+	char		**map;
+	int			width;
+	int			height;
 	char		face;
 	int			px;
 	int			py;
 	int			ceiling[3];
+	int			c;
 	int			floor[3];
+	int			f;
 	char		*north;
 	char		*south;
 	char		*west;

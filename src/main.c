@@ -36,8 +36,6 @@ static t_error	ft_init(int fd, char *file, t_data **data)
 	*data = (t_data *)ft_calloc(1, sizeof(t_data));
 	if (!*data)
 		return (set_error(E_CALLOC));
-	(*data)->floor[0] = -1;
-	(*data)->ceiling[0] = -1;
 	if (ft_parser(fd, file, *data) != OK)
 	{
 		close (fd);

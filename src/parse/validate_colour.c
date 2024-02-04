@@ -6,14 +6,15 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/01 18:08:29 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/01 18:10:11 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/04 11:41:56 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "libft.h"
+#include <stdlib.h>
 
-t_error	ft_check_colour(char *str, int *colours)
+t_error	ft_check_colour(char *str, int *colours, int *done)
 {
 	int		i;
 	int		c;
@@ -38,5 +39,6 @@ t_error	ft_check_colour(char *str, int *colours)
 		i++;
 	}
 	ft_free_ptr_array((void **)s_str);
+	*done = 1;
 	return (OK);
 }

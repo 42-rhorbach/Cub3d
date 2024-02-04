@@ -6,7 +6,7 @@
 /*   By: jvorstma <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 14:13:21 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/01 17:16:21 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/04 11:37:20 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ bool	ft_info_set(t_data *data)
 			|| data->south == NULL \
 			|| data->west == NULL \
 			|| data->east == NULL \
-			|| data->ceiling[0] == -1 \
-			|| data->floor[0] == -1)
+			|| data->c == 0 \
+			|| data->f == 0)
 		return (false);
 	else
 		return (true);
@@ -45,8 +45,8 @@ void	ft_free_data_struct(t_data *data)
 {
 	if (data)
 	{
-		if (data->map_grid)
-			ft_free_ptr_array((void **)data->map_grid);
+		if (data->map)
+			ft_free_ptr_array((void **)data->map);
 		if (data->north)
 			free(data->north);
 		if (data->south)
