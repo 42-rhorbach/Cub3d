@@ -79,6 +79,8 @@ t_error	ft_parser(int fd, char *file, t_data *data)
 		}
 		free(line);
 	}
+	if (ft_info_set(data) == false)
+		return (set_error(E_ELEMENT_MISSING));
 	if (ft_init_map(fd, &data, start, file) != OK)
 		return (get_error());
 	return (OK);

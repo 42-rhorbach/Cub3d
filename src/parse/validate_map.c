@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 03:16:05 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/01 10:12:29 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/04 14:44:51 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_error	ft_validate_map(t_data *data)
 {
 	int	i;
 	int	j;
-	int width;
+	int	width;
 
 	i = 0;
 	while (data->map && i < data->height)

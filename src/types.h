@@ -34,6 +34,7 @@ typedef enum e_error
 	E_WRONG_QUANTITY,
 	E_INV_INSTRC,
 	E_INCORRECT_COLOUR,
+	E_ELEMENT_MISSING,
 }	t_error;
 
 typedef enum e_texture_index
