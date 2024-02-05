@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/01 18:06:22 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/04 13:51:03 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/05 21:47:48 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static t_error	ft_check_texture_name(char *file)
 	i = ft_strlen(file) - 4;
 	if (i < 0)
 		return (set_error(E_TEXTURE_EXTENSION));
-	if (ft_strcmp(&file[i], ".xpm") != 0)
+	if (ft_strcmp(&file[i], ".png") != 0)
 		return (set_error(E_TEXTURE_EXTENSION));
 	return (OK);
 }

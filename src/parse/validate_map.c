@@ -6,12 +6,25 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 03:16:05 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/04 14:44:51 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/05 23:06:36 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "libft.h"
+
+static t_error	ft_validate_spot(char **map, int i, int j)
+{
+	if ((i - 1) < 0 || (j - 1) < 0 \
+		|| (j + 1) >= (int)ft_strlen(map[i - 1]) \
+		|| (j + 1) >= (int)ft_strlen(map[i + 1]) \
+		|| map[i - 1][j - 1] == ' ' || map[i - 1][j] == ' ' \
+		|| map[i - 1][j + 1] == ' ' || map[i][j - 1] == ' ' \
+		|| map[i][j + 1] == ' ' || map[i + 1][j - 1] == ' ' \
+		|| map[i + 1][j] == ' ' || map[i + 1][j + 1] == ' ')
+		return (set_error(E_MAP_NOT_CLOSED));
+	return (OK);
+}
 
 t_error	ft_validate_map(t_data *data)
 {
@@ -28,24 +41,13 @@ t_error	ft_validate_map(t_data *data)
 		{
 			if (data->map[i][j] == '0' || data->map[i][j] == data->face)
 			{
-				if ((i - 1) < 0 || (i + 1) >= data->height \
-					|| (j - 1) < 0 || (j + 1) >= width)
+				if ((i + 1) >= data->height || (j + 1) >= width)
 					return (set_error(E_MAP_NOT_CLOSED));
-				if (data->map[i - 1][j - 1] == ' ' \
-					|| data->map[i - 1][j] == ' ' \
-					|| data->map[i - 1][j + 1] == ' ' \
-					|| data->map[i][j - 1] == ' ' \
-					|| data->map[i][j + 1] == ' ' \
-					|| data->map[i + 1][j - 1] == ' ' \
-					|| data->map[i + 1][j] == ' ' \
-					|| data->map[i + 1][j + 1] == ' ')
-					return (set_error(E_MAP_NOT_CLOSED));
+				if (ft_validate_spot(data->map, i, j) != OK)
+					return (get_error());
 			}
 			else if (data->map[i][j] != ' ' && data->map[i][j] != '1')
-			{
-				printf("here\n");
 				return (set_error(E_INCORRECT_ELEMENT));
-			}
 			j++;
 		}
 		i++;
