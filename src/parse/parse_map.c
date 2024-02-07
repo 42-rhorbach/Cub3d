@@ -6,7 +6,7 @@
 /*   By: jvorstma <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 14:28:02 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/01 10:53:44 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/07 10:52:52 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,34 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
+static t_error	ft_fill_line(char *line, t_data *data, int index)
+{
+	int	i;
+
+	data->map[index] = (char *)malloc((data->width + 1) * sizeof(char));
+	if (!data->map[index])
+		return (set_error(E_SYS));
+	i = 0;
+	while (line[i] && line[i] != '\n' && i < data->width)
+	{
+		data->map[index][i] = line[i];
+		i++;
+	}
+	while (i < data->width)
+	{
+		data->map[index][i] = ' ';
+		i++;
+	}
+	data->map[index][i] = '\0';
+	return (OK);
+}
+
 static t_error	ft_check_map_line(char *line, t_data **data, int i)
 {
 	int	j;
 
 	j = 0;
-	while (line && line[j] && line[j] != '\n')
+	while (line[j] && line[j] != '\n')
 	{
 		if (line[j] == '0' || line[j] == '1' || line[j] == ' ')
 			j++;
@@ -34,16 +56,12 @@ static t_error	ft_check_map_line(char *line, t_data **data, int i)
 		else
 			return (set_error(E_INCORRECT_ELEMENT));
 	}
-	(*data)->map[i] = ft_strtrim(line, "\n");
-	if (!line)
-		return (set_error(E_SYS));
-	free(line);
-	return (OK);
+	return (ft_fill_line(line, *data, i));
 }
 
 static t_error	ft_fill_map(int fd, t_data *data, int start)
 {
-	int		i;
+	int	i;
 	char	*line;
 
 	data->map = (char **)ft_calloc((data->height + 1), sizeof(char *));
@@ -55,11 +73,14 @@ static t_error	ft_fill_map(int fd, t_data *data, int start)
 	i = 0;
 	while (i < data->height && get_next_line(fd, &line) == GNL_CONTINUE)
 	{
+		if (!line)
+			return (set_error(E_SYS));
 		if (ft_check_map_line(line, &data, i) != OK)
 		{
 			free(line);
 			return (get_error());
 		}
+		free(line);
 		i++;
 	}
 	if (i != data->height || data->face == '\0')
@@ -67,7 +88,7 @@ static t_error	ft_fill_map(int fd, t_data *data, int start)
 	return (OK);
 }
 
-static t_error	ft_get_map_size(int fd, int *start, int *size)
+static t_error	ft_get_map_size(int fd, int *start, t_data *data)
 {
 	char	*line;
 
@@ -79,7 +100,9 @@ static t_error	ft_get_map_size(int fd, int *start, int *size)
 	}
 	while (line && ft_is_empty_line(line) == false)
 	{
-		(*size)++;
+		data->height++;
+		if (data->width < (int)ft_strlen(line) - 1)
+			data->width = (int)ft_strlen(line) - 1;
 		free(line);
 		if (get_next_line(fd, &line) == GNL_EOF)
 			return (OK);
@@ -99,7 +122,7 @@ t_error	ft_init_map(int fd, t_data **data, int start, char *file)
 {
 	int		new_fd;
 
-	if (ft_get_map_size(fd, &start, &(*data)->height) != OK)
+	if (ft_get_map_size(fd, &start, *data) != OK)
 		return (get_error());
 	close (fd);
 	new_fd = open(file, O_RDONLY);

@@ -54,6 +54,7 @@ static void	ft_print_data_to_check(t_data *data)
 	printf("--ceiling: %i,%i,%i\n", data->ceiling[0], data->ceiling[1], data->ceiling[2]);
 	printf("--floor: %i,%i,%i\n", data->floor[0], data->floor[1], data->floor[2]);
 	printf("--px: %i, py: %i, face: %c\n", data->px, data->py, data->face);
+	printf("--height: %i, width: %i\n", data->height, data->width);
 }
 
 static t_error	ft_cub3d(char *file)

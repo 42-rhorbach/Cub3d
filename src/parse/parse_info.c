@@ -64,7 +64,7 @@ static t_error	ft_check_line(char	*trim_line, t_data **data)
 t_error	ft_parser(int fd, char *file, t_data *data)
 {
 	char	*line;
-	int		start;
+	size_t	start;
 
 	start = 0;
 	while (ft_info_set(data) == false \

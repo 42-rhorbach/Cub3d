@@ -112,3 +112,5 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+## we need to recompile changes in the headerfiles aswell, without doing make re
