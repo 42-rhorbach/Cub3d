@@ -6,16 +6,17 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 03:16:05 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/07 04:25:04 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/07 11:12:33 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "libft.h"
 
-static t_error	ft_validate_spot(char **map, int i, int j)
+static t_error	ft_validate_spot(char **map, int i, int j, t_data *data)
 {
-	if ((i - 1) < 0 || (j - 1) < 0 \
+	if ((i + 1) >= data->height || (j + 1) >= data->width \
+		|| (i - 1) < 0 || (j - 1) < 0 \
 		|| (j + 1) >= (int)ft_strlen(map[i - 1]) \
 		|| (j + 1) >= (int)ft_strlen(map[i + 1]) \
 		|| map[i - 1][j - 1] == ' ' || map[i - 1][j] == ' ' \
@@ -30,20 +31,16 @@ t_error	ft_validate_map(t_data *data)
 {
 	int	i;
 	int	j;
-	int	width;
 
 	i = 0;
 	while (data->map && i < data->height)
 	{
 		j = 0;
-		width = ft_strlen(data->map[i]);
-		while (j < width)
+		while (j < data->width)
 		{
 			if (data->map[i][j] == '0' || data->map[i][j] == data->face)
 			{
-				if ((i + 1) >= data->height || (j + 1) >= width)
-					return (set_error(E_MAP_NOT_CLOSED));
-				if (ft_validate_spot(data->map, i, j) != OK)
+				if (ft_validate_spot(data->map, i, j, data) != OK)
 					return (get_error());
 			}
 			else if (data->map[i][j] != ' ' && data->map[i][j] != '1')

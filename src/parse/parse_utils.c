@@ -6,7 +6,7 @@
 /*   By: jvorstma <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 14:13:21 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/04 11:37:20 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/07 11:35:07 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ bool	ft_info_set(t_data *data)
 		return (true);
 }
 
-bool	ft_is_empty_line(char *line)
+bool	ft_e_line(char *line)
 {
 	int	i;
 

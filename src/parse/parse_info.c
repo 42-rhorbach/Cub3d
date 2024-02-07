@@ -71,7 +71,7 @@ t_error	ft_parser(int fd, char *file, t_data *data)
 			&& get_next_line(fd, &line) == GNL_CONTINUE)
 	{
 		start++;
-		if (line && ft_is_empty_line(line) == false \
+		if (line && ft_e_line(line) == false \
 			&& ft_check_line(ft_strtrim(line, " \n"), &data) != OK)
 		{
 			free(line);

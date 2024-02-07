@@ -6,7 +6,7 @@
 /*   By: jvorstma <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 14:28:02 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/07 10:52:52 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/07 11:35:58 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static t_error	ft_check_map_line(char *line, t_data **data, int i)
 
 static t_error	ft_fill_map(int fd, t_data *data, int start)
 {
-	int	i;
+	int		i;
 	char	*line;
 
 	data->map = (char **)ft_calloc((data->height + 1), sizeof(char *));
@@ -92,13 +92,12 @@ static t_error	ft_get_map_size(int fd, int *start, t_data *data)
 {
 	char	*line;
 
-	while (get_next_line(fd, &line) == GNL_CONTINUE \
-			&& ft_is_empty_line(line) == true)
+	while (get_next_line(fd, &line) == GNL_CONTINUE && ft_e_line(line) == true)
 	{
 		(*start)++;
 		free(line);
 	}
-	while (line && ft_is_empty_line(line) == false)
+	while (line && ft_e_line(line) == false)
 	{
 		data->height++;
 		if (data->width < (int)ft_strlen(line) - 1)
@@ -107,7 +106,7 @@ static t_error	ft_get_map_size(int fd, int *start, t_data *data)
 		if (get_next_line(fd, &line) == GNL_EOF)
 			return (OK);
 	}
-	while (line && ft_is_empty_line(line) == true)
+	while (line && ft_e_line(line) == true)
 	{
 		free(line);
 		if (get_next_line(fd, &line) == GNL_EOF)
