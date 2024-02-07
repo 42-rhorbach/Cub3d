@@ -21,7 +21,7 @@ NAME= cub3D
 ##########
 
 LIBFT= ./Libft/libft.a
-LIBFLAGS= -L$(dir $(LIBFT)) -lft -L$(dir $(MLX42)) -lmlx42
+LIBFLAGS= -L$(dir $(LIBFT)) -lft -L$(dir $(MLX42)) -lmlx42 -ldl
 
 ifeq ($(shell uname),Linux)
 LIBFLAGS += -lglfw
@@ -38,11 +38,21 @@ MLX42= $(MLX42_DIR)/$(MLX42_BUILD_DIR)/libmlx42.a
 ##########
 
 HEADERS= ./Libft/libft.h \
-	./MLX42/include/MLX42/MLX42.h \
+		./MLX42/include/MLX42/MLX42.h \
+		src/types.h \
+		src/error.h \
+		src/parser/parser.h \
 
 ##########
 
-SOURCE= main.c \
+SOURCE= src/main.c \
+		src/error.c \
+		src/parse/parse_info.c \
+		src/parse/parse_utils.c \
+		src/parse/parse_map.c \
+		src/parse/validate_map.c \
+		src/parse/validate_path.c \
+		src/parse/validate_colour.c \
 
 ##########
 
@@ -82,7 +92,8 @@ $(MLX42):
 $(ODIR):
 	@mkdir -p $(ODIR)
 
-$(ODIR)/%.o: %.c $(HEADER) | $(ODIR)
+$(ODIR)/%.o: %.c $(HEADER)
+	@mkdir -p $(dir $@)
 	@$(call prettycomp,$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@)
 
 clean:
@@ -101,3 +112,5 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+## we need to recompile changes in the headerfiles aswell, without doing make re
