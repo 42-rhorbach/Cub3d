@@ -51,7 +51,7 @@ typedef enum e_texture_index
 typedef struct s_data
 {
 	mlx_t		*mlx;
-	mlx_image_t	*images[TEXTURE_COUNT];
+	mlx_image_t	*images;
 	char		**map;
 	int			width;
 	int			height;

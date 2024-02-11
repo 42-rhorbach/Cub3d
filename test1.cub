@@ -1,8 +1,8 @@
-      F 20,23,232               
+      F 255,0,255  
       SO ./southpic.png
 
 NO                              ./northpic.png
-     C 13,12,122
+     C 0,255,255
          WE   ./westpic.png
 EA ./eastpic/back/eastpic.png
 

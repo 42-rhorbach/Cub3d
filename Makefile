@@ -42,6 +42,7 @@ HEADERS= ./Libft/libft.h \
 		src/types.h \
 		src/error.h \
 		src/parser/parser.h \
+		src/init_game/game.h \
 
 ##########
 
@@ -53,6 +54,7 @@ SOURCE= src/main.c \
 		src/parse/validate_map.c \
 		src/parse/validate_path.c \
 		src/parse/validate_colour.c \
+		src/init_game/init_mlx.c \
 
 ##########
 
