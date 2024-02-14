@@ -41,7 +41,7 @@ HEADERS= ./Libft/libft.h \
 		./MLX42/include/MLX42/MLX42.h \
 		./src/types.h \
 		./src/error.h \
-		./src/parser/parser.h \
+		./src/parse/parser.h \
 		./src/init_game/game.h \
 
 ##########
@@ -91,7 +91,7 @@ $(MLX42):
 	@cmake -S $(MLX42_DIR) -B $(MLX42_DIR)/$(MLX42_BUILD_DIR)
 	@$(MAKE) -sC $(MLX42_DIR)/$(MLX42_BUILD_DIR) -j4
 
-$(ODIR)/%.o: %.c
+$(ODIR)/%.o: %.c $(HEADERS)
 	@mkdir -p $(dir $@)
 	@$(call prettycomp,$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@)
 
