@@ -6,18 +6,16 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/18 16:14:59 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/02/11 11:33:46 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/14 13:43:04 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "types.h"
-#include "libft.h"
 #include "error.h"
 #include "parse/parser.h"
 #include "init_game/game.h"
 #include <fcntl.h>
-#include "error.h"
 #include <stdlib.h>
 
 static t_error	ft_check_map_name(char *file)

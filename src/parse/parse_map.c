@@ -6,7 +6,7 @@
 /*   By: jvorstma <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 14:28:02 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/07 11:35:58 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/14 15:02:07 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ static t_error	ft_check_map_line(char *line, t_data **data, int i)
 		else if (ft_strchr("NSWE", line[j]) != NULL && (*data)->face == '\0')
 		{
 			(*data)->face = line[j];
-			(*data)->px = j;
-			(*data)->py = i;
+			(*data)->px = j * CELL_SIZE + CELL_SIZE / 2;
+			(*data)->py = i * CELL_SIZE + CELL_SIZE / 2;
 			j++;
 		}
 		else

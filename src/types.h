@@ -18,6 +18,16 @@
 
 # include <stdio.h> //for printf testing
 
+# define HEIGHT 2024
+# define WIDTH 2024
+
+# define CELL_SIZE 100
+
+# define STEP_X 4
+# define STEP_Y 4
+
+# define ANGLE 90
+
 typedef enum e_error
 {
 	OK,

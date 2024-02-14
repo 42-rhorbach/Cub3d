@@ -39,10 +39,10 @@ MLX42= $(MLX42_DIR)/$(MLX42_BUILD_DIR)/libmlx42.a
 
 HEADERS= ./Libft/libft.h \
 		./MLX42/include/MLX42/MLX42.h \
-		src/types.h \
-		src/error.h \
-		src/parser/parser.h \
-		src/init_game/game.h \
+		./src/types.h \
+		./src/error.h \
+		./src/parser/parser.h \
+		./src/init_game/game.h \
 
 ##########
 
@@ -84,17 +84,14 @@ $(NAME): $(LIBFT) $(MLX42) $(OBJECTS)
 
 $(LIBFT):
 	@git submodule update --init --recursive $(dir $(LIBFT))
-	@$(MAKE) -C $(dir $(LIBFT))
+	@$(MAKE) -sC $(dir $(LIBFT))
 
 $(MLX42):
 	@git submodule update --init --recursive $(dir $(MLX42_DIR))
 	@cmake -S $(MLX42_DIR) -B $(MLX42_DIR)/$(MLX42_BUILD_DIR)
-	@$(MAKE) -C $(MLX42_DIR)/$(MLX42_BUILD_DIR) -j4
+	@$(MAKE) -sC $(MLX42_DIR)/$(MLX42_BUILD_DIR) -j4
 
-$(ODIR):
-	@mkdir -p $(ODIR)
-
-$(ODIR)/%.o: %.c $(HEADER)
+$(ODIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	@$(call prettycomp,$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@)
 
