@@ -26,7 +26,7 @@
 # define STEP_X 4
 # define STEP_Y 4
 
-# define ANGLE 90
+# define ANGLE 60
 
 typedef enum e_error
 {

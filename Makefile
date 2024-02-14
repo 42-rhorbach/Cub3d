@@ -43,6 +43,7 @@ HEADERS= ./Libft/libft.h \
 		./src/error.h \
 		./src/parse/parser.h \
 		./src/init_game/game.h \
+		./src/raycasting/raycast.h
 
 ##########
 
@@ -55,6 +56,7 @@ SOURCE= src/main.c \
 		src/parse/validate_path.c \
 		src/parse/validate_colour.c \
 		src/init_game/init_mlx.c \
+		src/raycasting/raycast.c
 
 ##########
 

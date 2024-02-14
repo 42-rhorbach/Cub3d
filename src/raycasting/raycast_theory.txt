@@ -1,0 +1,30 @@
+The RayCasting is separated in some steps to organize the implementation of the logic. See below to understand what each step does:
+
+    Define a ray angle in relation of player FOV
+    Create a ray loop. This loop will iterate the screen width
+    Get the sin and cos of the ray angle to discover the numbers to increment to follow forward with the ray
+    Create a loop to check if the position of the ray is an wall. If the position is not a wall, increment with sin and cos values and check again
+    After find a wall, get the distance between player coordinates and ray coordinates with pythagoras theorem
+    Discover the wall height reversing the got distance in relation of the half height of the screen using divide operator
+    draw the "ceiling" line from the top of the screen to the top of the wall height
+    draw the "wall" line in relation of the wall height obtained
+    draw the "floor" line from the bottom of the wall height to the bottom of the screen
+    Repeat this process for every ray (x-axis screen coordinate)
+
+So, basically, we will draw just lines!
+
+
+####################################################################
+
+the direction given at the start.
+N = 90
+W = 180
+S = 270
+E = 0/360.
+
+our field of view = 60, so direction - 30 and direction + 30.
+we could (maybe) implement that turning head is per 1 degree angle.
+
+####################################################################
+
+source: https://github.com/vinibiavatti1/RayCastingTutorial/wiki/

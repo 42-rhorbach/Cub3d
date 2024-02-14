@@ -9,5 +9,5 @@
 !.gitignore
 !.normignore
 !textures/*
-
+!raycast_theory.txt
 //!*.cub

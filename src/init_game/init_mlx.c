@@ -6,11 +6,12 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/14 14:13:31 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/14 17:41:12 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "game.h"
+#include "../raycasting/raycast.h"
 
 static void	ft_put_pixel(mlx_image_t *images, int j, int i, int *rgb)
 {
@@ -60,19 +61,13 @@ t_error ft_init_game(t_data **data)
 		return (set_error(E_MLX));
 	}
 	ft_set_background(*data);
-	int	i = 0;
-	while (i < 10)
-	{
-		int j = 0;
-		while (j < 10)
-		{
-			mlx_put_pixel((*data)->images, (*data)->px + j, (*data)->py + i, 16);
-			j++;
-		}
-		i++;
-	}
 	mlx_key_hook((*data)->mlx, &ft_close_key, *data);
 	mlx_loop((*data)->mlx);
+	if (ft_ray_loop(*data) != OK)
+	{
+		mlx_close_window((*data)->mlx);
+		return (get_error());
+	}
 	mlx_terminate((*data)->mlx);
 	return (OK);
 }
