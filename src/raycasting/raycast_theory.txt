@@ -27,4 +27,11 @@ we could (maybe) implement that turning head is per 1 degree angle.
 
 ####################################################################
 
+get field of view and angle. 
+fov needs to be in radius
+
+####################################################################
+
 source: https://github.com/vinibiavatti1/RayCastingTutorial/wiki/
+
+https://medium.com/@afatir.ahmedfatir/cub3d-tutorial-af5dd31d2fcf
