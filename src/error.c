@@ -13,9 +13,7 @@
 #include "types.h"
 #include "libft.h"
 #include "MLX42.h"
-#include <errno.h>
 #include <stdio.h>
-#include <unistd.h>
 
 static t_error	*get_error_ptr(void)
 {
@@ -45,12 +43,18 @@ t_error	get_error(void)
 void	print_error(t_error err)
 {
 	static const char	*error_table[] = {
-	[E_ARGC] = "Argument must be a path to map of type .ber",
+	[E_ARGC] = "Program takes only one argument.",
+	[E_EMPTY_ARG] = "Passed argument is empty.",
+	[E_CALLOC] = "Calloc failed.",
 	[E_NO_MAP] = "Received empty map.",
-	[E_EXTENSION] = "Map file must end in \".cub\".",
+	[E_EXTENSION] = "Map file must end with \".cub\".",
+	[E_TEXTURE_EXTENSION] = "Texture file must end with \".png\".",
 	[E_MAP_NOT_CLOSED] = "Map is not enclosed by walls.",
 	[E_INCORRECT_ELEMENT] = "Unknown symbol found in map.",
 	[E_WRONG_QUANTITY] = "Too many/few players in map.",
+	[E_INV_INSTRC] = "Invalid file content.",
+	[E_INCORRECT_COLOUR] = "One of the colour codes in incorrect.",
+	[E_ELEMENT_MISSING] = "A element is missing.",
 	};
 
 	ft_putendl_fd("Error", STDERR_FILENO);
