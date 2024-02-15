@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/14 17:41:12 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/15 14:45:36 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ static void	ft_set_background(t_data *data)
 		while (j < WIDTH)
 		{
 			if (i < HEIGHT / 2)
-				ft_put_pixel(data->images, j, i, data->ceiling);
+				ft_put_pixel(data->image, j, i, data->ceiling);
 			else if (i < HEIGHT)
-				ft_put_pixel(data->images, j, i, data->floor);
+				ft_put_pixel(data->image, j, i, data->floor);
 			j++;
 		}
 		i++;
@@ -54,20 +54,21 @@ static void	ft_set_background(t_data *data)
 t_error ft_init_game(t_data **data)
 {
 	(*data)->mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", true);
-	(*data)->images = mlx_new_image((*data)->mlx, WIDTH, HEIGHT);
-	if (mlx_image_to_window((*data)->mlx, (*data)->images, 0, 0) == -1)
+	(*data)->image = mlx_new_image((*data)->mlx, WIDTH, HEIGHT);
+	if (!(*data)->image \
+		|| mlx_image_to_window((*data)->mlx, (*data)->image, 0, 0) == -1)
 	{
 		mlx_close_window((*data)->mlx);
 		return (set_error(E_MLX));
 	}
 	ft_set_background(*data);
 	mlx_key_hook((*data)->mlx, &ft_close_key, *data);
-	mlx_loop((*data)->mlx);
 	if (ft_ray_loop(*data) != OK)
 	{
 		mlx_close_window((*data)->mlx);
 		return (get_error());
 	}
+	mlx_loop((*data)->mlx);
 	mlx_terminate((*data)->mlx);
 	return (OK);
 }

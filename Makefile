@@ -24,9 +24,9 @@ LIBFT= ./Libft/libft.a
 LIBFLAGS= -L$(dir $(LIBFT)) -lft -L$(dir $(MLX42)) -lmlx42 -ldl
 
 ifeq ($(shell uname),Linux)
-LIBFLAGS += -lglfw
+LIBFLAGS += -lglfw -lm
 else
-LIBFLAGS += -lglfw3 -framework Cocoa -framework OpenGl -framework IOKit
+LIBFLAGS += -lglfw3 -framework Cocoa -framework OpenGl -framework IOKit -lm
 endif
 
 ##########

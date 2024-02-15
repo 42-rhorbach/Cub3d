@@ -26,7 +26,8 @@
 # define STEP_X 4
 # define STEP_Y 4
 
-# define ANGLE 60
+# define ANGLE 60.00
+# define PI 3.1415
 
 typedef enum e_error
 {
@@ -61,11 +62,12 @@ typedef enum e_texture_index
 typedef struct s_data
 {
 	mlx_t		*mlx;
-	mlx_image_t	*images;
+	mlx_image_t	*image;
 	char		**map;
 	int			width;
 	int			height;
 	char		face;
+	int			fov;
 	int			px;
 	int			py;
 	int			ceiling[3];

@@ -6,7 +6,7 @@
 /*   By: jvorstma <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 14:28:02 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/14 15:02:07 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/15 11:55:34 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,23 @@ static t_error	ft_fill_line(char *line, t_data *data, int index)
 
 static t_error	ft_check_map_line(char *line, t_data **data, int i)
 {
-	int	j;
+	int		j;
 
 	j = 0;
 	while (line[j] && line[j] != '\n')
 	{
 		if (line[j] == '0' || line[j] == '1' || line[j] == ' ')
 			j++;
-		else if (ft_strchr("NSWE", line[j]) != NULL && (*data)->face == '\0')
+		else if (ft_strchr("ENWS", line[j]) != NULL && (*data)->face == '\0')
 		{
 			(*data)->face = line[j];
+			(*data)->fov = 0;
+			if (line[j] == 'N')
+				(*data)->fov = 90;
+			if (line[j] == 'W')
+				(*data)->fov = 180;
+			if (line[j] == 'S')
+				(*data)->fov = 270;
 			(*data)->px = j * CELL_SIZE + CELL_SIZE / 2;
 			(*data)->py = i * CELL_SIZE + CELL_SIZE / 2;
 			j++;
