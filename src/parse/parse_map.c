@@ -6,7 +6,7 @@
 /*   By: jvorstma <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 14:28:02 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/15 11:55:34 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/18 13:43:17 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ static t_error	ft_fill_line(char *line, t_data *data, int index)
 	i = 0;
 	while (line[i] && line[i] != '\n' && i < data->width)
 	{
-		data->map[index][i] = line[i];
+		if (line[i] == data->face)
+			data->map[index][i] = '0';
+		else
+			data->map[index][i] = line[i];
 		i++;
 	}
 	while (i < data->width)

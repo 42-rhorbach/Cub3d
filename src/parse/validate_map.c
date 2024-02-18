@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 03:16:05 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/07 11:12:33 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/17 10:04:41 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ t_error	ft_validate_map(t_data *data)
 			{
 				if (ft_validate_spot(data->map, i, j, data) != OK)
 					return (get_error());
+				if (data->map[i][j] == data->face)
+					data->map[i][j] = '0';
 			}
 			else if (data->map[i][j] != ' ' && data->map[i][j] != '1')
 				return (set_error(E_INCORRECT_ELEMENT));

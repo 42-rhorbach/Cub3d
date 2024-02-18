@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/15 14:45:36 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/18 13:35:36 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	ft_set_background(t_data *data)
 		{
 			if (i < HEIGHT / 2)
 				ft_put_pixel(data->image, j, i, data->ceiling);
-			else if (i < HEIGHT)
+			else
 				ft_put_pixel(data->image, j, i, data->floor);
 			j++;
 		}
