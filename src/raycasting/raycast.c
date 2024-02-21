@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/22 18:01:32 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/21 16:28:42 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	ft_new_xy(t_rays *rays, double angle)
 		dy = CELL_SIZE;
 	if (dx < 0.001)
 		dx = CELL_SIZE;
-	// printf("%i, %i, %f, %f, %f, %f", rays->end_x, rays->end_y, rays->x, rays->y, dx, dy);
+	//printf("%i, %i, %f, %f, %f, %f", rays->end_x, rays->end_y, rays->x, rays->y, dx, dy);
 	if (dx / cos(angle * PI / 180) <= dy / sin(angle * PI / 180))
 	{
 		rays->x += dx * rays->x_dir;
@@ -64,7 +64,7 @@ static void	ft_new_xy(t_rays *rays, double angle)
 	}
 	rays->end_x = (int)(rays->x / CELL_SIZE);
 	rays->end_y = (int)(rays->y / CELL_SIZE);
-	// printf(" -> %f, %f, %i, %i\n", rays->x, rays->y, rays->end_x, rays->end_y);
+	//printf(" -> %f, %f, %i, %i\n", rays->x, rays->y, rays->end_x, rays->end_y);
 }
 
 static void	ft_ray_cast(double angle, t_rays rays, t_data *data, int *y)
@@ -112,6 +112,7 @@ static void	ft_ray_calc(double angle, t_data *data, int *y)
 			rays.y_dir = -1;
 		ft_ray_cast(angle, rays, data, y);
 	}
+	//need to know which side it hit the wall, for the textures.
 }
 
 t_error	ft_ray_loop(t_data *data)
@@ -148,7 +149,9 @@ t_error	ft_ray_loop(t_data *data)
 	while (x < WIDTH)
 	{
 		ft_ray_calc(angle, data, &y);
-		mlx_put_pixel(data->image, x, y, 0xFF0000FF);
+		y *= (int)sqrt(pow(y, 2) - pow((x-WIDTH/2)/(WIDTH/2), 2));
+		y = ((CELL_SIZE * HEIGHT)/y);
+		printf("%i, %i\n", x, y);
 	 	angle -= step;
 	 	if (angle <= 0.0)
 	 		angle += 360;
