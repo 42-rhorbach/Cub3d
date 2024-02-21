@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/21 14:14:34 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/21 14:22:10 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ static void	ft_new_xy(t_rays *rays, double angle)
 	double	step_y;
 
 	if (angle > 270)
-		angle -= angle;
-	else if (angle > 180)
-		angle = 180 - (angle - 180);
-	else if (angle > 90)
-		angle = 90 - (angle - 90);
+		angle = 360 - angle;
+	if (angle > 180)
+		angle -= 180;
+	if (angle > 90)
+		angle = 180 - angle;
 	step_x = fmod(rays->x, CELL_SIZE);
 	step_y = fmod(rays->y, CELL_SIZE);
 	if (step_x == 0)
@@ -66,9 +66,9 @@ static void	ft_new_xy(t_rays *rays, double angle)
 	if (rays->y_dir == 1)
 		step_y = CELL_SIZE - step_y;
 	if (step_x < step_y)
-		step_y = step_x / tan(angle * PI / 180);
+		step_y = step_x * tan(angle * PI / 180);
 	else
-		step_x = step_y * tan(angle * PI / 180);
+		step_x = step_y / tan(angle * PI / 180);
 	rays->x += step_x * rays->x_dir;
 	rays->y += step_y * rays->y_dir;
 }
@@ -105,13 +105,13 @@ static void	ft_ray_calc(double angle, t_data *data, int x)
 {
 	t_rays	rays;
 
-	if ((int)angle == 90)
+	if (angle == 90.0)
 		ft_straight_ray(data, x, 0, -1);
-	else if ((int)angle == 180)
+	else if (angle == 180.0)
 		ft_straight_ray(data, x, -1, 0);
-	else if ((int)angle == 270)
+	else if (angle == 270.0)
 		ft_straight_ray(data, x, 0, 1);
-	else if ((int)angle == 360 || (int)angle == 0)
+	else if (angle == 360.0 || angle == 0.0)
 		ft_straight_ray(data, x, 1, 0);
 	else
 	{
@@ -142,7 +142,7 @@ t_error	ft_ray_loop(t_data *data)
 	{
 		ft_ray_calc(angle, data, x);
 		angle -= step;
-		if (angle <= 0)
+		if (angle <= 0.0)
 			angle += 360;
 		x++;;
 	}
