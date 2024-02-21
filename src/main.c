@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/18 16:14:59 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/02/14 16:28:42 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/21 15:57:50 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ static t_error	ft_cub3d(char *file)
 		ft_free_data_struct(data);
 		return (get_error());
 	}
+	printf("x = %i, y = %i\n", data->px, data->py);
 	ft_free_data_struct(data);
 	return (OK);
 }
