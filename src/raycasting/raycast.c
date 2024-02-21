@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/18 19:15:05 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/21 18:12:57 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,26 @@ static void	ft_straight_ray(t_data *data, int x, int x_dir, int y_dir)
 
 static void	ft_new_xy(t_rays *rays, double angle)
 {
-	double	x_step;
-	double	y_step;
-	
-	x_step = CELL_SIZE - fmod(rays->x, CELL_SIZE);
-	y_step = CELL_SIZE - fmod(rays->y, CELL_SIZE);
-	if (x_step / cos(angle) < y_step / sin(angle))
-	{
-		rays->x += x_step * rays->x_dir;
-		rays->y += x_step * tan(angle) * rays->y_dir;
-	}
+	double	step_x;
+	double	step_y;
+
+	angle = fmod(angle, PI / 2);
+	step_x = fmod(rays->x, CELL_SIZE);
+	step_y = fmod(rays->y, CELL_SIZE);
+	if (step_x == 0)
+		step_x = CELL_SIZE;
+	if (step_y == 0)
+		step_y = CELL_SIZE;
+	if (rays->x_dir == 1)
+		step_x = CELL_SIZE - step_x;
+	if (rays->y_dir == 1)
+		step_y = CELL_SIZE - step_y;
+	if (step_x < step_y)
+		step_y = step_x / tan(angle);
 	else
-	{
-		rays->y += y_step * rays->y_dir;
-		rays->x += y_step / tan(angle) * rays->y_dir;
-	}
+		step_x = step_y * tan(angle);
+	rays->x += step_x * rays->x_dir;
+	rays->y += step_y * rays->y_dir;
 }
 
 static void	ft_ray_cast(double angle, t_rays rays, t_data *data, int x)
@@ -71,19 +76,20 @@ static void	ft_ray_cast(double angle, t_rays rays, t_data *data, int x)
 	rays.y = data->py;
 	rays.end_x = (int)(rays.x / CELL_SIZE);
 	rays.end_y = (int)(rays.y / CELL_SIZE);
-	while (rays.end_x >= 0 && rays.end_x < WIDTH \
-			&& rays.end_y >= 0 && rays.end_y < HEIGHT \
+	while (rays.end_x >= 0 && rays.end_x < data->width \
+			&& rays.end_y >= 0 && rays.end_y < data->height \
 			&& data->map[rays.end_y][rays.end_x] == '0')
 	{
 		ft_new_xy(&rays, angle);
 		rays.end_x = (int)(rays.x / CELL_SIZE);
 		rays.end_y = (int)(rays.y / CELL_SIZE);
 	}
+	printf("%i, %i, %i\n", rays.end_x, rays.end_y, x);
 	y = (int)sqrt(pow(data->px - rays.x, 2) + pow(data->py - rays.y, 2));
-	while (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT / 2)
+	while (x >= 0 && x < WIDTH && y >= 0 && y <= HEIGHT / 2)
 	{
-		mlx_put_pixel(data->image, x, HEIGHT - y, 0x0F0000FF);
-		mlx_put_pixel(data->image, x, y, 0x00F000FF);
+		mlx_put_pixel(data->image, x, y, 0xFF0000FF);
+		mlx_put_pixel(data->image, x, HEIGHT - y, 0xFF0000FF);
 		y++;
 	}
 }
@@ -124,7 +130,7 @@ t_error	ft_ray_loop(t_data *data)
 	angle = data->fov + ANGLE / 2;
 	if (angle > 360)
 		angle -= 360;
-	step = ANGLE / WIDTH;
+	step = (angle + ANGLE) / WIDTH;
 	while (x < WIDTH)
 	{
 		ft_ray_calc(angle, data, x);

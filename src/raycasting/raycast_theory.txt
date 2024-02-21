@@ -35,3 +35,11 @@ fov needs to be in radius
 source: https://github.com/vinibiavatti1/RayCastingTutorial/wiki/
 
 https://medium.com/@afatir.ahmedfatir/cub3d-tutorial-af5dd31d2fcf
+
+https://github.com/vinibiavatti1/RayCastingTutorial/wiki
+
+https://github.com/OneLoneCoder/Javidx9/blob/master/PixelGameEngine/SmallerProjects/OneLoneCoder_PGE_RayCastDDA.cpp
+
+https://forum.gamemaker.io/index.php?threads/fixing-raycasting-fisheye-effect.95563/
+
+https://lodev.org/cgtutor/raycasting.html
