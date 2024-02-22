@@ -94,8 +94,6 @@ typedef struct s_data
 
 typedef struct s_rays
 {
-	double	dx;
-	double	dy;
 	double	x;
 	double	y;
 	int		x_dir;

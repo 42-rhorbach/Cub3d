@@ -6,16 +6,15 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/21 14:22:10 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/22 18:01:32 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
 #include <math.h>
 
-static void	ft_straight_ray(t_data *data, int x, int x_dir, int y_dir)
+static void	ft_straight_ray(t_data *data, int *y, int x_dir, int y_dir)
 {
-	int		y;
 	int		end_x;
 	int		end_y;
 	double	dx;
@@ -34,85 +33,73 @@ static void	ft_straight_ray(t_data *data, int x, int x_dir, int y_dir)
 		end_x = (int)((data->px + dx) / CELL_SIZE);
 		end_y = (int)((data->py + dy) / CELL_SIZE);
 	}
-	y = (int)sqrt(pow(dx, 2) + pow(dy, 2));
-	printf("%i, %i, %i\n", y, end_x, end_y);
-	while (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT / 2)
-	{
-	//	mlx_put_pixel(data->image, x, HEIGHT - y, 0xFF0000FF);
-	//	mlx_put_pixel(data->image, x, y, 0x0F0000FF);
-		y++;
-	}
+	*y = (int)sqrt(pow(dx, 2) + pow(dy, 2));
 }
 
 static void	ft_new_xy(t_rays *rays, double angle)
 {
-	double	step_x;
-	double	step_y;
+	double	dx;
+	double	dy;
 
+	dx = rays->x - (rays->end_x * CELL_SIZE);
+	dy = rays->y - (rays->end_y * CELL_SIZE);
+	if (rays->x_dir == 1)
+		dx = CELL_SIZE - dx;
+	if (rays->y_dir == 1)
+		dy = CELL_SIZE - dy;
+	if (dy < 0.001)
+		dy = CELL_SIZE;
+	if (dx < 0.001)
+		dx = CELL_SIZE;
+	// printf("%i, %i, %f, %f, %f, %f", rays->end_x, rays->end_y, rays->x, rays->y, dx, dy);
+	if (dx / cos(angle * PI / 180) <= dy / sin(angle * PI / 180))
+	{
+		rays->x += dx * rays->x_dir;
+		rays->y += (dx * tan(angle * PI / 180)) * rays->y_dir;
+	}
+	else
+	{
+		rays->y += dy * rays->y_dir;
+		rays->x += (dy / tan(angle * PI / 180)) * rays->x_dir;
+	}
+	rays->end_x = (int)(rays->x / CELL_SIZE);
+	rays->end_y = (int)(rays->y / CELL_SIZE);
+	// printf(" -> %f, %f, %i, %i\n", rays->x, rays->y, rays->end_x, rays->end_y);
+}
+
+static void	ft_ray_cast(double angle, t_rays rays, t_data *data, int *y)
+{
 	if (angle > 270)
 		angle = 360 - angle;
 	if (angle > 180)
 		angle -= 180;
 	if (angle > 90)
 		angle = 180 - angle;
-	step_x = fmod(rays->x, CELL_SIZE);
-	step_y = fmod(rays->y, CELL_SIZE);
-	if (step_x == 0)
-		step_x = CELL_SIZE;
-	if (step_y == 0)
-		step_y = CELL_SIZE;
-	if (rays->x_dir == 1)
-		step_x = CELL_SIZE - step_x;
-	if (rays->y_dir == 1)
-		step_y = CELL_SIZE - step_y;
-	if (step_x < step_y)
-		step_y = step_x * tan(angle * PI / 180);
-	else
-		step_x = step_y / tan(angle * PI / 180);
-	rays->x += step_x * rays->x_dir;
-	rays->y += step_y * rays->y_dir;
-}
-
-static void	ft_ray_cast(double angle, t_rays rays, t_data *data, int x)
-{
-	int	y;
-
 	rays.x = data->px;
 	rays.y = data->py;
-	rays.end_x = (int)(rays.x / CELL_SIZE);
-	rays.end_y = (int)(rays.y / CELL_SIZE);
+	rays.end_x = (int)(data->px / CELL_SIZE);
+	rays.end_y = (int)(data->py / CELL_SIZE);
 	while (rays.end_x >= 0 && rays.end_x < data->width \
 			&& rays.end_y >= 0 && rays.end_y < data->height \
 			&& data->map[rays.end_y][rays.end_x] == '0')
-	{
 		ft_new_xy(&rays, angle);
-		rays.end_x = (int)(rays.x / CELL_SIZE);
-		rays.end_y = (int)(rays.y / CELL_SIZE);
-	}
-//	if (rays.end_x < 0 || rays.end_x >= data->width || rays.end_y < 0 || rays.end_y >= data->height)	
-//		printf("%i, %i, %i\n", rays.end_x, rays.end_y, x);
-	y = (int)sqrt(pow(data->px - rays.x, 2) + pow(data->py - rays.y, 2));
-//	printf("y: %i, end_x: %i, end_y: %i\n", y, rays.end_x, rays.end_y);
-	while (x >= 0 && x < WIDTH && y >= 0 && y <= HEIGHT / 2)
-	{
-	//	mlx_put_pixel(data->image, x, y, 0xFF0000FF);
-	//	mlx_put_pixel(data->image, x, HEIGHT - y, 0xFF0000FF);
-		y++;
-	}
+	*y = (int)sqrt(pow(data->px - rays.x, 2) + pow(data->py - rays.y, 2));
 }
 
-static void	ft_ray_calc(double angle, t_data *data, int x)
+static void	ft_ray_calc(double angle, t_data *data, int *y)
 {
 	t_rays	rays;
+	double	marge;
 
-	if (angle == 90.0)
-		ft_straight_ray(data, x, 0, -1);
-	else if (angle == 180.0)
-		ft_straight_ray(data, x, -1, 0);
-	else if (angle == 270.0)
-		ft_straight_ray(data, x, 0, 1);
-	else if (angle == 360.0 || angle == 0.0)
-		ft_straight_ray(data, x, 1, 0);
+	marge = 0.01;
+	if (fabs(angle - 90.0) < marge)
+		ft_straight_ray(data, y, 0, -1);
+	else if (fabs(angle - 180.0) < marge)
+		ft_straight_ray(data, y, -1, 0);
+	else if (fabs(angle - 270.0) < marge)
+		ft_straight_ray(data, y, 0, 1);
+	else if (fabs(angle - 360.0) < marge || angle < marge)
+		ft_straight_ray(data, y, 1, 0);
 	else
 	{
 		if (angle > 90 && angle < 270)
@@ -123,13 +110,14 @@ static void	ft_ray_calc(double angle, t_data *data, int x)
 			rays.y_dir = 1;
 		else
 			rays.y_dir = -1;
-		ft_ray_cast(angle, rays, data, x);
+		ft_ray_cast(angle, rays, data, y);
 	}
 }
 
 t_error	ft_ray_loop(t_data *data)
 {
 	int		x;
+	int		y;
 	double	angle;
 	double	step;
 
@@ -138,16 +126,33 @@ t_error	ft_ray_loop(t_data *data)
 	if (angle > 360)
 		angle -= 360;
 	step = ANGLE / WIDTH;
+	// ft_ray_calc(angle - step, data, x);
+	// printf("----------------------------------------------------------\n");
+	// ft_ray_calc(angle - 2 * step, data, x + 1);
+	// printf("----------------------------------------------------------\n");
+	// ft_ray_calc(angle - 3 * step, data, x + 2);
+	// printf("----------------------------------------------------------\n");
+	// ft_ray_calc(angle - 4 * step, data, x + 3);
+	// printf("----------------------------------------------------------\n");
+	// ft_ray_calc(angle - 5 * step, data, x + 4);
+	// printf("----------------------------------------------------------\n");
+	// ft_ray_calc(angle - 6 * step, data, x + 5);
+	// printf("----------------------------------------------------------\n");
+	// ft_ray_calc(angle - 7 * step, data, x + 6);
+	// printf("----------------------------------------------------------\n");
+	// ft_ray_calc(angle - 8 * step, data, x + 7);
+	// printf("----------------------------------------------------------\n");
+	// ft_ray_calc(angle - 9 * step, data, x + 8);
+	// printf("----------------------------------------------------------\n");
+	// ft_ray_calc(angle - 10 * step, data, x + 9);
 	while (x < WIDTH)
 	{
-		ft_ray_calc(angle, data, x);
-		angle -= step;
-		if (angle <= 0.0)
-			angle += 360;
-		x++;;
+		ft_ray_calc(angle, data, &y);
+		mlx_put_pixel(data->image, x, y, 0xFF0000FF);
+	 	angle -= step;
+	 	if (angle <= 0.0)
+	 		angle += 360;
+		x++;
 	}
 	return (OK);
 }
-
-//working with doubles, checking a int  is not possible.
-//find work around
