@@ -38,7 +38,7 @@
 # define STEP_Y 1
 
 /////////////////////////////////
-# define MARGE 0.01
+# define MARGIN 0.01
 # define ANGLE 60.00
 # define ANGLE_STEP 1
 # define PI 3.1415

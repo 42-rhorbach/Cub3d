@@ -6,23 +6,47 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/26 12:19:23 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/26 23:03:05 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "game.h"
 #include "../raycasting/raycast.h"
 
-static void	ft_put_pixel(mlx_image_t *images, int j, int i, int *rgb)
-{
-	uint32_t	colour;
+// static void	ft_get_dxy(t_data *data, int dir, int *dy, int *dx)
+// {
+// 	if (dir == 'u')
+// 	{
+		
+// 	}
+// 	else if (dir == 'd')
+// 	{
 
-	colour = rgb[0] << 24 | rgb[1] << 16 | rgb[2] << 8 | 125;
-	mlx_put_pixel(images, j, i, colour);
-}
+// 	}
+// 	else if (dir == 'l')
+// 	{
+
+// 	}
+// 	else if (dir == 'r')
+// 	{
+
+// 	}
+// 	else
+// 		return (0);
+// 	return (1)
+// }
 
 static void	move_player(t_data *data, int dx, int dy)
 {
+	//int	dy;
+	//int	dx;
+
+// we need the ft_get_dxy function to see which direction we are going,
+//depening on our current angle, we then know how much we need to add or substract from x and y
+//we do need to use some trigonometry for that part, if we are not i a stract clean angle.
+
+	//if (!ft_get_dxy(data, direction, &dy, &dx))
+	//	return ;
 	if ((data->py + dy) / CELL_SIZE < 0 || (data->py + dy) / CELL_SIZE >= data->height)
 		return ;
 	if ((data->px + dx) / CELL_SIZE < 0 || (data->px + dx) / CELL_SIZE >= data->width)
@@ -35,9 +59,13 @@ static void	move_player(t_data *data, int dx, int dy)
 		mlx_close_window(data->mlx);
 }
 
-static void	move_fov(t_data *data, int angle_change)
+static void	ft_move_angle(t_data *data, int angle_change)
 {
 	data->fov += angle_change;
+	if (data->fov <= 0)
+		data->fov = 360 - data->fov;
+	else if (data->fov < 360)
+		data->fov -= 360;
 	if (ft_ray_loop(data) != OK)
 		mlx_close_window(data->mlx);
 }
@@ -58,30 +86,9 @@ static void	ft_hook(mlx_key_data_t keydata, void *param)
 	if (keydata.key == MLX_KEY_D && keydata.action == MLX_PRESS)
 		move_player(data, STEP_X, 0);
 	if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
-		move_fov(data, -ANGLE_STEP);
+		ft_move_angle(data, ANGLE_STEP);
 	if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
-		move_fov(data, ANGLE_STEP);
-}
-
-static void	ft_set_background(t_data *data)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < HEIGHT)
-	{
-		j = 0;
-		while (j < WIDTH)
-		{
-			if (i < HEIGHT / 2)
-				ft_put_pixel(data->image, j, i, data->ceiling);
-			else
-				ft_put_pixel(data->image, j, i, data->floor);
-			j++;
-		}
-		i++;
-	}
+		ft_move_angle(data, -ANGLE_STEP);
 }
 
 t_error ft_init_game(t_data **data)
@@ -94,7 +101,6 @@ t_error ft_init_game(t_data **data)
 		mlx_close_window((*data)->mlx);
 		return (set_error(E_MLX));
 	}
-	ft_set_background(*data);
 	if (ft_ray_loop(*data) != OK)
 	{
 		mlx_close_window((*data)->mlx);
