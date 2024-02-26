@@ -40,6 +40,7 @@
 /////////////////////////////////
 # define MARGE 0.01
 # define ANGLE 60.00
+# define ANGLE_STEP 1
 # define PI 3.1415
 
 typedef enum e_error
