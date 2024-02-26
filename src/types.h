@@ -38,6 +38,7 @@
 # define STEP_Y 1
 
 /////////////////////////////////
+# define MARGE 0.01
 # define ANGLE 60.00
 # define PI 3.1415
 
@@ -96,6 +97,8 @@ typedef struct s_rays
 {
 	double	x;
 	double	y;
+	double	dx;
+	double	dy;
 	int		x_dir;
 	int		y_dir;
 	int		end_x;
