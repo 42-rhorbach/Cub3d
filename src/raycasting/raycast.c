@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/26 22:54:38 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/26 23:25:37 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	ft_draw_ray(t_rays *ray, t_data *data, int x)
 
 	// here we use pythagoras to calculate the final actual length of the ray.
 	//we 
-	y = (int)sqrt(pow(data->px - ray->x, 2) + pow(data->py - ray->y, 2));
+	y = (int)sqrt(pow((data->px - ray->x), 2) + pow((data->py - ray->y), 2));
 	//this i just copied, it for scaling, but i didnt try different things to see what might be better.
 	y = HEIGHT / y;
 	min_y = -y / 2 + HEIGHT / 2;
