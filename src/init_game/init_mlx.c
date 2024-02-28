@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/26 23:03:05 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/28 15:42:11 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ static void	move_player(t_data *data, int dx, int dy)
 static void	ft_move_angle(t_data *data, int angle_change)
 {
 	data->fov += angle_change;
-	if (data->fov <= 0)
-		data->fov = 360 - data->fov;
-	else if (data->fov < 360)
+	if (data->fov < MARGIN)
+		data->fov += 360;
+	else if (data->fov > 360)
 		data->fov -= 360;
 	if (ft_ray_loop(data) != OK)
 		mlx_close_window(data->mlx);

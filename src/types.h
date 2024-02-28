@@ -40,7 +40,7 @@
 /////////////////////////////////
 # define MARGIN 0.01
 # define ANGLE 60.00
-# define ANGLE_STEP 1
+# define ANGLE_STEP 5
 # define PI 3.1415
 
 typedef enum e_error
@@ -104,6 +104,7 @@ typedef struct s_rays
 	int		y_dir;
 	int		end_x;
 	int		end_y;
+	uint32_t	c;
 }	t_rays;
 
 #endif
