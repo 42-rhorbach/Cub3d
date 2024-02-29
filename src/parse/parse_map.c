@@ -6,7 +6,7 @@
 /*   By: jvorstma <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 14:28:02 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/21 16:33:49 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/29 12:56:41 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ static t_error	ft_check_map_line(char *line, t_data **data, int i)
 		else if (ft_strchr("ENWS", line[j]) != NULL && (*data)->face == '\0')
 		{
 			(*data)->face = line[j];
-			(*data)->fov = 360;
+			(*data)->p_angle = 360;
 			if (line[j] == 'N')
-				(*data)->fov = 90;
+				(*data)->p_angle = 90;
 			if (line[j] == 'W')
-				(*data)->fov = 180;
+				(*data)->p_angle = 180;
 			if (line[j] == 'S')
-				(*data)->fov = 270;
+				(*data)->p_angle = 270;
 			(*data)->px = j * CELL_SIZE + CELL_SIZE / 2;
 			(*data)->py = i * CELL_SIZE + CELL_SIZE / 2;
 			j++;

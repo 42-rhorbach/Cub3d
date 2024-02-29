@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/28 21:36:32 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/29 19:03:43 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,24 @@ static void	ft_new_xy(t_rays *ray, double angle)
 		ray->dx = CELL_SIZE - ray->dx;
 	if (ray->y_dir == 1)
 		ray->dy = CELL_SIZE - ray->dy;
-	if (ray->dy < MARGIN)
-		ray->dy = CELL_SIZE;
 	if (ray->dx < MARGIN)
 		ray->dx = CELL_SIZE;
-	if (ray->dx / cos(angle * PI / 180) <= ray->dy / sin(angle * PI / 180))
+	if (ray->dy < MARGIN)
+		ray->dy = CELL_SIZE;
+	if (ray->x_dir == 0 || ray->y_dir == 0)
 	{
-		ray->x += ray->dx * ray->x_dir;
-		ray->y += (ray->dx * tan(angle * PI / 180)) * ray->y_dir;
+		ray->x += (ray->dx * ray->x_dir);
+		ray->y += (ray->dy * ray->y_dir);
+		if (ray->y < 0 || ray->x < 0)
+			printf("%f, %f, %f, %f\n", ray->x, ray->y, ray->dx, ray->dy);
+		ray->c = 0xFFFFFFFF;
+	}
+	else if (ray->dx / cos(angle * PI / 180) <= ray->dy / sin(angle * PI / 180))
+	{
+		ray->x += (ray->dx * ray->x_dir);
+		ray->y += (ray->dx * tan(angle * PI / 180) * ray->y_dir);
+		if (ray->y < 0 || ray->x < 0)
+			printf("%f, %f, %f, %f\n", ray->x, ray->y, ray->dx, ray->dy);
 		if (ray->x_dir == -1)
 			ray->c = 0xFF0000FF;
 		else
@@ -73,8 +83,10 @@ static void	ft_new_xy(t_rays *ray, double angle)
 	}
 	else
 	{
-		ray->y += ray->dy * ray->y_dir;
-		ray->x += (ray->dy / tan(angle * PI / 180)) * ray->x_dir;
+		ray->y += (ray->dy * ray->y_dir);
+		ray->x += (ray->dy / tan((angle) * PI / 180) * ray->x_dir);
+		if (ray->y < 0 || ray->x < 0)
+			printf("%f, %f, %f, %f\n", ray->x, ray->y, ray->dx, ray->dy);
 		if (ray->y_dir == -1)
 			ray->c = 0x00FF00FF;
 		else
@@ -86,7 +98,6 @@ static void	ft_new_xy(t_rays *ray, double angle)
 
 static void	ft_ray_cast(double angle, t_rays *ray, t_data *data)
 {
-	printf("%f\n", angle);
 	ray->x = data->px;
 	ray->y = data->py;
 	ray->end_x = (int)(data->px / CELL_SIZE);
@@ -95,26 +106,26 @@ static void	ft_ray_cast(double angle, t_rays *ray, t_data *data)
 			&& ray->end_y >= 0 && ray->end_y < data->height \
 			&& data->map[ray->end_y][ray->end_x] == '0')
 		ft_new_xy(ray, angle);
+//	printf("%i, %i\n", ray->end_x, ray->end_y);
 }
 
-static void	ft_ray_calc(double angle, t_data *data, int x, double ray_angle)
+static void	ft_ray_calc(double ray_angle, t_data *data, int x)
 {
 	t_rays	ray;
 
-	if (fabs(angle - 90) < MARGIN || fabs(angle - 270) < MARGIN)
+	if (fabs(ray_angle - 90) < MARGIN || fabs(ray_angle - 270) < MARGIN)
 		ray.x_dir = 0;
-	else if (angle > 90 && angle < 270)
+	else if (ray_angle > 90 && ray_angle < 270)
 		ray.x_dir = -1;
 	else
 		ray.x_dir = 1;
-	if (fabs(angle - 360) < MARGIN || angle < MARGIN \
-		|| fabs(angle - 180) < MARGIN)
+	if (fabs(ray_angle - 360) < MARGIN || ray_angle < MARGIN \
+		|| fabs(ray_angle - 180) < MARGIN)
 		ray.y_dir = 0;
-	else if (angle > 180 && angle < 360)
+	else if (ray_angle > 180 && ray_angle < 360)
 		ray.y_dir = 1;
 	else
 		ray.y_dir = -1;
-	//lost in the angles. this is where it goes wrong.
 	ft_ray_cast(ray_angle, &ray, data);
 	ft_draw_ray(&ray, data, x);
 }
@@ -122,26 +133,20 @@ static void	ft_ray_calc(double angle, t_data *data, int x, double ray_angle)
 t_error	ft_ray_loop(t_data *data)
 {
 	int		x;
-	double	angle;
-	double	step;
 	double	ray_angle;
+	double	step;
 
 	x = 0;
-	angle = data->fov + (ANGLE / 2);
-	if (angle > 360)
-		angle -= 360;
-	step = ANGLE / (WIDTH -1);
-	ray_angle = 60;
+	ray_angle = data->p_angle + (FOV / 2);
+	if (ray_angle > 360)
+		ray_angle -= 360;
+	step = FOV / (WIDTH - 1);
 	while (x < WIDTH)
 	{
-		ft_ray_calc(angle, data, x, ray_angle);
-		if (x < (WIDTH / 2))
-			ray_angle += step;
-		else
-			ray_angle -= step;
-		angle -= step;
-	 	if (angle < MARGIN)
-	 		angle += 360;
+		ft_ray_calc(ray_angle, data, x);
+		ray_angle -= step;
+	 	if (ray_angle < MARGIN)
+	 		ray_angle += 360;
 		x++;
 	}
 	return (OK);

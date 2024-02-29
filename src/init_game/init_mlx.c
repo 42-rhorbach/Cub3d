@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/28 15:42:11 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/02/29 13:01:05 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,11 @@ static void	move_player(t_data *data, int dx, int dy)
 
 static void	ft_move_angle(t_data *data, int angle_change)
 {
-	data->fov += angle_change;
-	if (data->fov < MARGIN)
-		data->fov += 360;
-	else if (data->fov > 360)
-		data->fov -= 360;
+	data->p_angle += angle_change;
+	if (data->p_angle < MARGIN)
+		data->p_angle += 360;
+	else if (data->p_angle > 360)
+		data->p_angle -= 360;
 	if (ft_ray_loop(data) != OK)
 		mlx_close_window(data->mlx);
 }
@@ -86,9 +86,9 @@ static void	ft_hook(mlx_key_data_t keydata, void *param)
 	if (keydata.key == MLX_KEY_D && keydata.action == MLX_PRESS)
 		move_player(data, STEP_X, 0);
 	if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
-		ft_move_angle(data, ANGLE_STEP);
+		ft_move_angle(data, ROT_STEP);
 	if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
-		ft_move_angle(data, -ANGLE_STEP);
+		ft_move_angle(data, -ROT_STEP);
 }
 
 t_error ft_init_game(t_data **data)

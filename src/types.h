@@ -39,8 +39,8 @@
 
 /////////////////////////////////
 # define MARGIN 0.01
-# define ANGLE 60.00
-# define ANGLE_STEP 5
+# define FOV 60.00
+# define ROT_STEP 5
 # define PI 3.1415
 
 typedef enum e_error
@@ -81,7 +81,7 @@ typedef struct s_data
 	int			width;
 	int			height;
 	char		face;
-	int			fov;
+	int			p_angle;
 	int			px;
 	int			py;
 	int			ceiling[3];
