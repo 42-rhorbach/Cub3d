@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/29 13:01:05 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/01 15:00:57 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,15 @@
 
 static void	move_player(t_data *data, int dx, int dy)
 {
-	//int	dy;
-	//int	dx;
+// 	int	dy;
+// 	int	dx;
 
-// we need the ft_get_dxy function to see which direction we are going,
-//depening on our current angle, we then know how much we need to add or substract from x and y
-//we do need to use some trigonometry for that part, if we are not i a stract clean angle.
+// // we need the ft_get_dxy function to see which direction we are going,
+// //depening on our current angle, we then know how much we need to add or substract from x and y
+// //we do need to use some trigonometry for that part, if we are not i a stract clean angle.
 
-	//if (!ft_get_dxy(data, direction, &dy, &dx))
-	//	return ;
+// 	if (!ft_get_dxy(data, direction, &dy, &dx))
+// 		return ;
 	if ((data->py + dy) / CELL_SIZE < 0 || (data->py + dy) / CELL_SIZE >= data->height)
 		return ;
 	if ((data->px + dx) / CELL_SIZE < 0 || (data->px + dx) / CELL_SIZE >= data->width)
