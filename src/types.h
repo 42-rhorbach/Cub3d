@@ -27,10 +27,6 @@
 # define STEP_X 4
 # define STEP_Y 4
 
-# ifndef CUB_TEX
-#  warning CUB_TEX must be defined (dir to CUB3D textures)
-#  define CUB_TEX ""
-# endif
 ///////////////////////////////
 
 //for my laptop at home
@@ -49,11 +45,11 @@
 # define PI 3.1415
 
 //for testing
-# define NORTH 0xFF0000FF //red
-# define SOUTH 0x0000FFFF //blue
-# define EAST 0x00FF00FF //green
-# define WEST 0xFFFF00FF //yellow
-# define WHITE 0xFFFFFFFF
+// # define NORTH 0xFF0000FF //red
+// # define SOUTH 0x0000FFFF //blue
+// # define EAST 0x00FF00FF //green
+// # define WEST 0xFFFF00FF //yellow
+// # define WHITE 0xFFFFFFFF
 
 typedef enum e_error
 {
@@ -80,13 +76,13 @@ typedef enum e_texture_index
 	NORTH,
 	SOUTH,
 	WEST,
-	TEXTURE_COUNT
+	TEXTURE_COUNT,
 }	t_texture_index;
 
 typedef struct s_data
 {
 	mlx_t		*mlx;
-	mlx_image_t	*image[TEXTURE_COUNT];
+	mlx_image_t	*image[TEXTURE_COUNT+1];
 	char		**map;
 	int			width;
 	int			height;

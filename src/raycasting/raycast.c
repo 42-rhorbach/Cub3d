@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/01 15:02:02 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/06 13:45:13 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ static void	ft_draw_ray(t_rays *ray, t_data *data, int x)
 	while (y < HEIGHT)
 	{
 		if (y < min_y)
-			ft_put_pixel(data->image, x, y, data->ceiling);
+			ft_put_pixel(data->image[4], x, y, data->ceiling);
 		else if (y >= min_y && y <= max_y)
-			mlx_put_pixel(data->image, x, y, ray->c);
+			mlx_put_pixel(data->image[4], x, y, ray->c);
 		else if (y > max_y)
-			ft_put_pixel(data->image, x, y, data->floor);
+			ft_put_pixel(data->image[4], x, y, data->floor);
 		y++;
 	}
 }

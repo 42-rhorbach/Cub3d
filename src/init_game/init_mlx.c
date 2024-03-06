@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/06 13:34:12 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/03/06 13:49:42 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,34 +91,34 @@ static void	ft_hook(mlx_key_data_t keydata, void *param)
 		ft_move_angle(data, -ROT_STEP);
 }
 
-static t_error	load_texture(t_data *data, const char *texture_path,
-								mlx_image_t **img)
-{
-	mlx_texture_t	*texture;
+// static t_error	load_texture(t_data *data, const char *texture_path,
+// 								mlx_image_t **img)
+// {
+// 	mlx_texture_t	*texture;
 
-	texture = mlx_load_png(texture_path);
-	if (texture == NULL)
-		return (set_error(E_MLX));
-	*img = mlx_texture_to_image(data->mlx, texture);
-	mlx_delete_texture(texture);
-	if (*img == NULL)
-		return (set_error(E_MLX));
-	return (OK);
-}
+// 	texture = mlx_load_png(texture_path);
+// 	if (texture == NULL)
+// 		return (set_error(E_MLX));
+// 	*img = mlx_texture_to_image(data->mlx, texture);
+// 	mlx_delete_texture(texture);
+// 	if (*img == NULL)
+// 		return (set_error(E_MLX));
+// 	return (OK);
+// }
 
 t_error ft_init_game(t_data **data)
 {
 	(*data)->mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", true);
 	if ((*data)->mlx == NULL)
 		return (set_error(E_MLX));
-	if (load_texture((*data), CUB_TEX "west.png", (*data)->image[WEST]) != OK \
-	|| load_texture((*data), CUB_TEX "east.png", (*data)->image[EAST]) != OK \
-	|| load_texture((*data), CUB_TEX "north.png", (*data)->image[NORTH]) != OK \
-	|| load_texture((*data), CUB_TEX "south.png", (*data)->image[SOUTH]) != OK)
-		return (get_error());
-	(*data)->image = mlx_new_image((*data)->mlx, WIDTH, HEIGHT); //wat is dit?
-	if (!(*data)->image \
-		|| mlx_image_to_window((*data)->mlx, (*data)->image, 0, 0) == -1)
+	// if (load_texture((*data), (*data)->west, &(*data)->image[WEST]) != OK \
+	// || load_texture((*data), (*data)->east, &(*data)->image[EAST]) != OK \
+	// || load_texture((*data), (*data)->north, &(*data)->image[NORTH]) != OK \
+	// || load_texture((*data), (*data)->south, &(*data)->image[SOUTH]) != OK)
+	// 	return (get_error());
+	(*data)->image[4] = mlx_new_image((*data)->mlx, WIDTH, HEIGHT); //wat is dit?
+	if (!(*data)->image[4] \
+		|| mlx_image_to_window((*data)->mlx, (*data)->image[4], 0, 0) == -1)
 	{
 		mlx_close_window((*data)->mlx);
 		return (set_error(E_MLX));
@@ -126,7 +126,7 @@ t_error ft_init_game(t_data **data)
 	if (ft_ray_loop(*data) != OK)
 	{
 		mlx_close_window((*data)->mlx);
-		mlx_terminate((*data).mlx);
+		mlx_terminate((*data)->mlx);
 		return (get_error());
 	}
 	mlx_key_hook((*data)->mlx, &ft_hook, *data);
