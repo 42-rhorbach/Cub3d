@@ -26,6 +26,11 @@
 
 # define STEP_X 4
 # define STEP_Y 4
+
+# ifndef CUB_TEX
+#  warning CUB_TEX must be defined (dir to CUB3D textures)
+#  define CUB_TEX ""
+# endif
 ///////////////////////////////
 
 //for my laptop at home
@@ -71,19 +76,17 @@ typedef enum e_error
 
 typedef enum e_texture_index
 {
-	EXIT,
-	FLOOR,
-	HATCH,
-	PLAYER,
-	SHINY,
-	WALL,
+	EAST,
+	NORTH,
+	SOUTH,
+	WEST,
 	TEXTURE_COUNT
 }	t_texture_index;
 
 typedef struct s_data
 {
 	mlx_t		*mlx;
-	mlx_image_t	*image;
+	mlx_image_t	*image[TEXTURE_COUNT];
 	char		**map;
 	int			width;
 	int			height;
