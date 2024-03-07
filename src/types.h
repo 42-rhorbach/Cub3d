@@ -37,7 +37,7 @@
 // # define STEP_Y 1
 
 /////////////////////////////////
-# define MARGIN 0.1
+# define MARGIN 0.001
 # define A_MARGIN 0.01
 # define FOV 60.00
 # define ROT_STEP 5

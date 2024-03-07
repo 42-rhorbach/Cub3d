@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/07 19:17:52 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/07 19:24:59 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ static void	ft_new_xy(t_rays *ray, double angle)
 {
 	ray->dx = fmod(ray->x, 1);
 	ray->dy = fmod(ray->y, 1);
-	if (ray->x_dir == 1 && ray->dx > MARGIN)
+	if (ray->x_dir == 1)
 		ray->dx = 1 - ray->dx;
-	if (ray->y_dir == 1 && ray->dy > MARGIN)
+	if (ray->y_dir == 1)
 		ray->dy = 1 - ray->dy;
 	if (ray->dx < MARGIN)
 		ray->dx = 1;
