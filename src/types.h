@@ -24,8 +24,8 @@
 
 # define CELL_SIZE 100
 
-# define STEP_X 4
-# define STEP_Y 4
+# define STEP_X 10
+# define STEP_Y 10
 
 ///////////////////////////////
 
@@ -40,8 +40,9 @@
 
 /////////////////////////////////
 # define MARGIN 0.1
+# define A_MARGIN 1
 # define FOV 60.00
-# define ROT_STEP 5
+# define ROT_STEP 5.00
 # define PI 3.1415
 
 //for testing
@@ -106,6 +107,7 @@ typedef struct s_rays
 	double	y;
 	double	dx;
 	double	dy;
+	int		last;
 	int		x_dir;
 	int		y_dir;
 	int		end_x;

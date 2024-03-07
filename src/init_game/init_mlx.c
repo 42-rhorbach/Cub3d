@@ -6,52 +6,57 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/06 13:49:42 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/03/07 14:45:44 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "game.h"
+#include "utils.h"
+#include <math.h>
 #include "../raycasting/raycast.h"
 
-// static void	ft_get_dxy(t_data *data, int dir, int *dy, int *dx)
-// {
-// 	if (dir == 'u')
-// 	{
-
-// 	}
-// 	else if (dir == 'd')
-// 	{
-
-// 	}
-// 	else if (dir == 'l')
-// 	{
-
-// 	}
-// 	else if (dir == 'r')
-// 	{
-
-// 	}
-// 	else
-// 		return (0);
-// 	return (1)
-// }
-
-static void	move_player(t_data *data, int dx, int dy)
+static void	ft_get_dxy(t_data *data, int move_dir, int *dy, int *dx)
 {
-// 	int	dy;
-// 	int	dx;
+	double	n_angle;
+	int		dir_x;
+	int		dir_y;
+	int		temp;
 
-// // we need the ft_get_dxy function to see which direction we are going,
-// //depening on our current angle, we then know how much we need to add or substract from x and y
-// //we do need to use some trigonometry for that part, if we are not i a stract clean angle.
+	n_angle = data->p_angle;
+	n_angle_calc(&n_angle);
+	direction_xy(data->p_angle, &dir_x, &dir_y);
+	*dx = cos(n_angle * PI / 180) * STEP_X * dir_x;
+	*dy = sin(n_angle * PI / 180) * STEP_Y * dir_y;
+	if (move_dir == 's')
+	{
+		*dx = -*dx;
+		*dy = -*dy;
+	}
+	else if (move_dir == 'a')
+	{
+		temp = *dx;
+		*dx = *dy;
+		*dy = -temp;
+	}
+	else if (move_dir == 'd')
+	{
+		temp = *dx;
+		*dx = -*dy;
+		*dy = temp;
+	}
+}
 
-// 	if (!ft_get_dxy(data, direction, &dy, &dx))
-// 		return ;
-	if ((data->py + dy) / CELL_SIZE < 0 || (data->py + dy) / CELL_SIZE >= data->height)
+static void	move_player(t_data *data, int move_dir)
+{
+ 	int	dy;
+ 	int	dx;
+
+ 	ft_get_dxy(data, move_dir, &dy, &dx);
+	if ((int)((data->py + dy) / CELL_SIZE) < 0 + 1 || (int)((data->py + dy) / CELL_SIZE) >= data->height - 1)
 		return ;
-	if ((data->px + dx) / CELL_SIZE < 0 || (data->px + dx) / CELL_SIZE >= data->width)
+	if ((int)((data->px + dx) / CELL_SIZE) < 0 + 1 || (int)((data->px + dx) / CELL_SIZE) >= data->width - 1)
 		return ;
-	if (data->map[(data->py + dy) / CELL_SIZE][(data->px + dx) / CELL_SIZE] != '0')
+	if (data->map[(int)((data->py + dy) / CELL_SIZE)][(int)((data->px + dx) / CELL_SIZE)] != '0')
 		return ;
 	data->px += dx;
 	data->py += dy;
@@ -59,10 +64,10 @@ static void	move_player(t_data *data, int dx, int dy)
 		mlx_close_window(data->mlx);
 }
 
-static void	ft_move_angle(t_data *data, int angle_change)
+static void	ft_move_angle(t_data *data, double angle_change)
 {
 	data->p_angle += angle_change;
-	if (data->p_angle < MARGIN)
+	if (data->p_angle < A_MARGIN)
 		data->p_angle += 360;
 	else if (data->p_angle > 360)
 		data->p_angle -= 360;
@@ -78,13 +83,13 @@ static void	ft_hook(mlx_key_data_t keydata, void *param)
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 		mlx_close_window(data->mlx);
 	if (keydata.key == MLX_KEY_W && keydata.action == MLX_PRESS)
-		move_player(data, 0, -STEP_Y);
+		move_player(data, 'w');
 	if (keydata.key == MLX_KEY_S && keydata.action == MLX_PRESS)
-		move_player(data, 0, STEP_Y);
+		move_player(data, 's');
 	if (keydata.key == MLX_KEY_A && keydata.action == MLX_PRESS)
-		move_player(data, -STEP_X, 0);
+		move_player(data, 'a');
 	if (keydata.key == MLX_KEY_D && keydata.action == MLX_PRESS)
-		move_player(data, STEP_X, 0);
+		move_player(data, 'd');
 	if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
 		ft_move_angle(data, ROT_STEP);
 	if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)

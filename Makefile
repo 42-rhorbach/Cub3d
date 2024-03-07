@@ -41,6 +41,7 @@ HEADERS= ./Libft/libft.h \
 		./MLX42/include/MLX42/MLX42.h \
 		./src/types.h \
 		./src/error.h \
+		./src/utils.h \
 		./src/parse/parser.h \
 		./src/init_game/game.h \
 		./src/raycasting/raycast.h
@@ -49,6 +50,7 @@ HEADERS= ./Libft/libft.h \
 
 SOURCE= src/main.c \
 		src/error.c \
+		src/utils.c \
 		src/parse/parse_info.c \
 		src/parse/parse_utils.c \
 		src/parse/parse_map.c \
