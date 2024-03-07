@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/07 16:32:15 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/03/07 19:17:52 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	ft_put_pixel(mlx_image_t *image, int j, int i, int *rgb)
 static void	ft_draw_ray(t_rays *ray, t_data *data, int x, double s_angle)
 {
 	int		y;
-	double	height;
+	float	height;
 	int		min_y;
 	int		max_y;
 
@@ -38,8 +38,7 @@ static void	ft_draw_ray(t_rays *ray, t_data *data, int x, double s_angle)
 		s_angle = 90 - (s_angle - 90);
 	if (fabs(s_angle - 90) > MARGIN)
 		height = height * sin(s_angle * PI / 180);
-	height = height / CELL_SIZE;
-	height = HEIGHT / height; //add scaling
+	height = (HEIGHT / height); //add scaling
 	min_y =(int)(-height / 2 + HEIGHT / 2);
 	while (min_y < 0)
 		min_y = 0;
@@ -62,16 +61,16 @@ static void	ft_draw_ray(t_rays *ray, t_data *data, int x, double s_angle)
 
 static void	ft_new_xy(t_rays *ray, double angle)
 {
-	ray->dx = fmod(ray->x, CELL_SIZE);
-	ray->dy = fmod(ray->y, CELL_SIZE);
+	ray->dx = fmod(ray->x, 1);
+	ray->dy = fmod(ray->y, 1);
 	if (ray->x_dir == 1 && ray->dx > MARGIN)
-		ray->dx = CELL_SIZE - ray->dx;
+		ray->dx = 1 - ray->dx;
 	if (ray->y_dir == 1 && ray->dy > MARGIN)
-		ray->dy = CELL_SIZE - ray->dy;
+		ray->dy = 1 - ray->dy;
 	if (ray->dx < MARGIN)
-		ray->dx = CELL_SIZE;
+		ray->dx = 1;
 	if (ray->dy < MARGIN)
-		ray->dy = CELL_SIZE;
+		ray->dy = 1;
 	if (ray->x_dir != 0 && ray->y_dir != 0)
 	{
 		if (ray->dx / cos(angle * PI / 180) <= ray->dy / sin(angle * PI / 180))
@@ -94,16 +93,16 @@ static void	ft_new_xy(t_rays *ray, double angle)
 	}
 	ray->x += (ray->dx * ray->x_dir);
 	ray->y += (ray->dy * ray->y_dir);
-	ray->end_x = (int)(ray->x / CELL_SIZE);
-	ray->end_y = (int)(ray->y / CELL_SIZE);
+	ray->end_x = (int)ray->x;
+	ray->end_y = (int)ray->y;
 }
 
 static void	ft_ray_cast(double angle, t_rays *ray, t_data *data)
 {
 	ray->x = data->px;
 	ray->y = data->py;
-	ray->end_x = (int)(data->px / CELL_SIZE);
-	ray->end_y = (int)(data->py / CELL_SIZE);
+	ray->end_x = (int)data->px;
+	ray->end_y = (int)data->py;
 	n_angle_calc(&angle);
 	while (ray->end_x >= 1 && ray->end_x < data->width - 1 \
 			&& ray->end_y >= 1 && ray->end_y < data->height - 1 \

@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/07 14:45:44 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/03/07 19:04:02 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,20 @@
 #include <math.h>
 #include "../raycasting/raycast.h"
 
-static void	ft_get_dxy(t_data *data, int move_dir, int *dy, int *dx)
+static void	ft_get_dxy(t_data *data, int move_dir, float *dy, float *dx)
 {
 	double	n_angle;
 	int		dir_x;
 	int		dir_y;
-	int		temp;
+	float	temp;
 
 	n_angle = data->p_angle;
 	n_angle_calc(&n_angle);
 	direction_xy(data->p_angle, &dir_x, &dir_y);
+	if (dir_x == 0)
+		dir_x = 1;
+	if (dir_y == 0)
+		dir_y = 1;
 	*dx = cos(n_angle * PI / 180) * STEP_X * dir_x;
 	*dy = sin(n_angle * PI / 180) * STEP_Y * dir_y;
 	if (move_dir == 's')
@@ -48,23 +52,25 @@ static void	ft_get_dxy(t_data *data, int move_dir, int *dy, int *dx)
 
 static void	move_player(t_data *data, int move_dir)
 {
- 	int	dy;
- 	int	dx;
+ 	float	dy;
+ 	float	dx;
 
  	ft_get_dxy(data, move_dir, &dy, &dx);
-	if ((int)((data->py + dy) / CELL_SIZE) < 0 + 1 || (int)((data->py + dy) / CELL_SIZE) >= data->height - 1)
+	if ((int)(data->py + dy) < 0 + 1 || (int)(data->py + dy) >= data->height - 1)
 		return ;
-	if ((int)((data->px + dx) / CELL_SIZE) < 0 + 1 || (int)((data->px + dx) / CELL_SIZE) >= data->width - 1)
+	if ((int)(data->px + dx) < 0 + 1 || (int)(data->px + dx) >= data->width - 1)
 		return ;
-	if (data->map[(int)((data->py + dy) / CELL_SIZE)][(int)((data->px + dx) / CELL_SIZE)] != '0')
+	if (data->map[(int)(data->py + dy)][(int)(data->px + dx)] != '0')
 		return ;
+	printf("%f, %f\t", dx, dy);
 	data->px += dx;
 	data->py += dy;
+	printf("%f, %f\n", data->px, data->py);
 	if (ft_ray_loop(data) != OK)
 		mlx_close_window(data->mlx);
 }
 
-static void	ft_move_angle(t_data *data, double angle_change)
+static void	ft_move_angle(t_data *data, float angle_change)
 {
 	data->p_angle += angle_change;
 	if (data->p_angle < A_MARGIN)
@@ -113,6 +119,7 @@ static void	ft_hook(mlx_key_data_t keydata, void *param)
 
 t_error ft_init_game(t_data **data)
 {
+	printf("%f, %f\n", (*data)->px, (*data)->py);
 	(*data)->mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", true);
 	if ((*data)->mlx == NULL)
 		return (set_error(E_MLX));
