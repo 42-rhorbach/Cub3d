@@ -48,17 +48,18 @@ HEADERS= ./Libft/libft.h \
 
 ##########
 
-SOURCE= src/main.c \
-		src/error.c \
-		src/utils.c \
-		src/parse/parse_info.c \
-		src/parse/parse_utils.c \
-		src/parse/parse_map.c \
-		src/parse/validate_map.c \
-		src/parse/validate_path.c \
-		src/parse/validate_colour.c \
-		src/init_game/init_mlx.c \
-		src/raycasting/raycast.c
+SDIR= src/
+SOURCE= main.c \
+		error.c \
+		utils.c \
+		parse/parse_info.c \
+		parse/parse_utils.c \
+		parse/parse_map.c \
+		parse/validate_map.c \
+		parse/validate_path.c \
+		parse/validate_colour.c \
+		init_game/init_mlx.c \
+		raycasting/raycast.c
 
 ##########
 
