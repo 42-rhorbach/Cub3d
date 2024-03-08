@@ -6,7 +6,7 @@
 /*   By: jvorstma <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 14:28:02 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/29 12:56:41 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/07 18:10:11 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ static t_error	ft_check_map_line(char *line, t_data **data, int i)
 				(*data)->p_angle = 180;
 			if (line[j] == 'S')
 				(*data)->p_angle = 270;
-			(*data)->px = j * CELL_SIZE + CELL_SIZE / 2;
-			(*data)->py = i * CELL_SIZE + CELL_SIZE / 2;
+			(*data)->px = j + (2 * STEP_Y);
+			(*data)->py = i + (2 * STEP_X);
 			j++;
 		}
 		else

@@ -19,29 +19,36 @@
 # include <stdio.h> //for printf testing
 
 //for at codam
-// # define HEIGHT 2064
-// # define WIDTH 2064
+# define HEIGHT 2064
+# define WIDTH 2064
 
-// # define CELL_SIZE 100
+# define STEP_X 0.25
+# define STEP_Y 0.25
 
-// # define STEP_X 4
-// # define STEP_Y 4
 ///////////////////////////////
 
 //for my laptop at home
-# define HEIGHT 800
-# define WIDTH 800
+// # define HEIGHT 800
+// # define WIDTH 800
 
-# define CELL_SIZE 4
+// # define CELL_SIZE 4
 
-# define STEP_X 1
-# define STEP_Y 1
+// # define STEP_X 1
+// # define STEP_Y 1
 
 /////////////////////////////////
-# define MARGIN 0.01
+# define MARGIN 0.001
+# define A_MARGIN 0.01
 # define FOV 60.00
 # define ROT_STEP 5
 # define PI 3.1415
+
+//for testing
+// # define NORTH 0xFF0000FF //red
+// # define SOUTH 0x0000FFFF //blue
+// # define EAST 0x00FF00FF //green
+// # define WEST 0xFFFF00FF //yellow
+// # define WHITE 0xFFFFFFFF
 
 typedef enum e_error
 {
@@ -64,26 +71,24 @@ typedef enum e_error
 
 typedef enum e_texture_index
 {
-	EXIT,
-	FLOOR,
-	HATCH,
-	PLAYER,
-	SHINY,
-	WALL,
-	TEXTURE_COUNT
+	EAST,
+	NORTH,
+	SOUTH,
+	WEST,
+	TEXTURE_COUNT,
 }	t_texture_index;
 
 typedef struct s_data
 {
 	mlx_t		*mlx;
-	mlx_image_t	*image;
+	mlx_image_t	*image[TEXTURE_COUNT+1];
 	char		**map;
 	int			width;
 	int			height;
 	char		face;
 	int			p_angle;
-	int			px;
-	int			py;
+	float		px;
+	float		py;
 	int			ceiling[3];
 	int			c;
 	int			floor[3];
@@ -96,10 +101,11 @@ typedef struct s_data
 
 typedef struct s_rays
 {
-	double	x;
-	double	y;
-	double	dx;
-	double	dy;
+	float	x;
+	float	y;
+	float	dx;
+	float	dy;
+	int		last;
 	int		x_dir;
 	int		y_dir;
 	int		end_x;
