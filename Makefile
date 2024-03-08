@@ -47,16 +47,17 @@ HEADERS= ./Libft/libft.h \
 
 ##########
 
-SOURCE= src/main.c \
-		src/error.c \
-		src/parse/parse_info.c \
-		src/parse/parse_utils.c \
-		src/parse/parse_map.c \
-		src/parse/validate_map.c \
-		src/parse/validate_path.c \
-		src/parse/validate_colour.c \
-		src/init_game/init_mlx.c \
-		src/raycasting/raycast.c
+SDIR = src/
+SOURCE= main.c \
+		error.c \
+		parse/parse_info.c \
+		parse/parse_utils.c \
+		parse/parse_map.c \
+		parse/validate_map.c \
+		parse/validate_path.c \
+		parse/validate_colour.c \
+		init_game/init_mlx.c \
+		raycasting/raycast.c
 
 ##########
 
@@ -93,7 +94,7 @@ $(MLX42):
 	@cmake -S $(MLX42_DIR) -B $(MLX42_DIR)/$(MLX42_BUILD_DIR)
 	@$(MAKE) -sC $(MLX42_DIR)/$(MLX42_BUILD_DIR) -j4
 
-$(ODIR)/%.o: %.c $(HEADERS)
+$(ODIR)/%.o: $(SDIR)/%.c $(HEADERS)
 	@mkdir -p $(dir $@)
 	@$(call prettycomp,$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@)
 
