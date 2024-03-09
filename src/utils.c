@@ -6,16 +6,24 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/07 12:37:29 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/03/07 18:57:13 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/09 08:42:43 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "types.h"
-
+#include <math.h>
 
 void n_angle_calc(double *angle)
 {
-	if (*angle > 90 && *angle < 180)
+	if (fabs(*angle - 90) < A_MARGIN)
+		*angle = 90;
+	else if (fabs(*angle - 180) < A_MARGIN)
+		*angle = 0;
+	else if (fabs(*angle - 270) < A_MARGIN)
+		*angle = 90;
+	else if (fabs(*angle - 360) < A_MARGIN || *angle < A_MARGIN)
+		*angle = 0;  //these lines fix the "wrong way walking issue"
+	else if (*angle > 90 && *angle < 180)
 		*angle = 180 - *angle;
 	else if (*angle > 180 && *angle < 270)
 		*angle -= 180;
