@@ -1,0 +1,13 @@
+      F 0,255,0  
+      SO ./southpic.png
+
+NO                              ./northpic.png
+     C 0,0,255
+         WE   ./westpic.png
+EA ./eastpic/back/eastpic.png
+
+11111
+10001
+10N01
+10001
+11111

@@ -28,18 +28,19 @@
 ///////////////////////////////
 
 //for my laptop at home
-# define HEIGHT 800
-# define WIDTH 800
+# define HEIGHT 640
+# define WIDTH 640
 
-# define STEP_X 0.5
-# define STEP_Y 0.5
+# define STEP_X 0.25
+# define STEP_Y 0.25
 
 /////////////////////////////////
-# define MARGIN 0.001
+# define MARGIN 0.000001
 # define A_MARGIN 0.01
 # define FOV 60.00
+# define FOV_STEP FOV/(WIDTH - 1)
 # define ROT_STEP 5
-# define PI 3.1415
+# define PI 3.14159265359
 
 //for testing
 // # define NORTH 0xFF0000FF //red
@@ -84,9 +85,9 @@ typedef struct s_data
 	int			width;
 	int			height;
 	char		face;
-	int			p_angle;
-	float		px;
-	float		py;
+	double		p_angle;
+	double		px;
+	double		py;
 	int			ceiling[3];
 	int			c;
 	int			floor[3];
@@ -99,10 +100,10 @@ typedef struct s_data
 
 typedef struct s_rays
 {
-	float	x;
-	float	y;
-	float	dx;
-	float	dy;
+	double	x;
+	double	y;
+	double	dx;
+	double	dy;
 	int		last;
 	int		x_dir;
 	int		y_dir;

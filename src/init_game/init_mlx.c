@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/09 08:46:04 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/09 12:48:05 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <math.h>
 #include "../raycasting/raycast.h"
 
-static void	ft_get_dxy(t_data *data, int move_dir, float *dy, float *dx)
+static void	ft_get_dxy(t_data *data, int move_dir, double *dy, double *dx)
 {
 	double	n_angle;
 	int		dir_x;
@@ -48,13 +48,13 @@ static void	ft_get_dxy(t_data *data, int move_dir, float *dy, float *dx)
 
 static void	move_player(t_data *data, int move_dir)
 {
- 	float	dy;
- 	float	dx;
+ 	double	dy;
+ 	double	dx;
 
  	ft_get_dxy(data, move_dir, &dy, &dx);
-	if ((int)(data->py + dy) < 0 + 1 || (int)(data->py + dy) >= data->height - 1)
+	if ((int)(data->py + dy) < 0 || (int)(data->py + dy) >= data->height)
 		return ;
-	if ((int)(data->px + dx) < 0 + 1 || (int)(data->px + dx) >= data->width - 1)
+	if ((int)(data->px + dx) < 0 || (int)(data->px + dx) >= data->width)
 		return ;
 	if (data->map[(int)(data->py + dy)][(int)(data->px + dx)] != '0')
 		return ;
@@ -64,7 +64,7 @@ static void	move_player(t_data *data, int move_dir)
 		mlx_close_window(data->mlx);
 }
 
-static void	ft_move_angle(t_data *data, float angle_change)
+static void	ft_move_angle(t_data *data, double angle_change)
 {
 	data->p_angle += angle_change;
 	if (data->p_angle < A_MARGIN)

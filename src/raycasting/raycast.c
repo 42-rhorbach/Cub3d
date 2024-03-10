@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/07 19:24:59 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/10 23:12:27 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,34 @@ static void	ft_put_pixel(mlx_image_t *image, int j, int i, int *rgb)
 	mlx_put_pixel(image, j, i, colour);
 }
 
-//need to know which side it hit the wall, for the textures.
-static void	ft_draw_ray(t_rays *ray, t_data *data, int x, double s_angle)
+static void	ft_draw_ray(t_rays *ray, t_data *data, int x)
 {
 	int		y;
 	float	height;
+	float	wall_dst;
 	int		min_y;
 	int		max_y;
 
-	ray->x -= ray->dx * ray->x_dir;
-	ray->y -= ray->dy * ray->y_dir;
-	height = sqrt(pow(data->px - ray->x, 2) + pow(data->py - ray->y, 2));
-	if (s_angle > 90)
-		s_angle = 90 - (s_angle - 90);
-	if (fabs(s_angle - 90) > MARGIN)
-		height = height * sin(s_angle * PI / 180);
-	height = (HEIGHT / height); //add scaling
+	if (ray->x_dir == -1)
+		ray->x += ray->dx;
+	if (ray->y_dir == -1)
+		ray->y += ray->dy;
+	if (ray->y_dir == 0)
+		ray->y = data->py;
+	if (ray->x_dir == 0)
+		ray->x = data->px;
+	//we need to find a way to do this correctly.
+	//wall dist are correct depending on the dir, so our solution
+	//could be in handeling this the correct way.
+	wall_dst = sqrt(pow(data->px - ray->x, 2) + pow(data->py - ray->y, 2));
+	if (x * FOV_STEP < FOV / 2)
+		height = wall_dst * sin((60+ (x * FOV_STEP)) * PI / 180);
+	else if (x * FOV_STEP > FOV / 2)
+		height = wall_dst * sin((120 - (x * FOV_STEP)) * PI / 180);
+	else
+		height = wall_dst;
+	printf("%f\n", height);
+	height = (HEIGHT / height); //add/change scaling
 	min_y =(int)(-height / 2 + HEIGHT / 2);
 	while (min_y < 0)
 		min_y = 0;
@@ -73,7 +85,7 @@ static void	ft_new_xy(t_rays *ray, double angle)
 		ray->dy = 1;
 	if (ray->x_dir != 0 && ray->y_dir != 0)
 	{
-		if (ray->dx / cos(angle * PI / 180) <= ray->dy / sin(angle * PI / 180))
+		if (ray->dx / cos(angle * PI / 180) < ray->dy / sin(angle * PI / 180))
 		{
 			ray->dy = ray->dx * tan(angle * PI / 180);
 			ray->last = 1;
@@ -84,13 +96,10 @@ static void	ft_new_xy(t_rays *ray, double angle)
 			ray->last = 0;
 		}
 	}
+	else if (ray->x_dir == 0)
+		ray->last = 0;
 	else
-	{
-		if (ray->x_dir == 0)
-			ray->last = 0;
-		else
-			ray->last = 1;
-	}
+		ray->last = 1;
 	ray->x += (ray->dx * ray->x_dir);
 	ray->y += (ray->dy * ray->y_dir);
 	ray->end_x = (int)ray->x;
@@ -108,36 +117,30 @@ static void	ft_ray_cast(double angle, t_rays *ray, t_data *data)
 			&& ray->end_y >= 1 && ray->end_y < data->height - 1 \
 			&& data->map[ray->end_y][ray->end_x] == '0')
 		ft_new_xy(ray, angle);
-	//printf("%i, %i\n", ray->end_x, ray->end_y);
 }
 
-static void	ft_ray_calc(double ray_angle, t_data *data, int x, double s_angle)
+static void	ft_ray_calc(double ray_angle, t_data *data, int x)
 {
 	t_rays	ray;
 
 	direction_xy(ray_angle, &ray.x_dir, &ray.y_dir);
 	ft_ray_cast(ray_angle, &ray, data);
-	ft_draw_ray(&ray, data, x, s_angle);
+	ft_draw_ray(&ray, data, x);
 }
 
 t_error	ft_ray_loop(t_data *data)
 {
 	int		x;
 	double	ray_angle;
-	double	step;
-	double	s_angle;
 
 	x = 0;
 	ray_angle = data->p_angle + (FOV / 2);
 	if (ray_angle > 360)
 		ray_angle -= 360;
-	step = FOV / (WIDTH - 1);
-	s_angle = 60.00;
 	while (x < WIDTH)
 	{
-		ft_ray_calc(ray_angle, data, x, s_angle);
-		s_angle += step;
-		ray_angle -= step;
+		ft_ray_calc(ray_angle, data, x);
+		ray_angle -= FOV_STEP;
 	 	if (ray_angle < A_MARGIN)
 	 		ray_angle = 360;
 		x++;
