@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/13 15:15:18 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/03/14 11:56:40 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ static void	ft_ray_cast(double angle, t_rays *ray, t_data *data)
 			&& ray->end_y >= 1 && ray->end_y < data->height - 1 \
 			&& data->map[ray->end_y][ray->end_x] == '0')
 		ft_new_xy(ray, angle);
+	printf("%i, %f, %f, ", ray->last, ray->x, ray->y);
 }
 
 static void	ft_ray_calc(double ray_angle, t_data *data, int x)

@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/07 12:37:29 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/03/09 09:09:16 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/13 16:26:08 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void n_angle_calc(double *angle)
 	else if (fabs(*angle - 270) < A_MARGIN)
 		*angle = 90;
 	else if (fabs(*angle - 360) < A_MARGIN || *angle < A_MARGIN)
-		*angle = 0;  //these lines fix the "wrong way walking issue"
+		*angle = 0;
 	else if (*angle > 90 && *angle < 180)
 		*angle = 180 - *angle;
 	else if (*angle > 180 && *angle < 270)
