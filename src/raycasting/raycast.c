@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/10 23:12:27 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/13 15:15:18 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static void	ft_draw_ray(t_rays *ray, t_data *data, int x)
 	int		min_y;
 	int		max_y;
 
+	ray->c = 0x00FFFF66;
 	if (ray->x_dir == -1)
 		ray->x += ray->dx;
 	if (ray->y_dir == -1)
@@ -58,7 +59,6 @@ static void	ft_draw_ray(t_rays *ray, t_data *data, int x)
 	while (max_y >= HEIGHT)
 		max_y = HEIGHT - 1;
 	y = 0;
-	ray->c = 0xFFFF0044;
 	while (y < HEIGHT && y >= 0 && x >= 0 && x < WIDTH)
 	{
 		if (y < min_y)
