@@ -36,7 +36,7 @@
 
 /////////////////////////////////
 # define MARGIN 0.000001
-# define A_MARGIN 0.01
+# define A_MARGIN 1
 # define FOV 60.00
 # define FOV_STEP FOV/(WIDTH - 1)
 # define ROT_STEP 5
