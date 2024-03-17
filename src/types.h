@@ -28,7 +28,7 @@
 ///////////////////////////////
 
 //for my laptop at home
-# define HEIGHT 640
+# define HEIGHT 480
 # define WIDTH 640
 
 # define STEP_X 0.25
@@ -38,6 +38,7 @@
 # define MARGIN 0.000001
 # define A_MARGIN 1
 # define FOV 60.00
+# define HFOV FOV / 2
 # define FOV_STEP FOV/(WIDTH - 1)
 # define ROT_STEP 5
 # define PI 3.14159265359
