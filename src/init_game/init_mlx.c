@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/09 12:48:05 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/19 17:41:56 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "utils.h"
 #include <math.h>
 #include "../raycasting/raycast.h"
+#include "libft.h"
+
 
 static void	ft_get_dxy(t_data *data, int move_dir, double *dy, double *dx)
 {
@@ -48,10 +50,10 @@ static void	ft_get_dxy(t_data *data, int move_dir, double *dy, double *dx)
 
 static void	move_player(t_data *data, int move_dir)
 {
- 	double	dy;
- 	double	dx;
+	double	dy;
+	double	dx;
 
- 	ft_get_dxy(data, move_dir, &dy, &dx);
+	ft_get_dxy(data, move_dir, &dy, &dx);
 	if ((int)(data->py + dy) < 0 || (int)(data->py + dy) >= data->height)
 		return ;
 	if ((int)(data->px + dx) < 0 || (int)(data->px + dx) >= data->width)
@@ -75,9 +77,15 @@ static void	ft_move_angle(t_data *data, double angle_change)
 		mlx_close_window(data->mlx);
 }
 
+static void	ft_cursor_hook(double xpos, double ypos, void *param)
+{
+	(void)param;
+	printf("xpos: %f, ypos: %f\n", xpos, ypos);
+}
+
 static void	ft_hook(mlx_key_data_t keydata, void *param)
 {
-	t_data *data;
+	t_data	*data;
 
 	data = param;
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
@@ -111,7 +119,7 @@ static void	ft_hook(mlx_key_data_t keydata, void *param)
 // 	return (OK);
 // }
 
-t_error ft_init_game(t_data **data)
+t_error	ft_init_game(t_data **data)
 {
 	(*data)->mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", true);
 	if ((*data)->mlx == NULL)
@@ -121,9 +129,22 @@ t_error ft_init_game(t_data **data)
 		|| load_texture((*data), (*data)->north, &(*data)->image[NORTH]) != OK \
 		|| load_texture((*data), (*data)->south, &(*data)->image[SOUTH]) != OK)
 	 	return (get_error());*/
-	(*data)->image[4] = mlx_new_image((*data)->mlx, WIDTH, HEIGHT); //wat is dit?
+	(*data)->image[4] = mlx_new_image((*data)->mlx, WIDTH, HEIGHT); // TODO: Don't store the main window image in the same array as the wall images, and rename to wall_images[4]!
 	if (!(*data)->image[4] \
 		|| mlx_image_to_window((*data)->mlx, (*data)->image[4], 0, 0) == -1)
+	{
+		mlx_close_window((*data)->mlx); // TODO: This shouldn't have to be called here; refactor main() so it automatically happens, if it doesn't already
+		return (set_error(E_MLX));
+	}
+	(*data)->minimap = mlx_new_image((*data)->mlx, (*data)->width, (*data)->height);
+	mlx_image_t *minimap = (*data)->minimap;
+	ft_memset(minimap->pixels, 255, minimap->width * minimap->height * 4);
+	if ((*data)->minimap == NULL)
+	{
+		mlx_close_window((*data)->mlx);
+		return (set_error(E_MLX));
+	}
+	if (mlx_image_to_window((*data)->mlx, (*data)->minimap, 0, 0) == -1)
 	{
 		mlx_close_window((*data)->mlx);
 		return (set_error(E_MLX));
@@ -135,6 +156,7 @@ t_error ft_init_game(t_data **data)
 		return (get_error());
 	}
 	mlx_key_hook((*data)->mlx, &ft_hook, *data);
+	mlx_cursor_hook((*data)->mlx, &ft_cursor_hook, NULL);
 	mlx_loop((*data)->mlx);
 	mlx_terminate((*data)->mlx);
 	return (OK);

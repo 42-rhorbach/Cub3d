@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/07 12:37:29 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/03/13 16:26:08 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/19 15:46:13 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,17 @@ void n_angle_calc(double *angle)
 
 void direction_xy(double ray_angle, int *x_dir, int *y_dir)
 {
-	if (fabs(ray_angle - 90) < A_MARGIN || fabs(ray_angle - 270) < A_MARGIN)
-		*x_dir = 0;
-	else if (ray_angle > 90 && ray_angle < 270)
-		*x_dir = -1;
+	// if (fabs(ray_angle - 90) < A_MARGIN || fabs(ray_angle - 270) < A_MARGIN) // TODO: Why does this not do the `|| ray_angle < A_MARGIN` seen below?
+	// 	*x_dir = 0; // TODO: Why isn't x_dir and y_dir a boolean? It seems strange that they can be 0, if they are about the four quadrants of a radian circle
+	if (ray_angle > 90 && ray_angle < 270)
+		*x_dir = -1; // left
 	else
-		*x_dir = 1;
-	if (fabs(ray_angle - 180) < A_MARGIN \
-		|| fabs(ray_angle - 360) < A_MARGIN || ray_angle < A_MARGIN)
-		*y_dir = 0;
-	else if (ray_angle > 180 && ray_angle < 360)
-		*y_dir = 1;
+		*x_dir = 1; // right
+	// if (fabs(ray_angle - 180) < A_MARGIN \
+	// 	|| fabs(ray_angle - 360) < A_MARGIN || ray_angle < A_MARGIN)
+	// 	*y_dir = 0;
+	if (ray_angle > 180 && ray_angle < 360)
+		*y_dir = 1; // bottom
 	else
-		*y_dir = -1;
+		*y_dir = -1; // top
 }

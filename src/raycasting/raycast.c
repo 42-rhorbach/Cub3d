@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/17 23:53:34 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/19 15:54:31 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,19 +70,19 @@ static void	ft_new_xy(t_rays *ray, double angle)
 		ray->dx = 1;
 	if (ray->dy < MARGIN)
 		ray->dy = 1;
-	if (ray->x_dir == 0)
-		ray->last = 0;
-	else if (ray->y_dir == 0)
-		ray->last = 1;
-	else if (ray->dx / cos(angle * PI / 180) < ray->dy / sin(angle * PI / 180))
+	// if (ray->x_dir == 0)
+		// ray->last = 0;
+	// else if (ray->y_dir == 0)
+		// ray->last = 1;
+	if (ray->dx / cos(angle * PI / 180) < ray->dy / sin(angle * PI / 180))
 	{
 		ray->dy = ray->dx * tan(angle * PI / 180);
-		ray->last = 1;
+		// ray->last = 1;
 	}
 	else
 	{
 		ray->dx = (ray->dy / tan(angle * PI / 180));
-		ray->last = 0;
+		// ray->last = 0;
 	}
 	ray->x += (ray->dx * ray->x_dir);
 	ray->y += (ray->dy * ray->y_dir);
@@ -100,7 +100,7 @@ static void	ft_ray_cast(double angle, t_rays *ray, t_data *data)
 	while (ray->end_x >= 0 && ray->end_x < data->width \
 			&& ray->end_y >= 0 && ray->end_y < data->height \
 			&& data->map[ray->end_y][ray->end_x] == '0')
-		ft_new_xy(ray, angle);	
+		ft_new_xy(ray, angle);
 }
 
 static void	ft_ray_calc(double ray_angle, t_data *data, int x)
@@ -123,9 +123,10 @@ t_error	ft_ray_loop(t_data *data)
 		ray_angle -= 360;
 	while (x < WIDTH)
 	{
+		// x=123 is correct, x=276 is incorrect
 		ft_ray_calc(ray_angle, data, x);
 		ray_angle -= FOV_STEP;
-	 	if (ray_angle < A_MARGIN)
+	 	if (ray_angle < A_MARGIN) // TODO: Double-check this makes sense and is necessary
 	 		ray_angle = 360;
 		x++;
 	}

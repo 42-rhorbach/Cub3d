@@ -82,6 +82,7 @@ typedef struct s_data
 {
 	mlx_t		*mlx;
 	mlx_image_t	*image[TEXTURE_COUNT+1];
+	mlx_image_t *minimap;
 	char		**map;
 	int			width;
 	int			height;
@@ -105,7 +106,7 @@ typedef struct s_rays
 	double	y;
 	double	dx;
 	double	dy;
-	int		last;
+	// int		last; // TODO: Remove?
 	int		x_dir;
 	int		y_dir;
 	int		end_x;
