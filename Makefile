@@ -29,6 +29,10 @@ else
 LIBFLAGS += -lglfw3 -framework Cocoa -framework OpenGl -framework IOKit -lm
 endif
 
+ifdef DEBUG
+CFLAGS += -g
+endif
+
 ##########
 
 MLX42_DIR= ./MLX42
