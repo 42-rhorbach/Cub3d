@@ -6,20 +6,21 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/19 18:18:59 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/03/20 18:30:57 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
+#include "minimap.h"
 #include "utils.h"
 #include <math.h>
 
-static void	ft_put_pixel(mlx_image_t *image, int j, int i, int *rgb)
+void	ft_put_pixel(mlx_image_t *image, int x, int y, int *rgb)
 {
 	uint32_t	colour;
 
-	colour = rgb[0] << 24 | rgb[1] << 16 | rgb[2] << 8 | 125;
-	mlx_put_pixel(image, j, i, colour);
+	colour = rgb[0] << 24 | rgb[1] << 16 | rgb[2] << 8 | 255;
+	mlx_put_pixel(image, x, y, colour);
 }
 
 static void	ft_draw_ray(t_rays *ray, t_data *data, int x)
@@ -110,6 +111,7 @@ static void	ft_ray_calc(double ray_angle, t_data *data, int x)
 	direction_xy(ray_angle, &ray.x_dir, &ray.y_dir);
 	ft_ray_cast(ray_angle, &ray, data);
 	ft_draw_ray(&ray, data, x);
+	draw_minimap_ray(data, ray.end_x, ray.end_y);
 }
 
 void	ft_ray_loop(t_data *data)

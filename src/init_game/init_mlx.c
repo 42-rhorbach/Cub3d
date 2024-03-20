@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/20 16:21:03 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/03/20 18:44:33 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "utils.h"
 #include "../raycasting/raycast.h"
 #include <math.h>
-
 
 static void	ft_get_dxy(t_data *data, int move_dir, double *dy, double *dx)
 {
@@ -50,8 +49,8 @@ static void	ft_get_dxy(t_data *data, int move_dir, double *dy, double *dx)
 
 static void draw(t_data *data)
 {
-	ft_ray_loop(data);
 	draw_minimap(data);
+	ft_ray_loop(data);
 }
 
 static void	move_player(t_data *data, int move_dir)
