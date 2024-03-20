@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/19 15:54:31 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/03/19 18:18:59 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ static void	ft_ray_calc(double ray_angle, t_data *data, int x)
 	ft_draw_ray(&ray, data, x);
 }
 
-t_error	ft_ray_loop(t_data *data)
+void	ft_ray_loop(t_data *data)
 {
 	int		x;
 	double	ray_angle;
@@ -130,5 +130,4 @@ t_error	ft_ray_loop(t_data *data)
 	 		ray_angle = 360;
 		x++;
 	}
-	return (OK);
 }

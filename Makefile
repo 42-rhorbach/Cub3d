@@ -41,29 +41,31 @@ MLX42= $(MLX42_DIR)/$(MLX42_BUILD_DIR)/libmlx42.a
 
 ##########
 
-HEADERS= ./Libft/libft.h \
+HEADERS=./Libft/libft.h \
 		./MLX42/include/MLX42/MLX42.h \
-		./src/types.h \
-		./src/error.h \
-		./src/utils.h \
-		./src/parse/parser.h \
 		./src/init_game/game.h \
-		./src/raycasting/raycast.h
+		./src/minimap/minimap.h \
+		./src/parse/parser.h \
+		./src/raycasting/raycast.h \
+		./src/error.h \
+		./src/types.h \
+		./src/utils.h
 
 ##########
 
 SDIR= src/
-SOURCE= main.c \
-		error.c \
-		utils.c \
+SOURCE=	init_game/init_mlx.c \
+		minimap/minimap.c \
 		parse/parse_info.c \
-		parse/parse_utils.c \
 		parse/parse_map.c \
+		parse/parse_utils.c \
+		parse/validate_colour.c \
 		parse/validate_map.c \
 		parse/validate_path.c \
-		parse/validate_colour.c \
-		init_game/init_mlx.c \
-		raycasting/raycast.c
+		raycasting/raycast.c \
+		error.c \
+		main.c \
+		utils.c
 
 ##########
 

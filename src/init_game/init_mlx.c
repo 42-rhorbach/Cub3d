@@ -6,15 +6,15 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/19 17:41:56 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/03/20 16:21:03 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "game.h"
+#include "minimap.h"
 #include "utils.h"
-#include <math.h>
 #include "../raycasting/raycast.h"
-#include "libft.h"
+#include <math.h>
 
 
 static void	ft_get_dxy(t_data *data, int move_dir, double *dy, double *dx)
@@ -48,6 +48,12 @@ static void	ft_get_dxy(t_data *data, int move_dir, double *dy, double *dx)
 	}
 }
 
+static void draw(t_data *data)
+{
+	ft_ray_loop(data);
+	draw_minimap(data);
+}
+
 static void	move_player(t_data *data, int move_dir)
 {
 	double	dy;
@@ -62,8 +68,7 @@ static void	move_player(t_data *data, int move_dir)
 		return ;
 	data->px += dx;
 	data->py += dy;
-	if (ft_ray_loop(data) != OK)
-		mlx_close_window(data->mlx);
+	draw(data);
 }
 
 static void	ft_move_angle(t_data *data, double angle_change)
@@ -73,8 +78,7 @@ static void	ft_move_angle(t_data *data, double angle_change)
 		data->p_angle += 360;
 	else if (data->p_angle > 360)
 		data->p_angle -= 360;
-	if (ft_ray_loop(data) != OK)
-		mlx_close_window(data->mlx);
+	draw(data);
 }
 
 static void	ft_cursor_hook(double xpos, double ypos, void *param)
@@ -136,9 +140,7 @@ t_error	ft_init_game(t_data **data)
 		mlx_close_window((*data)->mlx); // TODO: This shouldn't have to be called here; refactor main() so it automatically happens, if it doesn't already
 		return (set_error(E_MLX));
 	}
-	(*data)->minimap = mlx_new_image((*data)->mlx, (*data)->width, (*data)->height);
-	mlx_image_t *minimap = (*data)->minimap;
-	ft_memset(minimap->pixels, 255, minimap->width * minimap->height * 4);
+	(*data)->minimap = mlx_new_image((*data)->mlx, (*data)->width * MINIMAP_SCALE, (*data)->height * MINIMAP_SCALE);
 	if ((*data)->minimap == NULL)
 	{
 		mlx_close_window((*data)->mlx);
@@ -149,12 +151,7 @@ t_error	ft_init_game(t_data **data)
 		mlx_close_window((*data)->mlx);
 		return (set_error(E_MLX));
 	}
-	if (ft_ray_loop(*data) != OK)
-	{
-		mlx_close_window((*data)->mlx);
-		mlx_terminate((*data)->mlx);
-		return (get_error());
-	}
+	draw(*data);
 	mlx_key_hook((*data)->mlx, &ft_hook, *data);
 	mlx_cursor_hook((*data)->mlx, &ft_cursor_hook, NULL);
 	mlx_loop((*data)->mlx);
