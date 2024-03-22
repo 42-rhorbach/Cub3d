@@ -6,21 +6,21 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/22 12:59:46 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/22 15:03:08 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
+#include "minimap.h"
 #include "utils.h"
 #include <math.h>
 
-static void	ft_put_pixel(mlx_image_t *image, int j, int i, int *rgb)
+void	ft_put_pixel(mlx_image_t *image, int x, int y, int *rgb)
 {
 	uint32_t	colour;
 
-	colour = rgb[0] << 24 | rgb[1] << 16 | rgb[2] << 8 | 125;
-	mlx_put_pixel(image, j, i, colour);
-	return ;
+	colour = rgb[0] << 24 | rgb[1] << 16 | rgb[2] << 8 | 255;
+	mlx_put_pixel(image, x, y, colour);
 }
 
 static void	ft_draw_ray(t_rays *ray, t_data *data, int x)
@@ -136,10 +136,10 @@ static void	ft_ray_calc(double d_angle, t_data *data, int x, double r_angle)
 	ft_set_ray_data(&ray, data);
 	ft_ray_cast(&ray, data);
 	ft_draw_ray(&ray, data, x);
-	return ;
+	draw_minimap_ray(data, ray.end_x, ray.end_y);
 }
 
-t_error	ft_ray_loop(t_data *data)
+void	ft_ray_loop(t_data *data)
 {
 	int		x;
 	double	d_angle;
@@ -159,5 +159,4 @@ t_error	ft_ray_loop(t_data *data)
 	 		d_angle = 360;
 		x++;
 	}
-	return (OK);
 }

@@ -28,8 +28,8 @@
 ///////////////////////////////
 
 //for my laptop at home
-# define HEIGHT 480
-# define WIDTH 640
+# define WIDTH 1920
+# define HEIGHT 1080
 
 # define STEP_X 0.25
 # define STEP_Y 0.25
@@ -82,6 +82,7 @@ typedef struct s_data
 {
 	mlx_t		*mlx;
 	mlx_image_t	*image[TEXTURE_COUNT+1];
+	mlx_image_t *minimap;
 	char		**map;
 	int			width;
 	int			height;

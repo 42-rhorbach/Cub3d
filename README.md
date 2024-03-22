@@ -25,3 +25,11 @@ edges are not correct, too staircase like
 (depth? conversion?) [FIXED on north and west side]
 
 edges jagged on south and east side, walls are not fully shown (half planes and gaps)
+
+# Debugging with gdb
+
+`DEBUG=1 make`
+`gdb --args ./cub3D test_files/test3.cub`
+`r` to run the program until any breakpoint
+`b ft_ray_loop` to set a breakpoint in the `ft_ray_loop` function
+`p data.px` to print the player's X coordinate
