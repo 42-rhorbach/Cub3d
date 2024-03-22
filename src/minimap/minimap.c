@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/20 14:27:11 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/03/20 18:40:18 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/03/22 15:41:00 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void draw_minimap_line(t_line l)
     while (true)
 	{
 		ft_put_pixel(l.image, l.x0, l.y0,
-			(int [3]){MINIMAP_RAY_R, MINIMAP_RAY_G, MINIMAP_RAY_B});
+			(uint8_t [3]){MINIMAP_RAY_R, MINIMAP_RAY_G, MINIMAP_RAY_B});
         if (l.x0 == l.x1 && l.y0 == l.y1)
 			return ;
         e2 = 2 * error;
@@ -62,10 +62,10 @@ static int	get_scaled(double n, int size)
 	int minimap_size;
 
 	minimap_size = size * MINIMAP_SCALE;
-	return (n / size * minimap_size);
+	return ((int)(n / size * minimap_size));
 }
 
-void	draw_minimap_ray(t_data *data, int end_x, int end_y)
+void	draw_minimap_ray(t_data *data, double end_x, double end_y)
 {
 	draw_minimap_line((t_line){
 		get_scaled(data->px, data->width),
