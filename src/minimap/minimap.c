@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/20 14:27:11 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/03/22 15:41:00 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/03/22 17:54:03 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void draw_minimap_line(t_line l)
     while (true)
 	{
 		ft_put_pixel(l.image, l.x0, l.y0,
-			(uint8_t [3]){MINIMAP_RAY_R, MINIMAP_RAY_G, MINIMAP_RAY_B});
+			(int [3]){MINIMAP_RAY_R, MINIMAP_RAY_G, MINIMAP_RAY_B});
         if (l.x0 == l.x1 && l.y0 == l.y1)
 			return ;
         e2 = 2 * error;
@@ -93,8 +93,8 @@ static void	draw_tile_pixel(mlx_image_t *minimap, char tile, int x, int y)
 	}
 }
 
-static void	draw_minimap_pixel(t_data *data, char tile, size_t tile_x,
-			size_t tile_y)
+static void	draw_minimap_pixel(t_data *data, char tile, size_t tile_x, \
+	size_t tile_y)
 {
 	size_t	pixel_y;
 	size_t	pixel_x;

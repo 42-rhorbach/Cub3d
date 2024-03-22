@@ -113,8 +113,8 @@ typedef struct s_rays
 	int		last;
 	int		x_dir;
 	int		y_dir;
-	int		end_x;
-	int		end_y;
+	double	end_x;
+	double	end_y;
 	uint32_t	c;
 }	t_rays;
 

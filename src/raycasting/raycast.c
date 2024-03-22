@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/22 15:39:55 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/03/22 18:16:21 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "utils.h"
 #include <math.h>
 
-void	ft_put_pixel(mlx_image_t *image, int x, int y, uint8_t *rgb)
+void	ft_put_pixel(mlx_image_t *image, int x, int y, int *rgb)
 {
 	uint32_t	colour;
 
@@ -28,21 +28,16 @@ static void	ft_draw_ray(t_rays *ray, t_data *data, int x)
 	int		y;
 	int		min_y;
 	int		max_y;
-	double	mx;
-	double	my;
 
 	if (ray->last == 0)
 		ray->wall_dist = ray->sx - ray->dx;
 	else
 		ray->wall_dist = ray->sy - ray->dy;
-	mx = ray->wall_dist / cos(ray->dir_angle * PI / 180);
-	my = ray->wall_dist * sin(ray->dir_angle * PI / 180);
 	ray->wall_dist *= sin(ray->ray_angle * PI / 180);
-	if (ray->wall_dist != 0)
+	if (ray->wall_dist > 1)
 		ray->height = (int)(HEIGHT / ray->wall_dist);
 	else
 		ray->height = HEIGHT;
-	// printf("%f, %i\n", ray->wall_dist, ray->height);
 	min_y =(int)(-ray->height / 2 + HEIGHT / 2);
 	if (min_y < 0)
 		min_y = 0;
@@ -61,7 +56,6 @@ static void	ft_draw_ray(t_rays *ray, t_data *data, int x)
 			ft_put_pixel(data->image[4], x, y, data->floor);
 		y++;
 	}
-	draw_minimap_ray(data, mx, my);
 	return ;
 }
 
@@ -103,9 +97,9 @@ static void	ft_set_ray_data(t_rays *ray, t_data *data)
 static void	ft_ray_cast(t_rays *ray, t_data *data)
 {
 	// while (true)
-	while (ray->end_x >= 0 && ray->end_x < data->width \
-			&& ray->end_y >= 0 && ray->end_y < data->height \
-			&& data->map[ray->end_y][ray->end_x] == '0')
+	while ((int)ray->end_x >= 0 && (int)ray->end_x < data->width \
+			&& (int)ray->end_y >= 0 && (int)ray->end_y < data->height \
+			&& data->map[(int)ray->end_y][(int)ray->end_x] == '0')
 	{
 		if (ray->x_dir != 0 && ray->y_dir != 0)
 			ft_new_xy(ray);
@@ -139,7 +133,7 @@ static void	ft_ray_calc(double d_angle, t_data *data, int x, double r_angle)
 	ft_set_ray_data(&ray, data);
 	ft_ray_cast(&ray, data);
 	ft_draw_ray(&ray, data, x);
-	//draw_minimap_ray(data, ray.end_x, ray.end_y);
+	draw_minimap_ray(data, ray.end_x, ray.end_y);
 }
 
 void	ft_ray_loop(t_data *data)
