@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/21 14:41:54 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/22 13:17:08 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static void	ft_get_dxy(t_data *data, int move_dir, double *dy, double *dx)
 		*dx = -sin(n_angle * PI / 180) * STEP_Y * dir_y;
 		*dy = cos(n_angle * PI / 180) * STEP_X * dir_x;
 	}
+	return ;
 }
 
 static void	move_player(t_data *data, int move_dir)
@@ -62,6 +63,7 @@ static void	move_player(t_data *data, int move_dir)
 	data->py += dy;
 	if (ft_ray_loop(data) != OK)
 		mlx_close_window(data->mlx);
+	return ;
 }
 
 static void	ft_move_angle(t_data *data, double angle_change)
@@ -73,6 +75,7 @@ static void	ft_move_angle(t_data *data, double angle_change)
 		data->p_angle -= 360;
 	if (ft_ray_loop(data) != OK)
 		mlx_close_window(data->mlx);
+	return ;
 }
 
 static void	ft_hook(mlx_key_data_t keydata, void *param)
@@ -94,6 +97,7 @@ static void	ft_hook(mlx_key_data_t keydata, void *param)
 		ft_move_angle(data, ROT_STEP);
 	if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
 		ft_move_angle(data, -ROT_STEP);
+	return ;
 }
 
 // static t_error	load_texture(t_data *data, const char *texture_path,

@@ -105,6 +105,10 @@ typedef struct s_rays
 	double	sy;
 	double	dx;
 	double	dy;
+	double	dir_angle;
+	double	ray_angle;
+	double	wall_dist;
+	int		height;
 	int		last;
 	int		x_dir;
 	int		y_dir;
