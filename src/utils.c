@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/07 12:37:29 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/03/13 16:26:08 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/21 14:44:29 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,20 @@
 
 void n_angle_calc(double *angle)
 {
-	if (fabs(*angle - 90) < A_MARGIN)
-		*angle = 90;
-	else if (fabs(*angle - 180) < A_MARGIN)
-		*angle = 0;
-	else if (fabs(*angle - 270) < A_MARGIN)
-		*angle = 90;
-	else if (fabs(*angle - 360) < A_MARGIN || *angle < A_MARGIN)
-		*angle = 0;
-	else if (*angle > 90 && *angle < 180)
+	// if (fabs(*angle - 90) < A_MARGIN)
+	// 	*angle = 90;
+	// else if (fabs(*angle - 180) < A_MARGIN)
+	// 	*angle = 0;
+	// else if (fabs(*angle - 270) < A_MARGIN)
+	// 	*angle = 90;
+	// else if (fabs(*angle - 360) < A_MARGIN || *angle < A_MARGIN)
+	// 	*angle = 0;
+	//trying to get rid of the a_margin, not sure if needed
+	if (*angle > 90 && *angle <= 180)
 		*angle = 180 - *angle;
-	else if (*angle > 180 && *angle < 270)
+	else if (*angle > 180 && *angle <= 270)
 		*angle -= 180;
-	else if (*angle > 270 && *angle < 360)
+	else if (*angle > 270 && *angle <= 360)
 		*angle = 360 - *angle;
 }
 

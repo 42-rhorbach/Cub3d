@@ -36,10 +36,10 @@
 
 /////////////////////////////////
 # define MARGIN 0.000001
-# define A_MARGIN 1
+# define A_MARGIN 0.1
 # define FOV 60.00
 # define HFOV FOV / 2
-# define FOV_STEP FOV/(WIDTH - 1)
+# define FOV_STEP FOV / (WIDTH - 1)
 # define ROT_STEP 5
 # define PI 3.14159265359
 
@@ -101,8 +101,8 @@ typedef struct s_data
 
 typedef struct s_rays
 {
-	double	x;
-	double	y;
+	double	sx;
+	double	sy;
 	double	dx;
 	double	dy;
 	int		last;

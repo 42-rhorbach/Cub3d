@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/17 23:53:34 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/22 01:16:44 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,22 @@ static void	ft_put_pixel(mlx_image_t *image, int j, int i, int *rgb)
 
 	colour = rgb[0] << 24 | rgb[1] << 16 | rgb[2] << 8 | 125;
 	mlx_put_pixel(image, j, i, colour);
+	return ;
 }
 
 static void	ft_draw_ray(t_rays *ray, t_data *data, int x)
 {
 	int		y;
-	float	height;
-	float	wall_dst;
+	float	wall_dist;
+	int		height;
 	int		min_y;
 	int		max_y;
 
-	if (ray->x_dir == -1)
-		ray->x += ray->dx;
-	if (ray->y_dir == -1)
-		ray->y += ray->dy;
-	wall_dst = sqrt(pow(data->px - ray->x, 2) + pow(data->py - ray->y, 2));
-	if (x * FOV_STEP < HFOV || x * FOV_STEP > HFOV)
-		wall_dst = wall_dst * sin(((90 + HFOV) - x * FOV_STEP) * PI / 180);
-	height = (HEIGHT / wall_dst);
+	if (ray->last == 0)
+		wall_dist = ray->sx - ray->dx;
+	else
+		wall_dist = ray->sy - ray->dy;
+	height = (int)(HEIGHT / wall_dist);
 	min_y =(int)(-height / 2 + HEIGHT / 2);
 	if (min_y < 0)
 		min_y = 0;
@@ -56,77 +54,108 @@ static void	ft_draw_ray(t_rays *ray, t_data *data, int x)
 			ft_put_pixel(data->image[4], x, y, data->floor);
 		y++;
 	}
+	return ;
 }
 
-static void	ft_new_xy(t_rays *ray, double angle)
+static void	ft_new_xy(t_rays *ray)
 {
-	ray->dx = fmod(ray->x, 1);
-	ray->dy = fmod(ray->y, 1);
-	if (ray->x_dir == 1)
-		ray->dx = 1 - ray->dx;
-	if (ray->y_dir == 1)
-		ray->dy = 1 - ray->dy;
-	if (ray->dx < MARGIN)
-		ray->dx = 1;
-	if (ray->dy < MARGIN)
-		ray->dy = 1;
-	if (ray->x_dir == 0)
-		ray->last = 0;
-	else if (ray->y_dir == 0)
-		ray->last = 1;
-	else if (ray->dx / cos(angle * PI / 180) < ray->dy / sin(angle * PI / 180))
+	if (ray->x_dir != 0 && ray->y_dir != 0)
 	{
-		ray->dy = ray->dx * tan(angle * PI / 180);
-		ray->last = 1;
+		if (ray->sx < ray->sy)
+		{
+			ray->sx += ray->dx;
+			ray->end_x += ray->x_dir;
+			ray->last = 0;
+		}
+		else
+		{
+			ray->sy += ray->dy;
+			ray->end_y += ray->y_dir;
+			ray->last = 1;
+		}
 	}
 	else
 	{
-		ray->dx = (ray->dy / tan(angle * PI / 180));
-		ray->last = 0;
+		if (ray->x_dir == 0)
+		{
+			ray->sy += ray->dy;
+			ray->end_y += ray->y_dir;
+			ray->last = 1;
+		}
+		else
+		{
+			ray->sx += ray->dx;
+			ray->end_x += ray->x_dir;
+			ray->last = 0;
+		}
 	}
-	ray->x += (ray->dx * ray->x_dir);
-	ray->y += (ray->dy * ray->y_dir);
-	ray->end_x = (int)ray->x;
-	ray->end_y = (int)ray->y;
+	return ;
 }
 
-static void	ft_ray_cast(double angle, t_rays *ray, t_data *data)
+static void	ft_get_sxy(t_rays *ray, t_data *data)
 {
-	ray->x = data->px;
-	ray->y = data->py;
+	ray->sx = fmod(data->px, 1);
+	ray->sy = fmod(data->py, 1);
+	if (ray->x_dir == 1)
+		ray->sx = 1 - ray->sx;
+	if (ray->y_dir == 1)
+		ray->sy = 1 - ray->sy;
+	ray->sx *= ray->dx;
+	ray->sy *= ray->dy;
+	return ;
+}
+
+static void	ft_get_dxy(t_rays *ray, double angle)
+{
+	ray->dx = fabs(1 / cos(angle * PI / 180));
+	ray->dy = fabs(1 / sin(angle * PI / 180));
+	return ;
+}
+
+static void	ft_ray_cast(t_rays *ray, t_data *data, double angle)
+{
 	ray->end_x = (int)data->px;
 	ray->end_y = (int)data->py;
-	n_angle_calc(&angle);
+	ft_get_dxy(ray, angle);
+	ft_get_sxy(ray, data);
 	while (ray->end_x >= 0 && ray->end_x < data->width \
 			&& ray->end_y >= 0 && ray->end_y < data->height \
 			&& data->map[ray->end_y][ray->end_x] == '0')
-		ft_new_xy(ray, angle);	
+		ft_new_xy(ray);	
+	return ;
 }
 
-static void	ft_ray_calc(double ray_angle, t_data *data, int x)
+static void	ft_ray_calc(double dir_angle, t_data *data, int x)
 {
 	t_rays	ray;
+	
+	// double testx;
+	// double testy;
+	// testx = fabs(1 / (1 + 0 * (2 * x / (double)WIDTH - 1)));
+	// testy = fabs(1 / (0 + 0.66 * (2 * x / (double)WIDTH - 1)));
+	// printf("%f, %f\t", testx, testy);
 
-	direction_xy(ray_angle, &ray.x_dir, &ray.y_dir);
-	ft_ray_cast(ray_angle, &ray, data);
+	direction_xy(dir_angle, &ray.x_dir, &ray.y_dir);
+	ft_ray_cast(&ray, data, dir_angle);
 	ft_draw_ray(&ray, data, x);
+	return ;
 }
 
 t_error	ft_ray_loop(t_data *data)
 {
 	int		x;
-	double	ray_angle;
+	double	dir_angle;
 
 	x = 0;
-	ray_angle = data->p_angle + HFOV;
-	if (ray_angle > 360)
-		ray_angle -= 360;
+	dir_angle = data->p_angle + HFOV;
+	if (dir_angle > 360)
+		dir_angle -= 360;
 	while (x < WIDTH)
 	{
-		ft_ray_calc(ray_angle, data, x);
-		ray_angle -= FOV_STEP;
-	 	if (ray_angle < A_MARGIN)
-	 		ray_angle = 360;
+		ft_ray_calc(dir_angle, data, x);
+		dir_angle -= FOV_STEP;
+	 	if (dir_angle <= 0)
+	 		dir_angle = 360;
 		x++;
 	}
 	return (OK);

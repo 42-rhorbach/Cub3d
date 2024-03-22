@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/09 12:48:05 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/21 14:41:54 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	move_player(t_data *data, int move_dir)
 static void	ft_move_angle(t_data *data, double angle_change)
 {
 	data->p_angle += angle_change;
-	if (data->p_angle < A_MARGIN)
+	if (data->p_angle <= 0)
 		data->p_angle += 360;
 	else if (data->p_angle > 360)
 		data->p_angle -= 360;
