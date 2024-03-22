@@ -6,7 +6,7 @@
 /*   By: jvorstma <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 14:28:02 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/14 15:02:07 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/09 11:38:49 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ static t_error	ft_fill_line(char *line, t_data *data, int index)
 	i = 0;
 	while (line[i] && line[i] != '\n' && i < data->width)
 	{
-		data->map[index][i] = line[i];
+		if (line[i] == data->face)
+			data->map[index][i] = '0';
+		else
+			data->map[index][i] = line[i];
 		i++;
 	}
 	while (i < data->width)
@@ -39,18 +42,25 @@ static t_error	ft_fill_line(char *line, t_data *data, int index)
 
 static t_error	ft_check_map_line(char *line, t_data **data, int i)
 {
-	int	j;
+	int		j;
 
 	j = 0;
 	while (line[j] && line[j] != '\n')
 	{
 		if (line[j] == '0' || line[j] == '1' || line[j] == ' ')
 			j++;
-		else if (ft_strchr("NSWE", line[j]) != NULL && (*data)->face == '\0')
+		else if (ft_strchr("ENWS", line[j]) != NULL && (*data)->face == '\0')
 		{
 			(*data)->face = line[j];
-			(*data)->px = j * CELL_SIZE + CELL_SIZE / 2;
-			(*data)->py = i * CELL_SIZE + CELL_SIZE / 2;
+			(*data)->p_angle = 360;
+			if (line[j] == 'N')
+				(*data)->p_angle = 90;
+			if (line[j] == 'W')
+				(*data)->p_angle = 180;
+			if (line[j] == 'S')
+				(*data)->p_angle = 270;
+			(*data)->px = j + 0.5;
+			(*data)->py = i + 0.5;
 			j++;
 		}
 		else

@@ -24,9 +24,13 @@ LIBFT= ./Libft/libft.a
 LIBFLAGS= -L$(dir $(LIBFT)) -lft -L$(dir $(MLX42)) -lmlx42 -ldl
 
 ifeq ($(shell uname),Linux)
-LIBFLAGS += -lglfw
+LIBFLAGS += -lglfw -lm
 else
-LIBFLAGS += -lglfw3 -framework Cocoa -framework OpenGl -framework IOKit
+LIBFLAGS += -lglfw3 -framework Cocoa -framework OpenGl -framework IOKit -lm
+endif
+
+ifdef DEBUG
+CFLAGS += -g
 endif
 
 ##########
@@ -37,24 +41,31 @@ MLX42= $(MLX42_DIR)/$(MLX42_BUILD_DIR)/libmlx42.a
 
 ##########
 
-HEADERS= ./Libft/libft.h \
+HEADERS=./Libft/libft.h \
 		./MLX42/include/MLX42/MLX42.h \
-		./src/types.h \
-		./src/error.h \
-		./src/parse/parser.h \
 		./src/init_game/game.h \
+		./src/minimap/minimap.h \
+		./src/parse/parser.h \
+		./src/raycasting/raycast.h \
+		./src/error.h \
+		./src/types.h \
+		./src/utils.h
 
 ##########
 
-SOURCE= src/main.c \
-		src/error.c \
-		src/parse/parse_info.c \
-		src/parse/parse_utils.c \
-		src/parse/parse_map.c \
-		src/parse/validate_map.c \
-		src/parse/validate_path.c \
-		src/parse/validate_colour.c \
-		src/init_game/init_mlx.c \
+SDIR= src/
+SOURCE=	init_game/init_mlx.c \
+		minimap/minimap.c \
+		parse/parse_info.c \
+		parse/parse_map.c \
+		parse/parse_utils.c \
+		parse/validate_colour.c \
+		parse/validate_map.c \
+		parse/validate_path.c \
+		raycasting/raycast.c \
+		error.c \
+		main.c \
+		utils.c
 
 ##########
 
@@ -91,7 +102,7 @@ $(MLX42):
 	@cmake -S $(MLX42_DIR) -B $(MLX42_DIR)/$(MLX42_BUILD_DIR)
 	@$(MAKE) -sC $(MLX42_DIR)/$(MLX42_BUILD_DIR) -j4
 
-$(ODIR)/%.o: %.c $(HEADERS)
+$(ODIR)/%.o: $(SDIR)/%.c $(HEADERS)
 	@mkdir -p $(dir $@)
 	@$(call prettycomp,$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@)
 

@@ -6,7 +6,11 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/18 16:14:59 by rhorbach      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2024/02/21 15:57:50 by rhorbach      ########   odam.nl         */
+=======
+/*   Updated: 2024/03/20 15:49:25 by rhorbach      ########   odam.nl         */
+>>>>>>> 76ef504604a33c336806f65d2a92d48eeb748010
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +58,8 @@ static void	ft_print_data_to_check(t_data *data)
 	printf("--west: %s\n", data->west);
 	printf("--ceiling: %i,%i,%i\n", data->ceiling[0], data->ceiling[1], data->ceiling[2]);
 	printf("--floor: %i,%i,%i\n", data->floor[0], data->floor[1], data->floor[2]);
-	printf("--px: %i, py: %i, face: %c\n", data->px, data->py, data->face);
+	printf("--px: %f, py: %f, face: %c\n", data->px, data->py, data->face);
+	printf("--fov: %f\n", data->p_angle);
 	printf("--height: %i, width: %i\n", data->height, data->width);
 	int i = 0;
 	while (i < data->height)
@@ -80,6 +85,8 @@ static t_error	ft_cub3d(char *file)
 		ft_free_data_struct(data);
 		return (get_error());
 	}
+	// data->px = 11.5;
+	// data->py = 9.75;
 	ft_print_data_to_check(data);
 	if (ft_init_game(&data) != OK)
 	{
