@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC= cc
-CFLAGS= -Wall -Wextra -Werror -D SL_TEX='"$(dir $(realpath $(lastword $(MAKEFILE_LIST))))/textures/"'
+CFLAGS= -Wall -Wextra -Werror -D SL_TEX='"$(dir $(realpath $(lastword $(MAKEFILE_LIST))))/textures/"' #-fsanitize=address,undefined
 RM= rm -r
 
 ##########

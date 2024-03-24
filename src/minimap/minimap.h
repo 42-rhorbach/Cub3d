@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/20 14:27:29 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/03/22 15:37:26 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/03/23 22:39:46 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define MINIMAP_RAY_G 50
 # define MINIMAP_RAY_B 50
 
-# define MINIMAP_SCALE 20
+# define MINIMAP_SCALE 5
 
 void	draw_minimap_ray(t_data *data, double end_x, double end_y);
 

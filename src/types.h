@@ -28,27 +28,26 @@
 ///////////////////////////////
 
 //for my laptop at home
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 800
+# define HEIGHT 500
 
-# define STEP_X 0.25
-# define STEP_Y 0.25
+# define MOVE_STEP 0.25
 
 /////////////////////////////////
 # define MARGIN 0.000001
-# define A_MARGIN 0.1
+# define A_MARGIN 0.01
 # define FOV 60.00
 # define HFOV FOV / 2
-# define FOV_STEP FOV / (WIDTH - 1)
+# define FOV_STEP FOV / WIDTH
 # define ROT_STEP 5
 # define PI 3.14159265359
 
 //for testing
-// # define NORTH 0xFF0000FF //red
-// # define SOUTH 0x0000FFFF //blue
-// # define EAST 0x00FF00FF //green
-// # define WEST 0xFFFF00FF //yellow
-// # define WHITE 0xFFFFFFFF
+# define CNORTH 0xCC00CCFF //purple
+# define CSOUTH 0xFFFF99 //yellow
+# define CEAST 0x996600FF //brown
+# define CWEST 0xcc0000FF //red
+# define WHITE 0xFFFFFFFF
 
 typedef enum e_error
 {
@@ -113,6 +112,8 @@ typedef struct s_rays
 	int		last;
 	int		x_dir;
 	int		y_dir;
+	int		x;
+	int		y;
 	double	end_x;
 	double	end_y;
 	uint32_t	c;

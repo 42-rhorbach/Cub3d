@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/20 14:27:11 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/03/22 17:54:03 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/23 22:27:11 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ static int	get_scaled(double n, int size)
 
 void	draw_minimap_ray(t_data *data, double end_x, double end_y)
 {
+	if (end_x < 0 || end_x > data->width - 1 || end_y < 0 || end_y > data->height -1)
+		return ;
 	draw_minimap_line((t_line){
 		get_scaled(data->px, data->width),
 		get_scaled(data->py, data->height),

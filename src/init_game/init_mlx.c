@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/22 14:56:42 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/03/23 21:18:15 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,23 @@ static void	ft_get_dxy(t_data *data, int move_dir, double *dy, double *dx)
 	direction_xy(data->p_angle, &dir_x, &dir_y);
 	if (move_dir == 'w')
 	{
-		*dx = cos(n_angle * PI / 180) * STEP_X * dir_x;
-		*dy = sin(n_angle * PI / 180) * STEP_Y * dir_y;
+		*dx = cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
+		*dy = sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
 	}
 	if (move_dir == 's')
 	{
-		*dx = -cos(n_angle * PI / 180) * STEP_X * dir_x;
-		*dy = -sin(n_angle * PI / 180) * STEP_Y * dir_y;
+		*dx = -cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
+		*dy = -sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
 	}
 	else if (move_dir == 'a')
 	{
-		*dx = sin(n_angle * PI / 180) * STEP_Y * dir_y;
-		*dy = -cos(n_angle * PI / 180) * STEP_X * dir_x;
+		*dx = sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
+		*dy = -cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
 	}
 	else if (move_dir == 'd')
 	{
-		*dx = -sin(n_angle * PI / 180) * STEP_Y * dir_y;
-		*dy = cos(n_angle * PI / 180) * STEP_X * dir_x;
+		*dx = -sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
+		*dy = cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
 	}
 	return ;
 }
@@ -52,6 +52,7 @@ static void draw(t_data *data)
 {
 	draw_minimap(data);
 	ft_ray_loop(data);
+	return ;
 }
 
 static void	move_player(t_data *data, int move_dir)
@@ -69,6 +70,7 @@ static void	move_player(t_data *data, int move_dir)
 	data->px += dx;
 	data->py += dy;
 	draw(data);
+	return ;
 }
 
 static void	ft_move_angle(t_data *data, double angle_change)
@@ -79,12 +81,14 @@ static void	ft_move_angle(t_data *data, double angle_change)
 	else if (data->p_angle > 360)
 		data->p_angle -= 360;
 	draw(data);
+	return ;
 }
 
 static void	ft_cursor_hook(double xpos, double ypos, void *param)
 {
 	(void)param;
 	printf("xpos: %f, ypos: %f\n", xpos, ypos);
+	return ;
 }
 
 static void	ft_hook(mlx_key_data_t keydata, void *param)
