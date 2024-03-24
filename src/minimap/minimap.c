@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/20 14:27:11 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/03/23 22:27:11 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/24 10:33:06 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,10 @@ static int	get_scaled(double n, int size)
 
 	minimap_size = size * MINIMAP_SCALE;
 	return ((int)(n / size * minimap_size));
+	//TODO:
+	//size can be left out, so we dont need this function.
+	//n / size * (size * minimap_scal) = (n * size * minimap_scale) / size = (n * minimap_scale) / 1 = n * minimap_scale
+	//so we could just do px * width, py * height, end_x * width and end_y * height
 }
 
 void	draw_minimap_ray(t_data *data, double end_x, double end_y)
