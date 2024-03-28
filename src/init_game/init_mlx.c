@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/23 21:18:15 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/28 15:01:58 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "../raycasting/raycast.h"
 #include <math.h>
 
-static void	ft_get_dxy(t_data *data, int move_dir, double *dy, double *dx)
+static void	ft_get_dxy(t_data *data, t_move_dir dir, double *dy, double *dx)
 {
 	double	n_angle;
 	int		dir_x;
@@ -25,22 +25,22 @@ static void	ft_get_dxy(t_data *data, int move_dir, double *dy, double *dx)
 	n_angle = data->p_angle;
 	n_angle_calc(&n_angle);
 	direction_xy(data->p_angle, &dir_x, &dir_y);
-	if (move_dir == 'w')
+	if (dir == FORWARD)
 	{
 		*dx = cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
 		*dy = sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
 	}
-	if (move_dir == 's')
+	if (dir == BACKWARD)
 	{
 		*dx = -cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
 		*dy = -sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
 	}
-	else if (move_dir == 'a')
+	else if (dir == LEFTWARD)
 	{
 		*dx = sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
 		*dy = -cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
 	}
-	else if (move_dir == 'd')
+	else if (dir == RIGHTWARD)
 	{
 		*dx = -sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
 		*dy = cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
@@ -52,15 +52,16 @@ static void draw(t_data *data)
 {
 	draw_minimap(data);
 	ft_ray_loop(data);
-	return ;
 }
 
-static void	move_player(t_data *data, int move_dir)
+static void	move_player(t_data *data, t_move_dir move_dir, double elapsed_time)
 {
 	double	dy;
 	double	dx;
 
 	ft_get_dxy(data, move_dir, &dy, &dx);
+	dx *= elapsed_time;
+	dy *= elapsed_time;
 	if ((int)(data->py + dy) < 0 || (int)(data->py + dy) >= data->height)
 		return ;
 	if ((int)(data->px + dx) < 0 || (int)(data->px + dx) >= data->width)
@@ -69,8 +70,6 @@ static void	move_player(t_data *data, int move_dir)
 		return ;
 	data->px += dx;
 	data->py += dy;
-	draw(data);
-	return ;
 }
 
 static void	ft_move_angle(t_data *data, double angle_change)
@@ -80,15 +79,12 @@ static void	ft_move_angle(t_data *data, double angle_change)
 		data->p_angle += 360;
 	else if (data->p_angle > 360)
 		data->p_angle -= 360;
-	draw(data);
-	return ;
 }
 
 static void	ft_cursor_hook(double xpos, double ypos, void *param)
 {
 	(void)param;
 	printf("xpos: %f, ypos: %f\n", xpos, ypos);
-	return ;
 }
 
 static void	ft_hook(mlx_key_data_t keydata, void *param)
@@ -98,19 +94,18 @@ static void	ft_hook(mlx_key_data_t keydata, void *param)
 	data = param;
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 		mlx_close_window(data->mlx);
-	if (keydata.key == MLX_KEY_W && keydata.action == MLX_PRESS)
-		move_player(data, 'w');
-	if (keydata.key == MLX_KEY_S && keydata.action == MLX_PRESS)
-		move_player(data, 's');
-	if (keydata.key == MLX_KEY_A && keydata.action == MLX_PRESS)
-		move_player(data, 'a');
-	if (keydata.key == MLX_KEY_D && keydata.action == MLX_PRESS)
-		move_player(data, 'd');
-	if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
-		ft_move_angle(data, ROT_STEP);
-	if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
-		ft_move_angle(data, -ROT_STEP);
-	return ;
+	if (keydata.key == MLX_KEY_W)
+		data->inputs.forward = (keydata.action != MLX_RELEASE);
+	if (keydata.key == MLX_KEY_S)
+		data->inputs.backward = (keydata.action != MLX_RELEASE);
+	if (keydata.key == MLX_KEY_A)
+		data->inputs.leftward = (keydata.action != MLX_RELEASE);
+	if (keydata.key == MLX_KEY_D)
+		data->inputs.rightward = (keydata.action != MLX_RELEASE);
+	if (keydata.key == MLX_KEY_LEFT)
+		data->inputs.counterclockwise = (keydata.action != MLX_RELEASE);
+	if (keydata.key == MLX_KEY_RIGHT)
+		data->inputs.clockwise = (keydata.action != MLX_RELEASE);
 }
 
 // static t_error	load_texture(t_data *data, const char *texture_path,
@@ -128,38 +123,60 @@ static void	ft_hook(mlx_key_data_t keydata, void *param)
 // 	return (OK);
 // }
 
-t_error	ft_init_game(t_data **data)
+void ft_game_loop(void *param)
 {
-	(*data)->mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", true);
-	if ((*data)->mlx == NULL)
+	t_data *const data = param;
+
+	double time = mlx_get_time();
+	double elapsed_time = time - data->time;
+	data->time = time;
+	if (data->inputs.forward)
+		move_player(data, FORWARD, elapsed_time);
+	if (data->inputs.backward)
+		move_player(data, BACKWARD, elapsed_time);
+	if (data->inputs.leftward)
+		move_player(data, LEFTWARD, elapsed_time);
+	if (data->inputs.rightward)
+		move_player(data, RIGHTWARD, elapsed_time);
+	if (data->inputs.counterclockwise)
+		ft_move_angle(data, ROT_STEP * elapsed_time);
+	if (data->inputs.clockwise)
+		ft_move_angle(data, -ROT_STEP * elapsed_time);
+	draw(data);
+}
+
+t_error	ft_init_game(t_data *data)
+{
+	data->mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", true);
+	if (data->mlx == NULL)
 		return (set_error(E_MLX));
-	/*if (load_texture((*data), (*data)->west, &(*data)->image[WEST]) != OK \
-		|| load_texture((*data), (*data)->east, &(*data)->image[EAST]) != OK \
-		|| load_texture((*data), (*data)->north, &(*data)->image[NORTH]) != OK \
-		|| load_texture((*data), (*data)->south, &(*data)->image[SOUTH]) != OK)
+	/*if (load_texture(data, data->west, &data->image[WEST]) != OK \
+		|| load_texture(data, data->east, &data->image[EAST]) != OK \
+		|| load_texture(data, data->north, &data->image[NORTH]) != OK \
+		|| load_texture(data, data->south, &data->image[SOUTH]) != OK)
 	 	return (get_error());*/
-	(*data)->image[4] = mlx_new_image((*data)->mlx, WIDTH, HEIGHT); // TODO: Don't store the main window image in the same array as the wall images, and rename to wall_images[4]!
-	if (!(*data)->image[4] \
-		|| mlx_image_to_window((*data)->mlx, (*data)->image[4], 0, 0) == -1)
+	data->image[4] = mlx_new_image(data->mlx, WIDTH, HEIGHT); // TODO: Don't store the main window image in the same array as the wall images, and rename to wall_images[4]!
+	if (!data->image[4] \
+		|| mlx_image_to_window(data->mlx, data->image[4], 0, 0) == -1)
 	{
-		mlx_close_window((*data)->mlx); // TODO: This shouldn't have to be called here; refactor main() so it automatically happens, if it doesn't already
+		mlx_close_window(data->mlx); // TODO: This shouldn't have to be called here; refactor main() so it automatically happens, if it doesn't already
 		return (set_error(E_MLX));
 	}
-	(*data)->minimap = mlx_new_image((*data)->mlx, (*data)->width * MINIMAP_SCALE, (*data)->height * MINIMAP_SCALE);
-	if ((*data)->minimap == NULL)
+	data->minimap = mlx_new_image(data->mlx, data->width * MINIMAP_SCALE, data->height * MINIMAP_SCALE);
+	if (data->minimap == NULL)
 	{
-		mlx_close_window((*data)->mlx);
+		mlx_close_window(data->mlx);
 		return (set_error(E_MLX));
 	}
-	if (mlx_image_to_window((*data)->mlx, (*data)->minimap, 0, 0) == -1)
+	if (mlx_image_to_window(data->mlx, data->minimap, 0, 0) == -1)
 	{
-		mlx_close_window((*data)->mlx);
+		mlx_close_window(data->mlx);
 		return (set_error(E_MLX));
 	}
-	draw(*data);
-	mlx_key_hook((*data)->mlx, &ft_hook, *data);
-	mlx_cursor_hook((*data)->mlx, &ft_cursor_hook, NULL);
-	mlx_loop((*data)->mlx);
-	mlx_terminate((*data)->mlx);
+	mlx_loop_hook(data->mlx, &ft_game_loop, data);
+	mlx_key_hook(data->mlx, &ft_hook, data);
+	mlx_cursor_hook(data->mlx, &ft_cursor_hook, NULL);
+	mlx_loop(data->mlx);
+	mlx_terminate(data->mlx);
 	return (OK);
 }
