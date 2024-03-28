@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:53:04 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/11 11:31:32 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/28 14:22:20 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,6 @@
 # include "error.h"
 # include "types.h"
 
-t_error	ft_init_game(t_data **data);
+t_error	ft_init_game(t_data *data);
 
 #endif
