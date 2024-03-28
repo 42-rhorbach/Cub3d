@@ -28,10 +28,10 @@
 ///////////////////////////////
 
 //for my laptop at home
-# define WIDTH 800
-# define HEIGHT 500
+# define WIDTH 1600
+# define HEIGHT 1000
 
-# define MOVE_STEP 0.25
+# define MOVE_STEP 2
 
 /////////////////////////////////
 # define MARGIN 0.000001
@@ -39,7 +39,7 @@
 # define FOV 60.00
 # define HFOV FOV / 2
 # define FOV_STEP FOV / WIDTH
-# define ROT_STEP 5
+# define ROT_STEP 50
 # define PI 3.14159265359
 
 //for testing
@@ -77,6 +77,16 @@ typedef enum e_texture_index
 	TEXTURE_COUNT,
 }	t_texture_index;
 
+typedef struct s_inputs
+{
+	bool	forward;
+	bool	backward;
+	bool	leftward;
+	bool	rightward;
+	bool	counterclockwise;
+	bool	clockwise;
+}	t_inputs;
+
 typedef struct s_data
 {
 	mlx_t		*mlx;
@@ -97,6 +107,8 @@ typedef struct s_data
 	char		*south;
 	char		*west;
 	char		*east;
+	t_inputs	inputs;
+	double		time;
 }	t_data;
 
 typedef struct s_rays
