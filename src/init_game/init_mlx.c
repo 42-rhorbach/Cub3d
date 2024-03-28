@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/28 14:55:44 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/03/28 15:01:58 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "../raycasting/raycast.h"
 #include <math.h>
 
-static void	ft_get_dxy(t_data *data, int move_dir, double *dy, double *dx)
+static void	ft_get_dxy(t_data *data, t_move_dir dir, double *dy, double *dx)
 {
 	double	n_angle;
 	int		dir_x;
@@ -25,22 +25,22 @@ static void	ft_get_dxy(t_data *data, int move_dir, double *dy, double *dx)
 	n_angle = data->p_angle;
 	n_angle_calc(&n_angle);
 	direction_xy(data->p_angle, &dir_x, &dir_y);
-	if (move_dir == 'w')
+	if (dir == FORWARD)
 	{
 		*dx = cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
 		*dy = sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
 	}
-	if (move_dir == 's')
+	if (dir == BACKWARD)
 	{
 		*dx = -cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
 		*dy = -sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
 	}
-	else if (move_dir == 'a')
+	else if (dir == LEFTWARD)
 	{
 		*dx = sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
 		*dy = -cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
 	}
-	else if (move_dir == 'd')
+	else if (dir == RIGHTWARD)
 	{
 		*dx = -sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
 		*dy = cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
@@ -54,7 +54,7 @@ static void draw(t_data *data)
 	ft_ray_loop(data);
 }
 
-static void	move_player(t_data *data, int move_dir, double elapsed_time)
+static void	move_player(t_data *data, t_move_dir move_dir, double elapsed_time)
 {
 	double	dy;
 	double	dx;
@@ -131,13 +131,13 @@ void ft_game_loop(void *param)
 	double elapsed_time = time - data->time;
 	data->time = time;
 	if (data->inputs.forward)
-		move_player(data, 'w', elapsed_time);
+		move_player(data, FORWARD, elapsed_time);
 	if (data->inputs.backward)
-		move_player(data, 's', elapsed_time);
+		move_player(data, BACKWARD, elapsed_time);
 	if (data->inputs.leftward)
-		move_player(data, 'a', elapsed_time);
+		move_player(data, LEFTWARD, elapsed_time);
 	if (data->inputs.rightward)
-		move_player(data, 'd', elapsed_time);
+		move_player(data, RIGHTWARD, elapsed_time);
 	if (data->inputs.counterclockwise)
 		ft_move_angle(data, ROT_STEP * elapsed_time);
 	if (data->inputs.clockwise)

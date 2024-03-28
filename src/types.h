@@ -87,6 +87,14 @@ typedef struct s_inputs
 	bool	clockwise;
 }	t_inputs;
 
+typedef enum e_move_dir
+{
+	FORWARD,
+	BACKWARD,
+	LEFTWARD,
+	RIGHTWARD,
+}	t_move_dir;
+
 typedef struct s_data
 {
 	mlx_t		*mlx;
