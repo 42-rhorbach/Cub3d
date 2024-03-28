@@ -52,7 +52,6 @@ static void draw(t_data *data)
 {
 	draw_minimap(data);
 	ft_ray_loop(data);
-	return ;
 }
 
 static void	move_player(t_data *data, int move_dir)
@@ -70,7 +69,6 @@ static void	move_player(t_data *data, int move_dir)
 	data->px += dx;
 	data->py += dy;
 	draw(data);
-	return ;
 }
 
 static void	ft_move_angle(t_data *data, double angle_change)
@@ -81,14 +79,12 @@ static void	ft_move_angle(t_data *data, double angle_change)
 	else if (data->p_angle > 360)
 		data->p_angle -= 360;
 	draw(data);
-	return ;
 }
 
 static void	ft_cursor_hook(double xpos, double ypos, void *param)
 {
 	(void)param;
 	printf("xpos: %f, ypos: %f\n", xpos, ypos);
-	return ;
 }
 
 static void	ft_hook(mlx_key_data_t keydata, void *param)
@@ -110,7 +106,6 @@ static void	ft_hook(mlx_key_data_t keydata, void *param)
 		ft_move_angle(data, ROT_STEP);
 	if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
 		ft_move_angle(data, -ROT_STEP);
-	return ;
 }
 
 // static t_error	load_texture(t_data *data, const char *texture_path,
