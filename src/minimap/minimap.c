@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/20 14:27:11 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/03/24 10:33:06 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/29 13:48:03 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,88 +15,58 @@
 #include "raycast.h"
 #include <stdlib.h>
 
-static void draw_minimap_line(t_line l)
+static void	draw_minimap_line(t_line l)
 {
-	int dx;
-	int dy;
-	int sx;
-	int sy;
-	int error;
-	int e2;
+	int	dx;
+	int	dy;
+	int	sx;
+	int	sy;
+	int	error;
+	int	e2;
 
-    dx = abs(l.x1 - l.x0);
+	dx = abs(l.x1 - l.x0);
 	sx = -1;
 	if (l.x0 < l.x1)
 		sx = 1;
-    dy = -abs(l.y1 - l.y0);
+	dy = -abs(l.y1 - l.y0);
 	sy = -1;
 	if (l.y0 < l.y1)
 		sy = 1;
-    error = dx + dy;
-    while (true)
+	error = dx + dy;
+	while (true)
 	{
-		ft_put_pixel(l.image, l.x0, l.y0,
-			(int [3]){MINIMAP_RAY_R, MINIMAP_RAY_G, MINIMAP_RAY_B});
-        if (l.x0 == l.x1 && l.y0 == l.y1)
+		ft_put_pixel(l.image, l.x0, l.y0, MINIMAP_RAY);
+		if (l.x0 == l.x1 && l.y0 == l.y1)
 			return ;
-        e2 = 2 * error;
-        if (e2 >= dy)
+		e2 = 2 * error;
+		if (e2 >= dy)
 		{
-            if (l.x0 == l.x1)
+			if (l.x0 == l.x1)
 				return ;
-            error = error + dy;
-            l.x0 = l.x0 + sx;
+			error = error + dy;
+			l.x0 = l.x0 + sx;
 		}
-        if (e2 <= dx)
+		if (e2 <= dx)
 		{
-            if (l.y0 == l.y1)
+			if (l.y0 == l.y1)
 				return ;
-            error = error + dx;
-            l.y0 = l.y0 + sy;
+			error = error + dx;
+			l.y0 = l.y0 + sy;
 		}
 	}
-}
-
-static int	get_scaled(double n, int size)
-{
-	int minimap_size;
-
-	minimap_size = size * MINIMAP_SCALE;
-	return ((int)(n / size * minimap_size));
-	//TODO:
-	//size can be left out, so we dont need this function.
-	//n / size * (size * minimap_scal) = (n * size * minimap_scale) / size = (n * minimap_scale) / 1 = n * minimap_scale
-	//so we could just do px * width, py * height, end_x * width and end_y * height
 }
 
 void	draw_minimap_ray(t_data *data, double end_x, double end_y)
 {
-	if (end_x < 0 || end_x > data->width - 1 || end_y < 0 || end_y > data->height -1)
+	if (end_x < 0 || end_x > data->width - 1 || \
+		end_y < 0 || end_y > data->height -1)
 		return ;
 	draw_minimap_line((t_line){
-		get_scaled(data->px, data->width),
-		get_scaled(data->py, data->height),
-		get_scaled(end_x, data->width),
-		get_scaled(end_y, data->height),
+		(data->px * MINIMAP_SCALE),
+		(data->py * MINIMAP_SCALE),
+		(end_x * MINIMAP_SCALE),
+		(end_y * MINIMAP_SCALE),
 		data->minimap});
-}
-
-static void	draw_tile_pixel(mlx_image_t *minimap, char tile, int x, int y)
-{
-	if (tile == '0')
-	{
-		ft_put_pixel(minimap, x, y, (int [3]){
-			MINIMAP_BACKGROUND_R,
-			MINIMAP_BACKGROUND_G,
-			MINIMAP_BACKGROUND_B});
-	}
-	else if (tile == '1')
-	{
-		ft_put_pixel(minimap, x, y, (int [3]){
-			MINIMAP_WALL_R,
-			MINIMAP_WALL_G,
-			MINIMAP_WALL_B});
-	}
 }
 
 static void	draw_minimap_pixel(t_data *data, char tile, size_t tile_x, \
@@ -115,7 +85,10 @@ static void	draw_minimap_pixel(t_data *data, char tile, size_t tile_x, \
 		{
 			y = tile_y * MINIMAP_SCALE + pixel_y;
 			x = tile_x * MINIMAP_SCALE + pixel_x;
-			draw_tile_pixel(data->minimap, tile, x, y);
+			if (tile == '0')
+				ft_put_pixel(data->minimap, (int)x, (int)y, MINIMAP_BACKGROUND);
+			else if (tile == '1')
+				ft_put_pixel(data->minimap, (int)x, (int)y, MINIMAP_WALL);
 			pixel_x++;
 		}
 		pixel_y++;

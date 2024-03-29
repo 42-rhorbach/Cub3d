@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/28 15:01:58 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/03/29 13:12:59 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,12 @@ static void	ft_get_dxy(t_data *data, t_move_dir dir, double *dy, double *dx)
 	n_angle = data->p_angle;
 	n_angle_calc(&n_angle);
 	direction_xy(data->p_angle, &dir_x, &dir_y);
-	if (dir == FORWARD)
-	{
-		*dx = cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
-		*dy = sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
-	}
+	*dx = cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
+	*dy = sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
 	if (dir == BACKWARD)
 	{
-		*dx = -cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
-		*dy = -sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
+		*dx = -*dx;
+		*dy = -*dy;
 	}
 	else if (dir == LEFTWARD)
 	{
@@ -45,13 +42,6 @@ static void	ft_get_dxy(t_data *data, t_move_dir dir, double *dy, double *dx)
 		*dx = -sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
 		*dy = cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
 	}
-	return ;
-}
-
-static void draw(t_data *data)
-{
-	draw_minimap(data);
-	ft_ray_loop(data);
 }
 
 static void	move_player(t_data *data, t_move_dir move_dir, double elapsed_time)
@@ -81,11 +71,11 @@ static void	ft_move_angle(t_data *data, double angle_change)
 		data->p_angle -= 360;
 }
 
-static void	ft_cursor_hook(double xpos, double ypos, void *param)
-{
-	(void)param;
-	printf("xpos: %f, ypos: %f\n", xpos, ypos);
-}
+// static void	ft_cursor_hook(double xpos, double ypos, void *param)
+// {
+// 	(void)param;
+// 	printf("xpos: %f, ypos: %f\n", xpos, ypos);
+// }
 
 static void	ft_hook(mlx_key_data_t keydata, void *param)
 {
@@ -123,12 +113,14 @@ static void	ft_hook(mlx_key_data_t keydata, void *param)
 // 	return (OK);
 // }
 
-void ft_game_loop(void *param)
+void	ft_game_loop(void *param)
 {
-	t_data *const data = param;
+	t_data *const	data = param;
+	double			time;
+	double			elapsed_time;
 
-	double time = mlx_get_time();
-	double elapsed_time = time - data->time;
+	time = mlx_get_time();
+	elapsed_time = time - data->time;
 	data->time = time;
 	if (data->inputs.forward)
 		move_player(data, FORWARD, elapsed_time);
@@ -142,7 +134,8 @@ void ft_game_loop(void *param)
 		ft_move_angle(data, ROT_STEP * elapsed_time);
 	if (data->inputs.clockwise)
 		ft_move_angle(data, -ROT_STEP * elapsed_time);
-	draw(data);
+	draw_minimap(data);
+	ft_ray_loop(data);
 }
 
 t_error	ft_init_game(t_data *data)
@@ -162,7 +155,8 @@ t_error	ft_init_game(t_data *data)
 		mlx_close_window(data->mlx); // TODO: This shouldn't have to be called here; refactor main() so it automatically happens, if it doesn't already
 		return (set_error(E_MLX));
 	}
-	data->minimap = mlx_new_image(data->mlx, data->width * MINIMAP_SCALE, data->height * MINIMAP_SCALE);
+	data->minimap = mlx_new_image(data->mlx, data->width * MINIMAP_SCALE, \
+					data->height * MINIMAP_SCALE);
 	if (data->minimap == NULL)
 	{
 		mlx_close_window(data->mlx);
@@ -175,7 +169,7 @@ t_error	ft_init_game(t_data *data)
 	}
 	mlx_loop_hook(data->mlx, &ft_game_loop, data);
 	mlx_key_hook(data->mlx, &ft_hook, data);
-	mlx_cursor_hook(data->mlx, &ft_cursor_hook, NULL);
+	// mlx_cursor_hook(data->mlx, &ft_cursor_hook, NULL);
 	mlx_loop(data->mlx);
 	mlx_terminate(data->mlx);
 	return (OK);
