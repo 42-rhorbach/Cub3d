@@ -105,9 +105,9 @@ typedef struct s_data
 	double		p_angle;
 	double		px;
 	double		py;
-	int			ceiling[3];
+	uint8_t		ceiling[3];
 	int			c;
-	int			floor[3];
+	uint8_t		floor[3];
 	int			f;
 	char		*north;
 	char		*south;

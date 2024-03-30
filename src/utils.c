@@ -6,21 +6,19 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/07 12:37:29 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/03/29 14:46:08 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/30 11:38:17 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "types.h"
 #include <math.h>
 
-void	ft_put_pixel(mlx_image_t *image, int x, int y, int *rgb)
+void	ft_put_pixel(mlx_image_t *image, int x, int y, uint8_t *rgb)
 {
 	uint32_t	colour;
 
 	colour = rgb[0] << 24 | rgb[1] << 16 | rgb[2] << 8 | 255;
 	mlx_put_pixel(image, x, y, colour);
-	//need to change colours to uint8_t for fsanitize
-	return ;
 }
 
 void	n_angle_calc(double *angle)
