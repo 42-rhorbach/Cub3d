@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/01 18:06:22 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/05 21:47:48 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/29 14:44:27 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ t_error	ft_check_path(char *path, char **data_path)
 //	if (fd == -1)
 //		return (set_error(E_SYS));
 //	close (fd);
+// TODO: is this needed for opening/checking the texture files?
+// you can delete if not needed, or adjust if needed in a different form.
 	if (ft_check_texture_name(path) != OK)
 		return (get_error());
 	*data_path = ft_strdup(path);

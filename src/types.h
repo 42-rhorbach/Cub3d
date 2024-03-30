@@ -37,8 +37,6 @@
 # define MARGIN 0.000001
 # define A_MARGIN 0.01
 # define FOV 60.00
-# define HFOV FOV / 2
-# define FOV_STEP FOV / WIDTH
 # define ROT_STEP 50
 # define PI 3.14159265359
 
@@ -98,8 +96,8 @@ typedef enum e_move_dir
 typedef struct s_data
 {
 	mlx_t		*mlx;
-	mlx_image_t	*image[TEXTURE_COUNT+1];
-	mlx_image_t *minimap;
+	mlx_image_t	*image[TEXTURE_COUNT + 1];
+	mlx_image_t	*minimap;
 	char		**map;
 	int			width;
 	int			height;
@@ -121,21 +119,21 @@ typedef struct s_data
 
 typedef struct s_rays
 {
-	double	sx;
-	double	sy;
-	double	dx;
-	double	dy;
-	double	dir_angle;
-	double	ray_angle;
-	double	wall_dist;
-	int		height;
-	int		last;
-	int		x_dir;
-	int		y_dir;
-	int		x;
-	int		y;
-	double	end_x;
-	double	end_y;
+	double		sx;
+	double		sy;
+	double		dx;
+	double		dy;
+	double		dir_angle;
+	double		ray_angle;
+	double		wall_dist;
+	int			height;
+	int			last;
+	int			x_dir;
+	int			y_dir;
+	int			x;
+	int			y;
+	double		end_x;
+	double		end_y;
 	uint32_t	c;
 }	t_rays;
 

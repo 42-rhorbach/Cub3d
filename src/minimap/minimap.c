@@ -6,13 +6,14 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/20 14:27:11 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/03/29 13:48:03 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/30 11:28:49 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minimap.h"
 #include "raycast.h"
+#include "utils.h"
 #include <stdlib.h>
 
 static void	draw_minimap_line(t_line l)
@@ -35,7 +36,7 @@ static void	draw_minimap_line(t_line l)
 	error = dx + dy;
 	while (true)
 	{
-		ft_put_pixel(l.image, l.x0, l.y0, MINIMAP_RAY);
+		mlx_put_pixel(l.image, l.x0, l.y0, MINIMAP_RAY);
 		if (l.x0 == l.x1 && l.y0 == l.y1)
 			return ;
 		e2 = 2 * error;
@@ -86,9 +87,9 @@ static void	draw_minimap_pixel(t_data *data, char tile, size_t tile_x, \
 			y = tile_y * MINIMAP_SCALE + pixel_y;
 			x = tile_x * MINIMAP_SCALE + pixel_x;
 			if (tile == '0')
-				ft_put_pixel(data->minimap, (int)x, (int)y, MINIMAP_BACKGROUND);
+				mlx_put_pixel(data->minimap, (int)x, (int)y, MINIMAP_BACKGROUND);
 			else if (tile == '1')
-				ft_put_pixel(data->minimap, (int)x, (int)y, MINIMAP_WALL);
+				mlx_put_pixel(data->minimap, (int)x, (int)y, MINIMAP_WALL);
 			pixel_x++;
 		}
 		pixel_y++;

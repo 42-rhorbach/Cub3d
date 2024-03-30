@@ -6,14 +6,24 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/07 12:37:29 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/03/23 21:17:31 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/29 14:46:08 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "types.h"
 #include <math.h>
 
-void n_angle_calc(double *angle)
+void	ft_put_pixel(mlx_image_t *image, int x, int y, int *rgb)
+{
+	uint32_t	colour;
+
+	colour = rgb[0] << 24 | rgb[1] << 16 | rgb[2] << 8 | 255;
+	mlx_put_pixel(image, x, y, colour);
+	//need to change colours to uint8_t for fsanitize
+	return ;
+}
+
+void	n_angle_calc(double *angle)
 {
 	if (*angle > 90 && *angle <= 180)
 		*angle = 180 - *angle;
@@ -23,7 +33,7 @@ void n_angle_calc(double *angle)
 		*angle = 360 - *angle;
 }
 
-void direction_xy(double ray_angle, int *x_dir, int *y_dir)
+void	direction_xy(double ray_angle, int *x_dir, int *y_dir)
 {
 	if (fabs(ray_angle - 90) < A_MARGIN || fabs(ray_angle - 270) < A_MARGIN) // TODO: Why does this not do the `|| ray_angle < A_MARGIN` seen below?
 		*x_dir = 0; // TODO: Why isn't x_dir and y_dir a boolean? It seems strange that they can be 0, if they are about the four quadrants of a radian circle

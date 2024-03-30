@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/18 16:14:59 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/03/28 15:35:35 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/03/29 15:18:09 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,30 +42,10 @@ static t_error	ft_init(int fd, char *file, t_data *data)
 	return (OK);
 }
 
-static void	ft_print_data_to_check(t_data data)
-{
-	printf("printing for checking:\n");
-	printf("--north: %s\n", data.north);
-	printf("--south: %s\n", data.south);
-	printf("--east: %s\n", data.east);
-	printf("--west: %s\n", data.west);
-	printf("--ceiling: %i,%i,%i\n", data.ceiling[0], data.ceiling[1], data.ceiling[2]);
-	printf("--floor: %i,%i,%i\n", data.floor[0], data.floor[1], data.floor[2]);
-	printf("--px: %f, py: %f, face: %c\n", data.px, data.py, data.face);
-	printf("--fov: %f\n", data.p_angle);
-	printf("--height: %i, width: %i\n", data.height, data.width);
-	int i = 0;
-	while (i < data.height)
-	{
-		printf("%s##\n", data.map[i]);
-		i++;
-	}
-}
-
 static t_error	ft_cub3d(char *file)
 {
 	static t_data	data;
-	int		fd;
+	int				fd;
 
 	if (ft_check_map_name(file) != OK)
 		return (get_error());
@@ -77,9 +57,6 @@ static t_error	ft_cub3d(char *file)
 		ft_free_data_struct(data);
 		return (get_error());
 	}
-	// data->px = 11.5;
-	// data->py = 9.75;
-	ft_print_data_to_check(data);
 	if (ft_init_game(&data) != OK)
 	{
 		ft_free_data_struct(data);

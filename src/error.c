@@ -40,6 +40,8 @@ t_error	get_error(void)
 }
 
 //TODO: added some preset messages from so_long, check which are redundant.
+//file to long, so maybe define the messages in a header file,
+//also error.h is not included, is that file not needed?
 void	print_error(t_error err)
 {
 	static const char	*error_table[] = {

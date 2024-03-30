@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:35:23 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/22 17:24:40 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/29 14:45:41 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 # include "error.h"
 # include "types.h"
-
-void	ft_put_pixel(mlx_image_t *image, int x, int y, int *rgb);
 
 void	ft_ray_loop(t_data *data);
 

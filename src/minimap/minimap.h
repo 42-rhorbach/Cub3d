@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/20 14:27:29 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/03/29 13:47:45 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/30 11:28:19 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 
 # include "libft.h"
 
-# define MINIMAP_BACKGROUND ((int[3]){42, 42, 42})
+# define MINIMAP_BACKGROUND 0x2A2A2AFF
 
-# define MINIMAP_WALL ((int[3]){242, 242, 242})
+# define MINIMAP_WALL 0x8E8E8EFF
 
-# define MINIMAP_RAY ((int[3]){200, 50, 50})
+# define MINIMAP_RAY 0xC83232FF
 
 # define MINIMAP_SCALE 15
 
