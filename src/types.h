@@ -96,7 +96,8 @@ typedef enum e_move_dir
 typedef struct s_data
 {
 	mlx_t		*mlx;
-	mlx_image_t	*image[TEXTURE_COUNT + 1];
+	mlx_image_t	*window;
+	mlx_image_t	*walls[TEXTURE_COUNT];
 	mlx_image_t	*minimap;
 	char		**map;
 	int			width;

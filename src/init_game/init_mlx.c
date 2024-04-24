@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/29 13:12:59 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/04/24 15:23:58 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,9 +148,9 @@ t_error	ft_init_game(t_data *data)
 		|| load_texture(data, data->north, &data->image[NORTH]) != OK \
 		|| load_texture(data, data->south, &data->image[SOUTH]) != OK)
 	 	return (get_error());*/
-	data->image[4] = mlx_new_image(data->mlx, WIDTH, HEIGHT); // TODO: Don't store the main window image in the same array as the wall images, and rename to wall_images[4]!
-	if (!data->image[4] \
-		|| mlx_image_to_window(data->mlx, data->image[4], 0, 0) == -1)
+	data->window = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+	if (!data->window \
+		|| mlx_image_to_window(data->mlx, data->window, 0, 0) == -1)
 	{
 		mlx_close_window(data->mlx); // TODO: This shouldn't have to be called here; refactor main() so it automatically happens, if it doesn't already
 		return (set_error(E_MLX));
