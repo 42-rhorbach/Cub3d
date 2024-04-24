@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 13:44:28 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/02/07 11:36:42 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/30 11:45:21 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ t_error	ft_validate_map(t_data *data);
 t_error	ft_check_path(char *path, char **data_path);
 
 //validate_colour
-t_error	ft_check_colour(char *str, int *colours, int *done);
+t_error	ft_check_colour(char *str, uint8_t *colours, int *done);
 
 //parse_utils
 t_error	ft_check_file_name(char *file, char *extension);
 bool	ft_info_set(t_data *data);
 bool	ft_e_line(char *line);
-void	ft_free_data_struct(t_data *data);
+void	ft_free_data_struct(t_data data);
 
 #endif

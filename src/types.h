@@ -28,27 +28,24 @@
 ///////////////////////////////
 
 //for my laptop at home
-# define HEIGHT 480
-# define WIDTH 640
+# define WIDTH 1600
+# define HEIGHT 1000
 
-# define STEP_X 0.25
-# define STEP_Y 0.25
+# define MOVE_STEP 2
 
 /////////////////////////////////
 # define MARGIN 0.000001
-# define A_MARGIN 0.1
+# define A_MARGIN 0.01
 # define FOV 60.00
-# define HFOV FOV / 2
-# define FOV_STEP FOV / (WIDTH - 1)
-# define ROT_STEP 5
+# define ROT_STEP 50
 # define PI 3.14159265359
 
 //for testing
-// # define NORTH 0xFF0000FF //red
-// # define SOUTH 0x0000FFFF //blue
-// # define EAST 0x00FF00FF //green
-// # define WEST 0xFFFF00FF //yellow
-// # define WHITE 0xFFFFFFFF
+# define CNORTH 0xCC00CCFF //purple
+# define CSOUTH 0xFFFF99 //yellow
+# define CEAST 0x996600FF //brown
+# define CWEST 0xcc0000FF //red
+# define WHITE 0xFFFFFFFF
 
 typedef enum e_error
 {
@@ -78,10 +75,29 @@ typedef enum e_texture_index
 	TEXTURE_COUNT,
 }	t_texture_index;
 
+typedef struct s_inputs
+{
+	bool	forward;
+	bool	backward;
+	bool	leftward;
+	bool	rightward;
+	bool	counterclockwise;
+	bool	clockwise;
+}	t_inputs;
+
+typedef enum e_move_dir
+{
+	FORWARD,
+	BACKWARD,
+	LEFTWARD,
+	RIGHTWARD,
+}	t_move_dir;
+
 typedef struct s_data
 {
 	mlx_t		*mlx;
-	mlx_image_t	*image[TEXTURE_COUNT+1];
+	mlx_image_t	*image[TEXTURE_COUNT + 1];
+	mlx_image_t	*minimap;
 	char		**map;
 	int			width;
 	int			height;
@@ -89,31 +105,35 @@ typedef struct s_data
 	double		p_angle;
 	double		px;
 	double		py;
-	int			ceiling[3];
+	uint8_t		ceiling[3];
 	int			c;
-	int			floor[3];
+	uint8_t		floor[3];
 	int			f;
 	char		*north;
 	char		*south;
 	char		*west;
 	char		*east;
+	t_inputs	inputs;
+	double		time;
 }	t_data;
 
 typedef struct s_rays
 {
-	double	sx;
-	double	sy;
-	double	dx;
-	double	dy;
-	double	dir_angle;
-	double	ray_angle;
-	double	wall_dist;
-	int		height;
-	int		last;
-	int		x_dir;
-	int		y_dir;
-	int		end_x;
-	int		end_y;
+	double		sx;
+	double		sy;
+	double		dx;
+	double		dy;
+	double		dir_angle;
+	double		ray_angle;
+	double		wall_dist;
+	int			height;
+	int			last;
+	int			x_dir;
+	int			y_dir;
+	int			x;
+	int			y;
+	double		end_x;
+	double		end_y;
 	uint32_t	c;
 }	t_rays;
 

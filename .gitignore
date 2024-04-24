@@ -12,3 +12,4 @@
 !raycast_theory.txt
 !testlog_dx_dy_movements.txt
 //!*.cub
+# !.vscode/*.json

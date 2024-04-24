@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/01 18:08:29 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/04 11:41:56 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/03/30 11:44:51 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include <stdlib.h>
 
-t_error	ft_check_colour(char *str, int *colours, int *done)
+t_error	ft_check_colour(char *str, uint8_t *colours, int *done)
 {
 	int		i;
 	int		c;
