@@ -1,8 +1,8 @@
-      F 0,255,0
+      F 105,105,105
       SO ./textures/South.png
 
 NO                              ./textures/North.png
-     C 0,0,255
+     C 119,136,153
          WE   ./textures/West.png
 EA ./textures/East.png
 

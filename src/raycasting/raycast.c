@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/04/24 15:24:42 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/04/30 16:55:55 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,64 @@
 #include "utils.h"
 #include <math.h>
 
+static t_side	get_side(int last, int x_dir, int y_dir)
+{
+	if (last == 0 && x_dir == 1)
+		return (EAST);
+	else if (last == 0 && x_dir == -1)
+		return (WEST);
+	else if (last == 1 && y_dir == 1)
+		return (NORTH);
+	return (SOUTH);
+}
+
+static size_t	get_index(size_t x, size_t y, size_t width)
+{
+	return (x + y * width);
+}
+
+// TODO: remove
+// #include <assert.h>
+
+static uint32_t	get_wall_pixel(mlx_image_t *tex, size_t x, size_t y)
+{
+	size_t i;
+	uint32_t r;
+	uint32_t g;
+	uint32_t b;
+
+	i = get_index(x, y, tex->width) * 4;
+	// fprintf(stderr, "x: %zu, y: %zu, i: %zu\n", x, y, i);
+	// assert(i < (x + y * tex->width) * 4);
+	// if (i >= ((tex->width - 1) + (tex->height - 1) * tex->width) * 4)
+	// {
+	// 	printf("foo\n");
+	// }
+	// printf("r: %d\n", tex->pixels[i + 0]);
+	r = (uint32_t)tex->pixels[i + 0] << 24;
+	g = (uint32_t)tex->pixels[i + 1] << 16;
+	b = (uint32_t)tex->pixels[i + 2] << 8;
+	return (r | g | b | 255);
+}
+
+static double	get_width_percent(t_side side, double end_x, double end_y)
+{
+	if (side == EAST || side == WEST)
+	{
+		return(fmod(end_y, 1));
+	}
+	return (fmod(end_x, 1));
+}
+
 //TODO:
 // ray->end_x and ray->end_y will be the precise coordinate of the wall-hitting
 // so this is needed for the textures i guess.
 static void	ft_draw_ray(t_rays *ray, t_data *data, int x)
 {
-	int		y;
-	int		min_y;
-	int		max_y;
+	int	y;
+	int	min_y;
+	int	max_y;
+	t_side side;
 
 	if (ray->last == 0)
 		ray->wall_dist = ray->sx - ray->dx;
@@ -43,23 +93,32 @@ static void	ft_draw_ray(t_rays *ray, t_data *data, int x)
 	max_y = (int)(ray->height / 2 + HEIGHT / 2);
 	if (max_y >= HEIGHT)
 		max_y = HEIGHT - 1;
-	if (ray->last == 0 && ray->x_dir == 1)
-		ray->c = CEAST;
-	else if (ray->last == 0 && ray->x_dir == -1)
-		ray->c = CWEST;
-	else if (ray->last == 1 && ray->y_dir == 1)
-		ray->c = CSOUTH;
-	else if (ray->last == 1 && ray->y_dir == -1)
-		ray->c = CNORTH;
-	else
-		ray->c = WHITE;
+	side = get_side(ray->last, ray->x_dir, ray->y_dir);
+	double width_percent =	get_width_percent(side, ray->end_x, ray->end_y);
+	mlx_image_t *tex = data->walls[side];
+	size_t wall_x = width_percent * (tex->width - 1);
+	// assert(wall_x < tex->width);
 	y = 0;
 	while (y < HEIGHT - 1 && y >= 0 && x >= 0 && x < WIDTH - 1)
 	{
 		if (y < min_y)
 			ft_put_pixel(data->window, x, y, data->ceiling);
 		else if (y >= min_y && y <= max_y)
+		{
+			double real_height = (double)HEIGHT / ray->wall_dist;
+			size_t offset;
+			offset = 0;
+			if (real_height > HEIGHT) {
+				offset = (real_height - HEIGHT) / 2;
+			}
+			double height_percent = (offset + y - min_y) / real_height;
+			// assert(height_percent >= 0);
+			// assert(height_percent <= 1);
+			size_t wall_y = height_percent * (tex->height - 1);
+			// assert(wall_y < tex->height);
+			ray->c = get_wall_pixel(tex, wall_x, wall_y);
 			mlx_put_pixel(data->window, x, y, ray->c);
+		}
 		else if (y > max_y)
 			ft_put_pixel(data->window, x, y, data->floor);
 		y++;
@@ -135,6 +194,7 @@ void	ft_ray_loop(t_data *data)
 	double	d_angle;
 	double	r_angle;
 
+	printf("fps: %f\n", 1 / data->mlx->delta_time);
 	x = 0;
 	d_angle = data->p_angle + (FOV / 2);
 	if (d_angle > 360)

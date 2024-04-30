@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC= cc
-CFLAGS= -Wall -Wextra -Werror -D SL_TEX='"$(dir $(realpath $(lastword $(MAKEFILE_LIST))))/textures/"' #-fsanitize=address,undefined
+CFLAGS= -Wall -Wextra -Werror -D SL_TEX='"$(dir $(realpath $(lastword $(MAKEFILE_LIST))))/textures/"' -Ofast -march=native
 RM= rm -r
 
 ##########
@@ -30,7 +30,7 @@ LIBFLAGS += -lglfw3 -framework Cocoa -framework OpenGl -framework IOKit -lm
 endif
 
 ifdef DEBUG
-CFLAGS += -g
+CFLAGS += -g -fsanitize=address,undefined
 endif
 
 ##########
