@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/29 13:12:59 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/04/24 15:53:48 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,20 +98,20 @@ static void	ft_hook(mlx_key_data_t keydata, void *param)
 		data->inputs.clockwise = (keydata.action != MLX_RELEASE);
 }
 
-// static t_error	load_texture(t_data *data, const char *texture_path,
-// 								mlx_image_t **img)
-// {
-// 	mlx_texture_t	*texture;
+static t_error	load_texture(t_data *data, const char *texture_path,
+								mlx_image_t **img)
+{
+	mlx_texture_t	*texture;
 
-// 	texture = mlx_load_png(texture_path);
-// 	if (texture == NULL)
-// 		return (set_error(E_MLX));
-// 	*img = mlx_texture_to_image(data->mlx, texture);
-// 	mlx_delete_texture(texture);
-// 	if (*img == NULL)
-// 		return (set_error(E_MLX));
-// 	return (OK);
-// }
+	texture = mlx_load_png(texture_path);
+	if (texture == NULL)
+		return (set_error(E_MLX));
+	*img = mlx_texture_to_image(data->mlx, texture);
+	mlx_delete_texture(texture);
+	if (*img == NULL)
+		return (set_error(E_MLX));
+	return (OK);
+}
 
 void	ft_game_loop(void *param)
 {
@@ -143,14 +143,14 @@ t_error	ft_init_game(t_data *data)
 	data->mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", true);
 	if (data->mlx == NULL)
 		return (set_error(E_MLX));
-	/*if (load_texture(data, data->west, &data->image[WEST]) != OK \
-		|| load_texture(data, data->east, &data->image[EAST]) != OK \
-		|| load_texture(data, data->north, &data->image[NORTH]) != OK \
-		|| load_texture(data, data->south, &data->image[SOUTH]) != OK)
-	 	return (get_error());*/
-	data->image[4] = mlx_new_image(data->mlx, WIDTH, HEIGHT); // TODO: Don't store the main window image in the same array as the wall images, and rename to wall_images[4]!
-	if (!data->image[4] \
-		|| mlx_image_to_window(data->mlx, data->image[4], 0, 0) == -1)
+	if (load_texture(data, data->north, &data->walls[NORTH]) != OK \
+		|| load_texture(data, data->east, &data->walls[EAST]) != OK \
+		|| load_texture(data, data->south, &data->walls[SOUTH]) != OK \
+		|| load_texture(data, data->west, &data->walls[WEST]) != OK)
+	 	return (get_error());
+	data->window = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+	if (!data->window \
+		|| mlx_image_to_window(data->mlx, data->window, 0, 0) == -1)
 	{
 		mlx_close_window(data->mlx); // TODO: This shouldn't have to be called here; refactor main() so it automatically happens, if it doesn't already
 		return (set_error(E_MLX));

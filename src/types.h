@@ -37,15 +37,8 @@
 # define MARGIN 0.000001
 # define A_MARGIN 0.01
 # define FOV 60.00
-# define ROT_STEP 50
+# define ROT_STEP 100
 # define PI 3.14159265359
-
-//for testing
-# define CNORTH 0xCC00CCFF //purple
-# define CSOUTH 0xFFFF99 //yellow
-# define CEAST 0x996600FF //brown
-# define CWEST 0xcc0000FF //red
-# define WHITE 0xFFFFFFFF
 
 typedef enum e_error
 {
@@ -66,14 +59,14 @@ typedef enum e_error
 	E_ELEMENT_MISSING,
 }	t_error;
 
-typedef enum e_texture_index
+typedef enum e_side
 {
 	EAST,
 	NORTH,
 	SOUTH,
 	WEST,
 	TEXTURE_COUNT,
-}	t_texture_index;
+}	t_side;
 
 typedef struct s_inputs
 {
@@ -96,7 +89,8 @@ typedef enum e_move_dir
 typedef struct s_data
 {
 	mlx_t		*mlx;
-	mlx_image_t	*image[TEXTURE_COUNT + 1];
+	mlx_image_t	*window;
+	mlx_image_t	*walls[TEXTURE_COUNT];
 	mlx_image_t	*minimap;
 	char		**map;
 	int			width;

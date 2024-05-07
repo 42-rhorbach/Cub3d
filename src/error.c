@@ -56,7 +56,7 @@ void	print_error(t_error err)
 	[E_WRONG_QUANTITY] = "Too many/few players in map.",
 	[E_INV_INSTRC] = "Invalid file content.",
 	[E_INCORRECT_COLOUR] = "One of the colour codes in incorrect.",
-	[E_ELEMENT_MISSING] = "A element is missing.",
+	[E_ELEMENT_MISSING] = "An element is missing.",
 	};
 
 	ft_putendl_fd("Error", STDERR_FILENO);

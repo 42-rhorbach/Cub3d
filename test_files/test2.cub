@@ -1,13 +1,10 @@
-NO ./path_n.png
+      F 105,105,105
+      SO ./textures/South.png
 
-SO ./path_s.png
-
-WE ./path_w.png
-
-EA ./path_e.png
-
-F 220,100,0
-C 225,30,0
+NO                              ./textures/North.png
+     C 119,136,153
+         WE   ./textures/West.png
+EA ./textures/East.png
 
         11111111111111111111111111
         10000000001100000000000001
