@@ -137,4 +137,14 @@ typedef struct s_rays
 	uint32_t	c;
 }	t_rays;
 
+typedef struct s_bresh
+{
+	int	dx;
+	int	dy;
+	int	sx;
+	int	sy;
+	int	error;
+	int	e2;
+}	t_bresh;
+
 #endif

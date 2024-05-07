@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/20 14:27:11 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/03/30 11:28:49 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/07 14:00:04 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,45 +16,45 @@
 #include "utils.h"
 #include <stdlib.h>
 
-static void	draw_minimap_line(t_line l)
+static void	minimap_draw_pixel(t_line l, t_bresh b)
 {
-	int	dx;
-	int	dy;
-	int	sx;
-	int	sy;
-	int	error;
-	int	e2;
-
-	dx = abs(l.x1 - l.x0);
-	sx = -1;
-	if (l.x0 < l.x1)
-		sx = 1;
-	dy = -abs(l.y1 - l.y0);
-	sy = -1;
-	if (l.y0 < l.y1)
-		sy = 1;
-	error = dx + dy;
 	while (true)
 	{
 		mlx_put_pixel(l.image, l.x0, l.y0, MINIMAP_RAY);
 		if (l.x0 == l.x1 && l.y0 == l.y1)
 			return ;
-		e2 = 2 * error;
-		if (e2 >= dy)
+		b.e2 = 2 * b.error;
+		if (b.e2 >= b.dy)
 		{
 			if (l.x0 == l.x1)
 				return ;
-			error = error + dy;
-			l.x0 = l.x0 + sx;
+			b.error = b.error + b.dy;
+			l.x0 = l.x0 + b.sx;
 		}
-		if (e2 <= dx)
+		if (b.e2 <= b.dx)
 		{
 			if (l.y0 == l.y1)
 				return ;
-			error = error + dx;
-			l.y0 = l.y0 + sy;
+			b.error = b.error + b.dx;
+			l.y0 = l.y0 + b.sy;
 		}
 	}
+}
+
+static void	draw_minimap_line(t_line l)
+{
+	t_bresh	b;
+
+	b.dx = abs(l.x1 - l.x0);
+	b.sx = -1;
+	if (l.x0 < l.x1)
+		b.sx = 1;
+	b.dy = -abs(l.y1 - l.y0);
+	b.sy = -1;
+	if (l.y0 < l.y1)
+		b.sy = 1;
+	b.error = b.dx + b.dy;
+	minimap_draw_pixel(l, b);
 }
 
 void	draw_minimap_ray(t_data *data, double end_x, double end_y)
@@ -87,7 +87,8 @@ static void	draw_minimap_pixel(t_data *data, char tile, size_t tile_x, \
 			y = tile_y * MINIMAP_SCALE + pixel_y;
 			x = tile_x * MINIMAP_SCALE + pixel_x;
 			if (tile == '0')
-				mlx_put_pixel(data->minimap, (int)x, (int)y, MINIMAP_BACKGROUND);
+				mlx_put_pixel(data->minimap, (int)x, (int)y, \
+					MINIMAP_BACKGROUND);
 			else if (tile == '1')
 				mlx_put_pixel(data->minimap, (int)x, (int)y, MINIMAP_WALL);
 			pixel_x++;
