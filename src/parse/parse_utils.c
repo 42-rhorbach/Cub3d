@@ -6,12 +6,11 @@
 /*   By: jvorstma <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 14:13:21 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/28 15:36:24 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/05/07 16:40:56 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-#include "libft.h"
 #include <stdlib.h>
 
 bool	ft_info_set(t_data *data)

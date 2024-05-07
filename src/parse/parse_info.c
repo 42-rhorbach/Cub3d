@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "parser.h"
-#include "libft.h"
 #include <stdlib.h>
 
 static t_error	ft_set_input(char *id, char *value, t_data *data)

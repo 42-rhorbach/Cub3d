@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 13:44:28 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/03/30 11:45:21 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/07 16:40:40 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "error.h"
 # include "types.h"
+# include "libft.h"
 
 //parse_info
 t_error	ft_parser(int fd, char *file, t_data *data);

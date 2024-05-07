@@ -6,12 +6,11 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 03:16:05 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/02/17 10:04:41 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/07 16:41:05 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-#include "libft.h"
 
 static t_error	ft_validate_spot(char **map, int i, int j, t_data *data)
 {

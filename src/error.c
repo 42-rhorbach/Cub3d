@@ -13,7 +13,6 @@
 #include "types.h"
 #include "libft.h"
 #include "MLX42.h"
-#include <stdio.h>
 
 static t_error	*get_error_ptr(void)
 {
@@ -39,9 +38,6 @@ t_error	get_error(void)
 	return (*err_ptr);
 }
 
-//TODO: added some preset messages from so_long, check which are redundant.
-//file to long, so maybe define the messages in a header file,
-//also error.h is not included, is that file not needed?
 void	print_error(t_error err)
 {
 	static const char	*error_table[] = {
@@ -59,13 +55,10 @@ void	print_error(t_error err)
 	[E_ELEMENT_MISSING] = "An element is missing.",
 	};
 
-	ft_putendl_fd("Error", STDERR_FILENO);
 	if (err == E_MLX)
-	{
-		ft_putstr_fd("cub3d: ", STDERR_FILENO);
-		ft_putendl_fd((char *)mlx_strerror(mlx_errno), STDERR_FILENO);
-	}
-	else if (err == E_SYS)
+		return ;
+	ft_putendl_fd("Error", STDERR_FILENO);
+	if (err == E_SYS)
 		perror("cub3d");
 	else
 	{

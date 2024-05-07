@@ -6,12 +6,11 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/01 18:08:29 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/30 11:44:51 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/07 16:41:03 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-#include "libft.h"
 #include <stdlib.h>
 
 t_error	ft_check_colour(char *str, uint8_t *colours, int *done)

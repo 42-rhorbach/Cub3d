@@ -6,14 +6,14 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/04/24 15:53:48 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/05/07 16:38:10 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "game.h"
 #include "minimap.h"
 #include "utils.h"
-#include "../raycasting/raycast.h"
+#include "raycast.h"
 #include <math.h>
 
 static void	ft_get_dxy(t_data *data, t_move_dir dir, double *dy, double *dx)

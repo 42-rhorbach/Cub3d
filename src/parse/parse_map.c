@@ -6,12 +6,11 @@
 /*   By: jvorstma <marvin@42.fr>                      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/25 14:28:02 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/03/09 11:38:49 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/07 16:40:58 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-#include "libft.h"
 #include <fcntl.h>
 #include <stdlib.h>
 
