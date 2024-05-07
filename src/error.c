@@ -59,13 +59,10 @@ void	print_error(t_error err)
 	[E_ELEMENT_MISSING] = "A element is missing.",
 	};
 
-	ft_putendl_fd("Error", STDERR_FILENO);
 	if (err == E_MLX)
-	{
-		ft_putstr_fd("cub3d: ", STDERR_FILENO);
-		ft_putendl_fd((char *)mlx_strerror(mlx_errno), STDERR_FILENO);
-	}
-	else if (err == E_SYS)
+		return ;
+	ft_putendl_fd("Error", STDERR_FILENO);
+	if (err == E_SYS)
 		perror("cub3d");
 	else
 	{
