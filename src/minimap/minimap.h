@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/20 14:27:29 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/05/07 16:45:35 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/07 22:17:10 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include "libft.h"
 # include "raycast.h"
 # include "utils.h"
-# include <stdlib.h>
 
 # define MINIMAP_BACKGROUND 0x2A2A2AFF
 # define MINIMAP_WALL 0x8E8E8EFF

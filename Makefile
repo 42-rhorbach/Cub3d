@@ -55,6 +55,7 @@ HEADERS=./Libft/libft.h \
 
 SDIR= src/
 SOURCE=	init_game/init_mlx.c \
+		init_game/game_loop.c \
 		minimap/minimap.c \
 		parse/parse_info.c \
 		parse/parse_map.c \
@@ -110,17 +111,15 @@ clean:
 	@if [ -d "$(ODIR)" ]; then \
 		$(RM) $(ODIR); \
 	fi
-	@$(MAKE) -C $(dir $(LIBFT)) clean
+	@$(MAKE) -sC $(dir $(LIBFT)) clean
 
 fclean: clean
 	@if [ -x "$(NAME)" ]; then \
 		$(RM) $(NAME); \
 	fi
-	@$(MAKE) -C $(dir $(LIBFT)) fclean
-	$(RM) -f $(MLX42_DIR)/$(MLX42_BUILD_DIR)
+	@$(MAKE) -sC $(dir $(LIBFT)) fclean
+	@$(RM) -f $(MLX42_DIR)/$(MLX42_BUILD_DIR)
 
 re: fclean all
 
 .PHONY: all clean fclean re
-
-## we need to recompile changes in the headerfiles aswell, without doing make re

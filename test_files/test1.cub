@@ -1,10 +1,10 @@
       F 0,255,0  
-      SO ./southpic.png
+      SO textures/1.png
 
-NO                              ./northpic.png
+NO                              textures/2.png
      C 0,0,255
-         WE   ./westpic.png
-EA ./eastpic/back/eastpic.png
+         WE   textures/3.png
+EA textures/../textures/4.png
 
 
 11111111111111111

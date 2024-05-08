@@ -10,9 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "types.h"
-#include "libft.h"
-#include "MLX42.h"
+#include "error.h"
+#include <stdio.h>
 
 static t_error	*get_error_ptr(void)
 {

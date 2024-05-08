@@ -16,24 +16,11 @@
 # include "MLX42.h"
 # include <unistd.h>
 
-# include <stdio.h> //for printf testing
-
-//for at codam
-// # define HEIGHT 2064
-// # define WIDTH 2064
-
-// # define STEP_X 0.25
-// # define STEP_Y 0.25
-
-///////////////////////////////
-
-//for my laptop at home
 # define WIDTH 1600
 # define HEIGHT 1000
 
 # define MOVE_STEP 2
 
-/////////////////////////////////
 # define MARGIN 0.000001
 # define A_MARGIN 0.01
 # define FOV 60.00

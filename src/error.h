@@ -14,6 +14,8 @@
 # define ERROR_H
 
 # include "types.h"
+# include "libft.h"
+# include "MLX42.h"
 
 t_error	set_error(t_error err);
 t_error	get_error(void);

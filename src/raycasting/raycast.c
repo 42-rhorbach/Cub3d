@@ -6,13 +6,11 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/05/07 14:01:17 by rhorbach      ########   odam.nl         */
+/*   Updated: 2024/05/07 22:20:52 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
-#include "minimap.h"
-#include "utils.h"
 #include <math.h>
 
 static t_side	get_side(int last, int x_dir, int y_dir)
@@ -194,7 +192,6 @@ void	ft_ray_loop(t_data *data)
 	double	d_angle;
 	double	r_angle;
 
-	printf("fps: %.2f\n\x1b[A", 1 / data->mlx->delta_time);
 	x = 0;
 	d_angle = data->p_angle + (FOV / 2);
 	if (d_angle > 360)
