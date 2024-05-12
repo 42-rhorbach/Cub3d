@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/05/11 10:13:37 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/11 10:30:29 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,14 @@ static t_error ft_init_window(t_data *data)
 		|| mlx_image_to_window(data->mlx, data->window, 0, 0) == -1)
 	{
 		mlx_close_window(data->mlx); // TODO: This shouldn't have to be called here; refactor main() so it automatically happens, if it doesn't already
+		return (set_error(E_MLX));
+	}
+	data->minimap = mlx_new_image(data->mlx, data->width * MINIMAP_SCALE, \
+					data->height * MINIMAP_SCALE);
+	if (!data->minimap \
+		|| mlx_image_to_window(data->mlx, data->minimap, 0, 0) == -1)
+	{
+		mlx_close_window(data->mlx);
 		return (set_error(E_MLX));
 	}
 	return (OK);

@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/08 16:57:37 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/05/11 10:12:29 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/11 10:30:40 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,6 @@ void	ft_game_loop(void *param)
 		ft_move_angle(data, ROT_STEP * elapsed_time);
 	if (data->inputs.clockwise)
 		ft_move_angle(data, -ROT_STEP * elapsed_time);
+	draw_minimap(data);
 	ft_ray_loop(data);
 }

@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   game.h                                             :+:    :+:            */
+/*   ERROR.h                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
+/*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2024/02/11 10:53:04 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/05/11 10:28:01 by jvorstma      ########   odam.nl         */
+/*   Created: 2023/07/25 15:03:25 by rhorbach      #+#    #+#                 */
+/*   Updated: 2023/07/28 14:49:01 by rhorbach      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GAME_H
-# define GAME_H
+#ifndef ERROR_H
+# define ERROR_H
 
-# include "error.h"
 # include "types.h"
-# include "utils.h"
-# include "raycast.h"
+# include "libft.h"
+# include "MLX42.h"
 
-t_error	ft_init_game(t_data *data);
-void	ft_game_loop(void *param);
+t_error	set_error(t_error err);
+t_error	get_error(void);
+void	print_error(t_error err);
 
 #endif

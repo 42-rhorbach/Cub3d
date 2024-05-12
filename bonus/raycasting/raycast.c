@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/05/11 10:13:13 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/11 10:31:08 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,7 @@ static void	ft_ray_calc(double d_angle, t_data *data, int x, double r_angle)
 	ft_set_ray_data(&ray);
 	ft_ray_cast(&ray, data);
 	ft_draw_ray(&ray, data, x);
+	draw_minimap_ray(data, ray.end_x, ray.end_y);
 }
 
 void	ft_ray_loop(t_data *data)

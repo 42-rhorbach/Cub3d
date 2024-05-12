@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   game.h                                             :+:    :+:            */
+/*   raycast.h                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2024/02/11 10:53:04 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/05/11 10:28:01 by jvorstma      ########   odam.nl         */
+/*   Created: 2024/02/14 17:35:23 by jvorstma      #+#    #+#                 */
+/*   Updated: 2024/05/07 22:16:54 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GAME_H
-# define GAME_H
+#ifndef RAYCAST_H
+# define RAYCAST_H
 
 # include "error.h"
 # include "types.h"
+# include "minimap.h"
 # include "utils.h"
-# include "raycast.h"
 
-t_error	ft_init_game(t_data *data);
-void	ft_game_loop(void *param);
+void	ft_ray_loop(t_data *data);
 
 #endif

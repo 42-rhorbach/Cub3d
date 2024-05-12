@@ -17,6 +17,7 @@ RM= rm -r
 ##########
 
 NAME= cub3D
+BNAME= cub3D_bonus
 
 ##########
 
@@ -41,22 +42,20 @@ MLX42= $(MLX42_DIR)/$(MLX42_BUILD_DIR)/libmlx42.a
 
 ##########
 
-HEADERS=./Libft/libft.h \
-		./MLX42/include/MLX42/MLX42.h \
-		./src/init_game/game.h \
-		./src/minimap/minimap.h \
-		./src/parse/parser.h \
-		./src/raycasting/raycast.h \
-		./src/error.h \
-		./src/types.h \
-		./src/utils.h
-
-##########
-
 SDIR= src/
-SOURCE=	init_game/init_mlx.c \
+
+HEADERS= ./Libft/libft.h \
+		./MLX42/include/MLX42/MLX42.h \
+		$(SDIR)init_game/game.h \
+		$(SDIR)parse/parser.h \
+		$(SDIR)raycasting/raycast.h \
+		$(SDIR)error.h \
+		$(SDIR)types.h \
+		$(SDIR)utils.h
+
+
+SOURCE= init_game/init_mlx.c \
 		init_game/game_loop.c \
-		minimap/minimap.c \
 		parse/parse_info.c \
 		parse/parse_map.c \
 		parse/parse_utils.c \
@@ -70,12 +69,44 @@ SOURCE=	init_game/init_mlx.c \
 
 ##########
 
+BDIR= bonus/
+
+BHEADERS= ./Libft/libft.h \
+		./MLX42/include/MLX42/MLX42.h \
+		$(BDIR)init_game/game.h \
+		$(BDIR)parse/parser.h \
+		$(BDIR)raycasting/raycast.h \
+		$(BDIR)error.h \
+		$(BDIR)types.h \
+		$(BDIR)utils.h \
+ 		$(BDIR)minimap.h
+
+BSOURCE= init_game/init_mlx.c \
+		init_game/game_loop.c \
+		parse/parse_info.c \
+		parse/parse_map.c \
+		parse/parse_utils.c \
+		parse/validate_colour.c \
+		parse/validate_map.c \
+		parse/validate_path.c \
+		raycasting/raycast.c \
+		error.c \
+		utils.c \
+		main.c \
+		minimap/minimap.c
+
+##########
+
 INCLUDES= $(addprefix -I, $(sort $(dir $(HEADERS))))
+BINCLUDES= $(addprefix -I, $(sort $(dir $(BHEADERS))))
 
 ##########
 
 ODIR= obj
 OBJECTS= $(addprefix $(ODIR)/,$(SOURCE:.c=.o))
+
+BODIR= bobj
+BOBJECTS= $(addprefix $(BODIR)/,$(BSOURCE:.c=.o))
 
 ##########
 
@@ -91,8 +122,13 @@ endef
 
 all: $(NAME)
 
+bonus: $(BNAME)
+
 $(NAME): $(LIBFT) $(MLX42) $(OBJECTS)
 	$(CC) $(CFLAGS) $(INCLUDES) $(OBJECTS) $(LIBFLAGS) -o $@
+
+$(BNAME): $(LIBFT) $(MLX42) $(BOBJECTS)
+	$(CC) $(CFLAGS) $(BINCLUDES) $(BOBJECTS) $(LIBFLAGS) -o $@
 
 $(LIBFT):
 	@git submodule update --init --recursive $(dir $(LIBFT))
@@ -107,9 +143,16 @@ $(ODIR)/%.o: $(SDIR)/%.c $(HEADERS)
 	@mkdir -p $(dir $@)
 	@$(call prettycomp,$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@)
 
+$(BODIR)/%.o: $(BDIR)/%.c $(BHEADERS)
+	@mkdir -p $(dir $@)
+	@$(call prettycomp,$(CC) -c $(CFLAGS) $(BINCLUDES) $< -o $@)
+
 clean:
 	@if [ -d "$(ODIR)" ]; then \
 		$(RM) $(ODIR); \
+	fi
+	@if [ -d "$(BODIR)" ]; then \
+		$(RM) $(BODIR); \
 	fi
 	@$(MAKE) -sC $(dir $(LIBFT)) clean
 
@@ -117,9 +160,12 @@ fclean: clean
 	@if [ -x "$(NAME)" ]; then \
 		$(RM) $(NAME); \
 	fi
+	@if [ -x "$(BNAME)" ]; then \
+		$(RM) $(BNAME); \
+	fi
 	@$(MAKE) -sC $(dir $(LIBFT)) fclean
 	@$(RM) -f $(MLX42_DIR)/$(MLX42_BUILD_DIR)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus

@@ -1,24 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   game.h                                             :+:    :+:            */
+/*   utils.h                                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
+/*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2024/02/11 10:53:04 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/05/11 10:28:01 by jvorstma      ########   odam.nl         */
+/*   Created: 2024/03/07 12:55:56 by rhorbach      #+#    #+#                 */
+/*   Updated: 2024/05/07 21:38:59 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GAME_H
-# define GAME_H
+#ifndef UTILS_H
+# define UTILS_H
 
-# include "error.h"
 # include "types.h"
-# include "utils.h"
-# include "raycast.h"
 
-t_error	ft_init_game(t_data *data);
-void	ft_game_loop(void *param);
+void	ft_put_pixel(mlx_image_t *image, int x, int y, uint8_t *rgb);
+void	n_angle_calc(double *angle);
+void	direction_xy(double ray_angle, int *x_dir, int *y_dir);
 
 #endif
