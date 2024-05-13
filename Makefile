@@ -97,8 +97,8 @@ BSOURCE= init_game/init_mlx.c \
 
 ##########
 
-INCLUDES= -I$(sort $(dir $(HEADERS)))
-BINCLUDES= -I$(sort $(dir $(BHEADERS)))
+INCLUDES= $(addprefix -I, $(sort $(dir $(HEADERS))))
+BINCLUDES= $(addprefix -I, $(sort $(dir $(BHEADERS))))
 
 ##########
 
