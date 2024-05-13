@@ -79,7 +79,7 @@ BHEADERS= ./Libft/libft.h \
 		$(BDIR)error.h \
 		$(BDIR)types.h \
 		$(BDIR)utils.h \
- 		$(BDIR)minimap.h
+ 		$(BDIR)minimap/minimap.h
 
 BSOURCE= init_game/init_mlx.c \
 		init_game/game_loop.c \
@@ -97,8 +97,8 @@ BSOURCE= init_game/init_mlx.c \
 
 ##########
 
-INCLUDES= $(addprefix -I, $(sort $(dir $(HEADERS))))
-BINCLUDES= $(addprefix -I, $(sort $(dir $(BHEADERS))))
+INCLUDES= -I$(sort $(dir $(HEADERS)))
+BINCLUDES= -I$(sort $(dir $(BHEADERS)))
 
 ##########
 
