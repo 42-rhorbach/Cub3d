@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:53:04 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/05/08 17:03:37 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/15 00:51:46 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,17 @@
 # include "minimap.h"
 # include "utils.h"
 # include "raycast.h"
+
+typedef struct s_move
+{
+	double	dy;
+	double	dx;
+	double	step;
+	int		dir_x;
+	int		dir_y;
+	double	new_x;
+	double	new_y;
+}	t_move;
 
 t_error	ft_init_game(t_data *data);
 void	ft_game_loop(void *param);

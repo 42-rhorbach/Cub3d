@@ -6,71 +6,64 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/08 16:57:37 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/05/14 15:06:52 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/15 00:52:53 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "game.h"
 #include <math.h>
 
-static void	ft_get_dxy(t_data *data, t_move_dir dir, double *dy, double *dx)
+static void	ft_get_dxy(t_data *data, t_move_dir dir, t_move *m)
 {
 	double	n_angle;
-	int		dir_x;
-	int		dir_y;
 
 	n_angle = data->p_angle;
 	n_angle_calc(&n_angle);
-	direction_xy(data->p_angle, &dir_x, &dir_y);
-	*dx = cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
-	*dy = sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
+	direction_xy(data->p_angle, &m->dir_x, &m->dir_y);
+	m->dx = cos(n_angle * PI / 180) * m->step * m->dir_x;
+	m->dy = sin(n_angle * PI / 180) * m->step * m->dir_y;
 	if (dir == BACKWARD)
 	{
-		*dx = -*dx;
-		*dy = -*dy;
+		m->dx = -m->dx;
+		m->dy = -m->dy;
 	}
 	else if (dir == LEFTWARD)
 	{
-		*dx = sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
-		*dy = -cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
+		m->dx = sin(n_angle * PI / 180) * m->step * m->dir_y;
+		m->dy = -cos(n_angle * PI / 180) * m->step * m->dir_x;
 	}
 	else if (dir == RIGHTWARD)
 	{
-		*dx = -sin(n_angle * PI / 180) * MOVE_STEP * dir_y;
-		*dy = cos(n_angle * PI / 180) * MOVE_STEP * dir_x;
+		m->dx = -sin(n_angle * PI / 180) * m->step * m->dir_y;
+		m->dy = cos(n_angle * PI / 180) * m->step * m->dir_x;
 	}
 }
 
 static void	move_player(t_data *data, t_move_dir move_dir, double elapsed_time)
 {
-	double	dy;
-	double	dx;
-	double	m;
+	t_move	m;
 
-	m = 0.2;
-	ft_get_dxy(data, move_dir, &dy, &dx);
-	dx *= elapsed_time;
-	dy *= elapsed_time;
-	if ((int)(data->py + dy) < 1 || (int)(data->py + dy) >= data->height - 1)
+	m.step = MOVE_STEP * elapsed_time;
+	ft_get_dxy(data, move_dir, &m);
+	m.new_x = data->px + m.dx;
+	m.new_y = data->py + m.dy;
+	if ((int)(m.new_y) < 1 || (int)(m.new_y) >= data->height - 1 \
+		|| (int)(m.new_x) < 1 || (int)(m.new_x) >= data->width - 1)
 		return ;
-	if ((int)(data->px + dx) < 1 || (int)(data->px + dx) >= data->width - 1)
+	if (data->map[(int)(m.new_y)][(int)(m.new_x)] != '0')
 		return ;
-	if (data->map[(int)(data->py + dy)][(int)(data->px + dx)] != '0')
+	if (data->map[(int)(m.new_y + 0.1)][(int)(m.new_x + 0.1)] != '0' \
+		|| data->map[(int)(m.new_y - 0.1)][(int)(m.new_x - 0.1)] != '0' \
+		|| data->map[(int)(m.new_y - 0.1)][(int)(m.new_x)] != '0' \
+		|| data->map[(int)(m.new_y - 0.1)][(int)(m.new_x + 0.1)] != '0' \
+		|| data->map[(int)(m.new_y + 0.1)][(int)(m.new_x)] != '0' \
+		|| data->map[(int)(m.new_y + 0.1)][(int)(m.new_x - 0.1)] != '0' \
+		|| data->map[(int)(m.new_y)][(int)(m.new_x - 0.1)] != '0' \
+		|| data->map[(int)(m.new_y)][(int)(m.new_x + 0.1)] != '0')
 		return ;
-	// if (data->map[(int)(data->py + dy - m)][(int)(data->px + dx)] != '0' \
-	// 	&& data->map[(int)(data->py + dy)][(int)(data->px + dx - m)] != '0')
-	// 	return ;
-	// if (data->map[(int)(data->py + dy + m)][(int)(data->px + dx)] != '0' \
-	// 	&& data->map[(int)(data->py + dy)][(int)(data->px + dx + m)] != '0')
-	// 	return ;
-	if (data->map[(int)(data->py + dy - m)][(int)(data->px + dx - m)] != '0')
-		return ;
-	if (data->map[(int)(data->py + dy + m)][(int)(data->px + dx + m)] != '0')
-		return ;
-	data->px += dx;
-	data->py += dy;
+	data->px = m.new_x;
+	data->py = m.new_y;
 }
-// still not correct
 
 static void	ft_move_angle(t_data *data, double angle_change)
 {
