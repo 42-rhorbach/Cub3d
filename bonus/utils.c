@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/07 12:37:29 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/05/07 23:04:39 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/14 08:23:14 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ void	direction_xy(double ray_angle, int *x_dir, int *y_dir)
 {
 	if (fabs(ray_angle - 90) < A_MARGIN || fabs(ray_angle - 270) < A_MARGIN)
 		*x_dir = 0;
-	if (ray_angle > 90 && ray_angle < 270)
+	else if (ray_angle > 90 && ray_angle < 270)
 		*x_dir = -1;
 	else
 		*x_dir = 1;
 	if (fabs(ray_angle - 180) < A_MARGIN \
 		|| fabs(ray_angle - 360) < A_MARGIN || ray_angle < A_MARGIN)
 		*y_dir = 0;
-	if (ray_angle > 180 && ray_angle < 360)
+	else if (ray_angle > 180 && ray_angle < 360)
 		*y_dir = 1;
 	else
 		*y_dir = -1;
