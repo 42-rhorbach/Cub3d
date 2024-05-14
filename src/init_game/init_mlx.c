@@ -6,18 +6,12 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/05/11 10:13:37 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/14 07:31:43 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "game.h"
 #include <math.h>
-
-// static void	ft_cursor_hook(double xpos, double ypos, void *param)
-// {
-// 	(void)param;
-// 	printf("xpos: %f, ypos: %f\n", xpos, ypos);
-// }
 
 static t_error	load_texture(t_data *data, const char *texture_path,
 								mlx_image_t **img)
@@ -55,7 +49,7 @@ static void	ft_hook(mlx_key_data_t keydata, void *param)
 		data->inputs.clockwise = (keydata.action != MLX_RELEASE);
 }
 
-static t_error ft_init_window(t_data *data)
+static t_error	ft_init_window(t_data *data)
 {
 	data->window = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	if (!data->window \
@@ -81,7 +75,6 @@ t_error	ft_init_game(t_data *data)
 		return (get_error());
 	mlx_loop_hook(data->mlx, &ft_game_loop, data);
 	mlx_key_hook(data->mlx, &ft_hook, data);
-	// mlx_cursor_hook(data->mlx, &ft_cursor_hook, NULL);
 	mlx_loop(data->mlx);
 	mlx_terminate(data->mlx);
 	return (OK);
