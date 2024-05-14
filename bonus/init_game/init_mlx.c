@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:06:25 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/05/14 07:29:49 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/14 12:45:22 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static t_error	ft_init_window(t_data *data)
 	if (!data->window \
 		|| mlx_image_to_window(data->mlx, data->window, 0, 0) == -1)
 	{
-		mlx_close_window(data->mlx); // TODO: This shouldn't have to be called here; refactor main() so it automatically happens, if it doesn't already
+		mlx_close_window(data->mlx);
 		return (set_error(E_MLX));
 	}
 	data->minimap = mlx_new_image(data->mlx, data->width * MINIMAP_SCALE, \
@@ -69,8 +69,12 @@ static t_error	ft_init_window(t_data *data)
 	return (OK);
 }
 
+//window check maybe not needed, since we handle the screen in our header, 
+//what do you think?
 t_error	ft_init_game(t_data *data)
 {
+	if (WIDTH < 100 || HEIGHT < 100 || WIDTH > 3000 || HEIGHT > 2500)
+		return (set_error(E_SCREEN));
 	data->mlx = mlx_init(WIDTH, HEIGHT, "Cub3d", true);
 	if (data->mlx == NULL)
 		return (set_error(E_MLX));

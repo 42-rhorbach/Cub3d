@@ -42,8 +42,7 @@ void	print_error(t_error err)
 	static const char	*error_table[] = {
 	[E_ARGC] = "Program takes only one argument.",
 	[E_EMPTY_ARG] = "Passed argument is empty.",
-	[E_CALLOC] = "Calloc failed.",
-	[E_NO_MAP] = "Received empty map.",
+	[E_CALLOC] = "Calloc failed.", [E_NO_MAP] = "Received empty map.",
 	[E_EXTENSION] = "Map file must end with \".cub\".",
 	[E_TEXTURE_EXTENSION] = "Texture file must end with \".png\".",
 	[E_MAP_NOT_CLOSED] = "Map is not enclosed by walls.",
@@ -52,6 +51,7 @@ void	print_error(t_error err)
 	[E_INV_INSTRC] = "Invalid file content.",
 	[E_INCORRECT_COLOUR] = "One of the colour codes in incorrect.",
 	[E_ELEMENT_MISSING] = "An element is missing.",
+	[E_SCREEN] = "Screen measurements are out of bound.",
 	};
 
 	if (err == E_MLX)

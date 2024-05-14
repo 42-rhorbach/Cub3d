@@ -24,7 +24,7 @@
 # define MARGIN 0.000001
 # define A_MARGIN 0.01
 # define FOV 60.00
-# define ROT_STEP 100
+# define ROT_STEP 70
 # define PI 3.14159265359
 
 typedef enum e_error
@@ -44,6 +44,7 @@ typedef enum e_error
 	E_INV_INSTRC,
 	E_INCORRECT_COLOUR,
 	E_ELEMENT_MISSING,
+	E_SCREEN,
 }	t_error;
 
 typedef enum e_side
