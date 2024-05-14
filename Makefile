@@ -63,6 +63,7 @@ SOURCE= init_game/init_mlx.c \
 		parse/validate_map.c \
 		parse/validate_path.c \
 		raycasting/raycast.c \
+		raycasting/draw_ray.c \
 		error.c \
 		main.c \
 		utils.c
@@ -90,6 +91,7 @@ BSOURCE= init_game/init_mlx.c \
 		parse/validate_map.c \
 		parse/validate_path.c \
 		raycasting/raycast.c \
+		raycasting/draw_ray.c \
 		error.c \
 		utils.c \
 		main.c \

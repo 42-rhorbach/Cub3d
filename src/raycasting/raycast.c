@@ -6,95 +6,11 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 17:29:40 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/05/14 08:11:01 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/14 13:19:15 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycast.h"
-#include <math.h>
-
-static t_side	get_side(int last, int x_dir, int y_dir)
-{
-	if (last == 0 && x_dir == 1)
-		return (EAST);
-	else if (last == 0 && x_dir == -1)
-		return (WEST);
-	else if (last == 1 && y_dir == 1)
-		return (NORTH);
-	return (SOUTH);
-}
-
-static uint32_t	get_wall_pixel(mlx_image_t *tex, size_t x, size_t y)
-{
-	size_t		i;
-	uint32_t	r;
-	uint32_t	g;
-	uint32_t	b;
-
-	i = (x + y * tex->width) * 4;
-	r = (uint32_t)tex->pixels[i + 0] << 24;
-	g = (uint32_t)tex->pixels[i + 1] << 16;
-	b = (uint32_t)tex->pixels[i + 2] << 8;
-	return (r | g | b | 255);
-}
-
-static double	get_width_percent(t_side side, double end_x, double end_y)
-{
-	if (side == EAST || side == WEST)
-		return (fmod(end_y, 1));
-	return (fmod(end_x, 1));
-}
-
-static void	ft_draw_ray(t_rays *ray, t_data *data, int x)
-{
-	t_wall_pixel	wp;
-	mlx_image_t		*tex;
-	int				y;
-
-	if (ray->last == 0)
-		ray->wall_dist = ray->sx - ray->dx;
-	else
-		ray->wall_dist = ray->sy - ray->dy;
-	ray->end_x = ray->wall_dist * fabs(cos(ray->dir_angle * PI / 180));
-	ray->end_y = ray->wall_dist * fabs(sin(ray->dir_angle * PI / 180));
-	ray->end_x = data->px + (ray->end_x * ray->x_dir);
-	ray->end_y = data->py + (ray->end_y * ray->y_dir);
-	ray->wall_dist *= sin(ray->ray_angle * PI / 180);
-	if (ray->wall_dist > 1)
-		ray->height = (int)(HEIGHT / ray->wall_dist);
-	else
-		ray->height = HEIGHT;
-	wp.min_y = (int)(-ray->height / 2 + HEIGHT / 2);
-	if (wp.min_y < 0)
-		wp.min_y = 0;
-	wp.max_y = (int)(ray->height / 2 + HEIGHT / 2);
-	if (wp.max_y >= HEIGHT)
-		wp.max_y = HEIGHT - 1;
-	wp.side = get_side(ray->last, ray->x_dir, ray->y_dir);
-	wp.width_percent = get_width_percent(wp.side, ray->end_x, ray->end_y);
-	tex = data->walls[wp.side];
-	wp.wall_x = wp.width_percent * (tex->width - 1);
-	y = 0;
-	while (y < HEIGHT - 1 && y >= 0 && x >= 0 && x < WIDTH - 1)
-	{
-		if (y < wp.min_y)
-			ft_put_pixel(data->window, x, y, data->ceiling);
-		else if (y >= wp.min_y && y <= wp.max_y)
-		{
-			wp.real_height = (double)HEIGHT / ray->wall_dist;
-			wp.offset = 0;
-			if (wp.real_height > HEIGHT)
-				wp.offset = (wp.real_height - HEIGHT) / 2;
-			wp.height_percent = (wp.offset + y - wp.min_y) / wp.real_height;
-			wp.wall_y = wp.height_percent * (tex->height - 1);
-			ray->c = get_wall_pixel(tex, wp.wall_x, wp.wall_y);
-			mlx_put_pixel(data->window, x, y, ray->c);
-		}
-		else if (y > wp.max_y)
-			ft_put_pixel(data->window, x, y, data->floor);
-		y++;
-	}
-}
 
 static void	ft_set_ray_data(t_rays *ray)
 {
