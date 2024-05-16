@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/08 16:57:37 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/05/16 10:57:18 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/16 11:54:54 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ static void	move_player(t_data *data, t_move_dir move_dir, double elapsed_time)
 	ft_get_dxy(move_dir, &m, m.dir_x);
 	m.new_x = data->px + m.dx;
 	m.new_y = data->py + m.dy;
-	m.mx = 0.1 * m.dir_x;
-	m.my = 0.1 * m.dir_y;
+	m.mx = 0.05 * m.dir_x;
+	m.my = 0.05 * m.dir_y;
 	if ((int)(m.new_y) < 1 || (int)(m.new_y) >= data->height - 1 \
 		|| (int)(m.new_x) < 1 || (int)(m.new_x) >= data->width - 1)
 		return ;

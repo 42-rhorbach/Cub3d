@@ -19,7 +19,7 @@
 # define WIDTH 1600
 # define HEIGHT 1000
 
-# define MOVE_STEP 1
+# define MOVE_STEP 2
 
 # define MARGIN 0.000001
 # define A_MARGIN 0.01

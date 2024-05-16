@@ -6,7 +6,7 @@
 /*   By: rhorbach <rhorbach@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/07 12:37:29 by rhorbach      #+#    #+#                 */
-/*   Updated: 2024/05/14 08:23:44 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/16 12:02:22 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,3 @@ void	direction_xy(double ray_angle, int *x_dir, int *y_dir)
 	else
 		*y_dir = -1;
 }
-// was a if/ if /else statement, why?
