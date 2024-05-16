@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/11 10:53:04 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/05/15 00:40:01 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/16 08:21:49 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@ typedef struct s_move
 	int		dir_y;
 	double	new_x;
 	double	new_y;
+	double	angle;
+	double	mx;
+	double	my;
+
 }	t_move;
 
 t_error	ft_init_game(t_data *data);
