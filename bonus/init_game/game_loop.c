@@ -6,7 +6,7 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/08 16:57:37 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/05/16 07:37:28 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/16 10:47:32 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,8 @@ static void	move_player(t_data *data, t_move_dir move_dir, double elapsed_time)
 		return ;
 	if (data->map[(int)(m.new_y)][(int)(m.new_x)] != '0')
 		return ;
-	if (data->map[(int)(m.new_y + 0.05)][(int)(m.new_x + 0.05)] != '0' \
-		|| data->map[(int)(m.new_y - 0.05)][(int)(m.new_x - 0.05)] != '0' \
-		|| data->map[(int)(m.new_y - 0.05)][(int)(m.new_x)] != '0' \
-		|| data->map[(int)(m.new_y - 0.05)][(int)(m.new_x + 0.05)] != '0' \
-		|| data->map[(int)(m.new_y + 0.05)][(int)(m.new_x)] != '0' \
-		|| data->map[(int)(m.new_y + 0.05)][(int)(m.new_x - 0.05)] != '0' \
-		|| data->map[(int)(m.new_y)][(int)(m.new_x - 0.05)] != '0' \
-		|| data->map[(int)(m.new_y)][(int)(m.new_x + 0.05)] != '0')
+	if (data->map[(int)(m.new_y)][(int)(data->px)] != '0' \
+		|| data->map[(int)(data->py)][(int)(m.new_x)] != '0')
 		return ;
 	data->px = m.new_x;
 	data->py = m.new_y;
