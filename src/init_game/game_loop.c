@@ -6,14 +6,14 @@
 /*   By: jvorstma <jvorstma@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/05/08 16:57:37 by jvorstma      #+#    #+#                 */
-/*   Updated: 2024/05/16 11:54:54 by jvorstma      ########   odam.nl         */
+/*   Updated: 2024/05/17 13:40:55 by jvorstma      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "game.h"
 #include <math.h>
 
-static void	ft_get_dxy(t_move_dir dir, t_move *m, int buf)
+static void	ft_get_dxy(t_move_dir dir, t_move *m, int dir_x_buf)
 {
 	if (dir == BACKWARD)
 	{
@@ -23,12 +23,12 @@ static void	ft_get_dxy(t_move_dir dir, t_move *m, int buf)
 	else if (dir == LEFTWARD)
 	{
 		m->dir_x = m->dir_y;
-		m->dir_y = -buf;
+		m->dir_y = -dir_x_buf;
 	}
 	else if (dir == RIGHTWARD)
 	{
 		m->dir_x = -m->dir_y;
-		m->dir_y = buf;
+		m->dir_y = dir_x_buf;
 	}
 	if (dir == RIGHTWARD || dir == LEFTWARD)
 	{
@@ -53,18 +53,12 @@ static void	move_player(t_data *data, t_move_dir move_dir, double elapsed_time)
 	ft_get_dxy(move_dir, &m, m.dir_x);
 	m.new_x = data->px + m.dx;
 	m.new_y = data->py + m.dy;
-	m.mx = 0.05 * m.dir_x;
-	m.my = 0.05 * m.dir_y;
 	if ((int)(m.new_y) < 1 || (int)(m.new_y) >= data->height - 1 \
 		|| (int)(m.new_x) < 1 || (int)(m.new_x) >= data->width - 1)
 		return ;
 	if (data->map[(int)(m.new_y)][(int)(m.new_x)] != '0' \
-		|| data->map[(int)(m.new_y)][(int)(data->px)] != '0' \
-		|| data->map[(int)(data->py)][(int)(m.new_x)] != '0')
-		return ;
-	if (data->map[(int)(m.new_y + m.my)][(int)(m.new_x + m.mx)] != '0' \
-		|| (data->map[(int)(m.new_y + m.my)][(int)(data->px)] != '0' \
-		&& data->map[(int)(data->py)][(int)(m.new_x + m.mx)] != '0'))
+		|| data->map[(int)(m.new_y + 0.05 * m.dir_y)][(int)(data->px)] != '0' \
+		|| data->map[(int)(data->py)][(int)(m.new_x + 0.05 * m.dir_x)] != '0')
 		return ;
 	data->px = m.new_x;
 	data->py = m.new_y;
